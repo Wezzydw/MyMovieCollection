@@ -38,7 +38,7 @@ public class MovieDAO {
         File[] folders = folder.listFiles();
         for (File f : folders) {
             if (f.isFile()) {
-                if(f.getAbsolutePath().endsWith(".mkv") && !f.getAbsolutePath().toLowerCase().contains("sample"))
+                if(checkForFileType(f))
                 {
                     movies.add(new Movie(1, 1, "title: " + i + " " + f.getName(), "MYpath", "Test"));
                 i++;
@@ -59,6 +59,24 @@ public class MovieDAO {
 //        }
 
         return movies;
+    }
+    
+    private boolean checkForFileType(File f)
+    {
+        String path = f.getAbsolutePath();
+        if(path.endsWith(".mkv") || path.endsWith(".mp4") || 
+                path.endsWith(".mpeg4"))
+        {
+            if(!path.toLowerCase().contains("sample"))
+                return true;
+        }
+        
+        return false;
+    }
+    
+    private void getIMDBData(String filepath)
+    {
+        
     }
 
 
