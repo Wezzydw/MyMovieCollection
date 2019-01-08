@@ -5,10 +5,63 @@
  */
 package mymoviecollection.dal;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import mymoviecollection.be.Movie;
+
 /**
  *
  * @author Andreas Svendsen
  */
 public class MovieDAO {
-    
+
+    List<Movie> movies;
+
+    DatabaseConnection conProvider;
+
+    public MovieDAO() {
+        movies = new ArrayList();
+        movies = new ArrayList();
+    }
+
+    public List<Movie> scanFolder(String filepath) {
+
+        File folder = new File(filepath);
+        File[] folders = folder.listFiles();
+        for (File f : folders) {
+            if (f.isFile()) {
+                movies.add(new Movie(1, 1, "title", "MYpath", "Test"));
+            }
+            if (f.isDirectory()) {
+                scanFolder(f.getAbsolutePath());
+                movies.addAll(scanFolder(f.getAbsolutePath()));
+            }
+        }
+        for (Movie m : movies) {
+            System.out.println(m.getTitle());
+        }
+
+        return null;
+    }
+
+
+    public void deleteMovies(List<Movie> selectedMovie) throws IOException {
+        try (Connection con = conProvider.getConnection()) {
+            String a = "DELETE FROM Movies WHERE Id =?;";
+            PreparedStatement prst = con.prepareStatement(a);
+            for (Movie movie : movies) {
+                prst.setInt(1, movie.getId());
+                prst.addBatch();
+            }
+            prst.executeBatch();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
