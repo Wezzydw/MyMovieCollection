@@ -60,7 +60,8 @@ public class Movie {
         this.filePath = filePath;
     }
 
-    public void setLastView(String lastView) {
+    public void setLastView(Date lastView)
+    {
         this.lastView = lastView;
     }
 
@@ -68,7 +69,8 @@ public class Movie {
         return filePath;
     }
 
-    public String getLastView() {
+    public Date getLastView()
+    {
         return lastView;
     }
 

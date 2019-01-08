@@ -5,10 +5,24 @@
  */
 package mymoviecollection.bll;
 
+import java.util.List;
+import mymoviecollection.be.Movie;
+import mymoviecollection.dal.MovieDAO;
+
 /**
  *
  * @author Andreas Svendsen
  */
 public class Search {
+    private MovieDAO mdao;
+    private List<Movie> movie;
+    
+    public Search(){
+        mdao = new MovieDAO();
+        
+    }
+    
+    
+    
     
 }
