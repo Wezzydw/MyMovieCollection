@@ -20,30 +20,48 @@ import mymoviecollection.be.Movie;
  * @author Andreas Svendsen
  */
 public class MovieDAO {
-       DatabaseConnection conProvider;
-        List<Movie> movies;
 
-    
-    public MovieDAO() throws IOException{
-    conProvider = new DatabaseConnection();
-    movies = new ArrayList();
-    
+    List<Movie> movies;
+
+    DatabaseConnection conProvider;
+
+    public MovieDAO() {
+        movies = new ArrayList();
+        movies = new ArrayList();
     }
-        public void deleteMovies(List<Movie> selectedMovie) throws IOException
-    {
-        try (Connection con = conProvider.getConnection())
-        {
+
+    public List<Movie> scanFolder(String filepath) {
+
+        File folder = new File(filepath);
+        File[] folders = folder.listFiles();
+        for (File f : folders) {
+            if (f.isFile()) {
+                movies.add(new Movie(1, 1, "title", "MYpath", "Test"));
+            }
+            if (f.isDirectory()) {
+                scanFolder(f.getAbsolutePath());
+                movies.addAll(scanFolder(f.getAbsolutePath()));
+            }
+        }
+        for (Movie m : movies) {
+            System.out.println(m.getTitle());
+        }
+
+        return null;
+    }
+
+
+    public void deleteMovies(List<Movie> selectedMovie) throws IOException {
+        try (Connection con = conProvider.getConnection()) {
             String a = "DELETE FROM Movies WHERE Id =?;";
             PreparedStatement prst = con.prepareStatement(a);
-            for (Movie movie : movies)
-            {
+            for (Movie movie : movies) {
                 prst.setInt(1, movie.getId());
                 prst.addBatch();
             }
             prst.executeBatch();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }

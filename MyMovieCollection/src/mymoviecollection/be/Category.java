@@ -13,7 +13,7 @@ public class Category {
     String title;
     int Id;
 
-    public Category(String title, int Id)
+    public Category(String title)
     {
         this.title = title;
         this.Id = Id;
@@ -34,9 +34,5 @@ public class Category {
         return Id;
     }
 
-    public void setId(int Id)
-    {
-        this.Id = Id;
-    }
     
 }
