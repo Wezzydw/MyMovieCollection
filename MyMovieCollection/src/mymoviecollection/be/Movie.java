@@ -32,6 +32,10 @@ public class Movie {
     Date date = new Date();
     //System.out.println(dateFormat.format(date));
 
+    public Movie(String title, String length, String releaseYear, String categori, String filepath, int id)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     public int getRating() {
         return rating;
     }
