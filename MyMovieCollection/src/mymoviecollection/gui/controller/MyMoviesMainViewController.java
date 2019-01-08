@@ -50,6 +50,7 @@ public class MyMoviesMainViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+
         try
         {
             model = new Model();
@@ -57,6 +58,10 @@ public class MyMoviesMainViewController implements Initializable
         {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
+        lstMov.setItems(model.getAllMovies());
+
     }    
 
     @FXML
