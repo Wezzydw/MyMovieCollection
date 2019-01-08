@@ -41,6 +41,7 @@ public class Manager {
     }
     
     public void scanFolder(String filepath){
+        
         mdao.scanFolder(filepath);
     }
 
@@ -73,6 +74,7 @@ public class Manager {
     }
 
     public ObservableList<Movie> getAllMovies() {
+        //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
         return movies;
     }
 
