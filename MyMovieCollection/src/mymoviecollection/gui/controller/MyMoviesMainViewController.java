@@ -77,5 +77,10 @@ public class MyMoviesMainViewController implements Initializable
     private void btnRate(ActionEvent event)
     {
     }
+
+    @FXML
+    private void btnPlayMov(ActionEvent event)
+    {
+    }
     
 }
