@@ -5,10 +5,87 @@
  */
 package mymoviecollection.be;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+
+
+
 /**
  *
  * @author Andreas Svendsen
  */
 public class Movie {
-    
-}
+    int rating;
+    int id;
+    String title;
+    String filePath;
+    Date lastView;
+
+    public Movie(int rating, int id, String title, String filePath, String lastView)
+    {
+        this.rating = rating;
+        this.id = id;
+        this.title = title;
+        this.filePath = filePath;
+      
+    }
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date date = new Date();
+    //System.out.println(dateFormat.format(date));
+
+    public int getRating()
+    {
+        return rating;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setRating(int rating)
+    {
+        this.rating = rating;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public void setFilePath(String filePath)
+    {
+        this.filePath = filePath;
+    }
+
+    public void setLastView(String lastView)
+    {
+        this.lastView = lastView;
+    }
+
+    public String getFilePath()
+    {
+        return filePath;
+    }
+
+    public String getLastView()
+    {
+        return lastView;
+    }
+
+           
+    }   
+
