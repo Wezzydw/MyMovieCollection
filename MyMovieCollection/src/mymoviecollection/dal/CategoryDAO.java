@@ -31,13 +31,13 @@ public class CategoryDAO {
     }
     //Vi skal have begrænsninger på ikke at lave en Category som allerede findes,
     // men det skal nok laves i bll laget
-    public void createCategory(String title)
+    public void createCategory(Category category)
     {
         try (Connection con = conProvider.getConnection())
         {
             try (PreparedStatement pstmt = con.prepareStatement("INSERT INTO Category (name) VALUES (?)"))
             {
-                pstmt.setString(1, title);
+                pstmt.setString(1, category.getTitle());
                 pstmt.execute();
                 pstmt.close();
             }

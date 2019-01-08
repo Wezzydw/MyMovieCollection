@@ -20,21 +20,25 @@ import mymoviecollection.dal.DatabaseConnection;
  */
 public class MyMovieCollection extends Application {
 
+    public MyMovieCollection()
+    {
+
+    }
+
     @Override
-    public void start(Stage stage) throws IOException, SQLServerException {
-//        Parent root = FXMLLoader.load(getClass().getResource("/mymovieCollection/gui/view/MyMoviesMainView.fxml"));
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();        
-        DatabaseConnection db = new DatabaseConnection();
-        db.getConnection();
-        System.out.println("Virker");
+    public void start(Stage stage) throws IOException
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("/mymoviecollection/gui/view/MyMoviesMainView.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 
