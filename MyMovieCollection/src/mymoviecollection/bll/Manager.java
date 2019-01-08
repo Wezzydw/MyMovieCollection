@@ -7,9 +7,11 @@ package mymoviecollection.bll;
 
 import java.io.IOException;
 import java.util.List;
+import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mymoviecollection.be.Movie;
+import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.MovieDAO;
 
 /**
@@ -18,13 +20,20 @@ import mymoviecollection.dal.MovieDAO;
  */
 public class Manager {
     private MovieDAO mdao;
+    private CategoryDAO cdao;
+
     private ObservableList<Movie> movies;
+
     private Movie movie;
     
     
-    public Manager(){
+    public Manager() throws IOException{
         mdao = new MovieDAO();
+        cdao = new CategoryDAO();
+        
+
         movies = FXCollections.observableArrayList();
+
     }
     
     public void deleteMovie() throws IOException{
@@ -55,8 +64,8 @@ public class Manager {
         
     }
 
-    public void addCategory() {
-        
+    public void addCategory(Category category) {
+        cdao.createCategory(category);
     }
 
     public void deleteCategory() {
