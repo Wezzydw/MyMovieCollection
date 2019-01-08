@@ -10,6 +10,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 /**
  * FXML Controller class
@@ -18,6 +22,17 @@ import javafx.fxml.Initializable;
  */
 public class MyMoviesMainViewController implements Initializable
 {
+
+    @FXML
+    private ListView<?> lstMov;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private Label lblTitle;
+    @FXML
+    private Label lblInfo;
+    @FXML
+    private ChoiceBox<?> choiceBoxCat;
 
     /**
      * Initializes the controller class.

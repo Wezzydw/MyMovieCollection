@@ -10,18 +10,18 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
    <children>
-      <ListView layoutX="374.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextField layoutX="425.0" layoutY="93.0" />
+      <ListView fx:id="lstMov" layoutX="374.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" />
+      <TextField fx:id="txtSearch" layoutX="425.0" layoutY="93.0" />
       <Region layoutX="33.0" layoutY="105.0" prefHeight="246.0" prefWidth="172.0" />
       <Button layoutX="505.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnRemoveCat" text="Fjern categori" />
       <Button layoutX="410.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnAddCat" text="Tilføj categori" />
       <Button layoutX="341.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnRemoveMov" text="Fjern film" />
       <Button layoutX="270.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnAddMov" text="Tilføj film" />
-      <Label layoutX="59.0" layoutY="34.0" text="Title" />
-      <Label layoutX="45.0" layoutY="67.0" text="Misc info" />
+      <Label fx:id="lblTitle" layoutX="59.0" layoutY="34.0" text="Title" />
+      <Label fx:id="lblInfo" layoutX="45.0" layoutY="67.0" text="Misc info" />
       <Button layoutX="173.0" layoutY="348.0" mnemonicParsing="false" onAction="#btnEditMov" text="Rediger film" />
       <Button layoutX="258.0" layoutY="307.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
-      <ChoiceBox layoutX="424.0" layoutY="39.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="choiceBoxCat" layoutX="424.0" layoutY="39.0" prefWidth="150.0" />
       <Button layoutX="321.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnRate" text="Rate" />
    </children>
 </AnchorPane>
