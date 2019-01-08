@@ -83,6 +83,9 @@ public class CategoryDAO {
             pstmt.execute();
             pstmt.close();
             // ikke testet herfra
+//            a = "Select * FROM Category;";
+//            pstmt = con.prepareStatement(a);
+//            ResultSet rs = pstmt.executeQuery();
             ResultSet rs = pstmt.executeQuery("Select * FROM Category;");
             while (rs.next())
             {
