@@ -5,6 +5,9 @@
  */
 package mymoviecollection.dal;
 
+import java.io.File;
+import mymoviecollection.be.Movie;
+
 /**
  *
  * @author Wezzy Laptop
@@ -16,8 +19,12 @@ public class MovieDAOTester {
      */
     public static void main(String[] args) {
         
+        //File f = new File(uri);
         MovieDAO m = new MovieDAO();
-        m.scanFolder("C:\\Users\\Wezzy Laptop\\Desktop\\Musik2");
+        for (Movie mv : m.scanFolder("\\\\WEZZY\\FILM"))
+        {
+            System.out.println(mv.getTitle());
+        }
     }
     
 }
