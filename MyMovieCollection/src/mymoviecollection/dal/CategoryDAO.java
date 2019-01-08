@@ -45,8 +45,8 @@ public class CategoryDAO {
             ex.printStackTrace();
         }
     }
-    
-    public void deleteCategory(String title) throws SQLException //String skal måske være category fra be laget
+    // skal måske også slette i CatMov, da det er sammenhænget mellem category og movie
+    public void deleteCategory(String title) throws SQLException //String skal måske være category fra BE laget
     {
         try (Connection con = conProvider.getConnection())
         {
@@ -55,7 +55,17 @@ public class CategoryDAO {
             pstmt.setString(1, title);
             pstmt.execute();
             pstmt.close();
-
+            //ikke testet
+            a = "Select * From catMov;";
+            ResultSet rs = pstmt.executeQuery(a);
+            while (rs.next())
+            {
+                a = "DELETE FROM Playlist WHERE Title = (?);";
+                pstmt = con.prepareStatement(a);
+                pstmt.setString(1, title);
+                pstmt.execute();
+            }
+            //hertil
         } catch (SQLServerException ex)
         {
         }
@@ -71,6 +81,20 @@ public class CategoryDAO {
             pstmt.setString(2, currentTitle);
             pstmt.execute();
             pstmt.close();
+            // ikke testet herfra
+            ResultSet rs = pstmt.executeQuery("Select * FROM Category;");
+            while (rs.next())
+            {
+                a = "UPDATE Category SET name = (?) WHERE name = (?) ;";
+                pstmt = con.prepareStatement(a);
+                pstmt.setString(1, newTitle);
+                pstmt.setString(2, currentTitle);
+
+                pstmt.execute();
+                pstmt.close();
+            }
+            //hertil
+            
         } catch (SQLServerException ex)
         {
             ex.printStackTrace();
