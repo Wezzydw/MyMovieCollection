@@ -48,6 +48,7 @@ public class MyMoviesMainViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new Model();
+        lstMov.setItems(model.getAllMovies());
     }    
 
     @FXML
