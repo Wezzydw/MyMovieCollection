@@ -5,12 +5,14 @@
  */
 package mymoviecollection.dal;
 
+
+
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import mymoviecollection.be.Category;
@@ -22,12 +24,18 @@ import mymoviecollection.be.Category;
 public class CategoryDAO {
     
     DatabaseConnection conProvider;
-    
+
+    public CategoryDAO() throws IOException
+    {
+        this.conProvider = new DatabaseConnection();
+    }
+    //Vi skal have begrænsninger på ikke at lave en Category som allerede findes,
+    // men det skal nok laves i bll laget
     public void createCategory(String title)
     {
         try (Connection con = conProvider.getConnection())
         {
-            try (PreparedStatement pstmt = con.prepareStatement("INSERT INTO Category (Title) VALUES (?)"))
+            try (PreparedStatement pstmt = con.prepareStatement("INSERT INTO Category (name) VALUES (?)"))
             {
                 pstmt.setString(1, title);
                 pstmt.execute();
@@ -38,17 +46,27 @@ public class CategoryDAO {
             ex.printStackTrace();
         }
     }
-    
-    public void deleteCategory(String title) throws SQLException //String skal måske være category fra be laget
+    // skal måske også slette i CatMov, da det er sammenhænget mellem category og movie
+    public void deleteCategory(String title) throws SQLException //String skal måske være category fra BE laget
     {
         try (Connection con = conProvider.getConnection())
         {
-            String a = "DELETE FROM Category WHERE Title = (?);";
+            String a = "DELETE FROM Category WHERE name = (?);";
             PreparedStatement pstmt = con.prepareStatement(a);
             pstmt.setString(1, title);
             pstmt.execute();
             pstmt.close();
-
+            //ikke testet
+            a = "Select * From catMov;";
+            ResultSet rs = pstmt.executeQuery(a);
+            while (rs.next())
+            {
+                a = "DELETE FROM Playlist WHERE Title = (?);";
+                pstmt = con.prepareStatement(a);
+                pstmt.setString(1, title);
+                pstmt.execute();
+            }
+            //hertil
         } catch (SQLServerException ex)
         {
         }
@@ -58,12 +76,29 @@ public class CategoryDAO {
     {
         try (Connection con = conProvider.getConnection())
         {
-            String a = "UPDATE Category SET Title = (?) WHERE Title = (?);";
+            String a = "UPDATE Category SET name = (?) WHERE name = (?);";
             PreparedStatement pstmt = con.prepareStatement(a);
             pstmt.setString(1, newTitle);
             pstmt.setString(2, currentTitle);
             pstmt.execute();
             pstmt.close();
+            // ikke testet herfra
+//            a = "Select * FROM Category;";
+//            pstmt = con.prepareStatement(a);
+//            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery("Select * FROM Category;");
+            while (rs.next())
+            {
+                a = "UPDATE Category SET name = (?) WHERE name = (?) ;";
+                pstmt = con.prepareStatement(a);
+                pstmt.setString(1, newTitle);
+                pstmt.setString(2, currentTitle);
+
+                pstmt.execute();
+                pstmt.close();
+            }
+            //hertil
+            
         } catch (SQLServerException ex)
         {
             ex.printStackTrace();
@@ -83,10 +118,11 @@ public class CategoryDAO {
             while (rs.next())
             {
 
-                String title = rs.getString("title");
+                String title = rs.getString("name");
                 Category playlist = new Category(title);
                 categories.add(playlist);
             }
+            pstmt.close();
 
         } catch (SQLException ex)
         {

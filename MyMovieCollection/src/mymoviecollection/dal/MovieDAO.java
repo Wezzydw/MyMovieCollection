@@ -124,4 +124,24 @@ public class MovieDAO {
         }
         return allMovies;
     }
+           public void SendDataToDB(List<Movie> allMovies) throws IOException
+    {
+        String a = "INSERT INTO Movies (Title, Categori, Filepath, Length, ReleaseYear) VALUES (?,?,?,?,?,?,?);";
+        try (Connection con = conProvider.getConnection())
+        {
+            for (Movie movie : allMovies)
+            {
+                PreparedStatement pstmt = con.prepareStatement(a);
+                pstmt.setString(1, movie.getTitle());
+                pstmt.setString(4, movie.getCategori());
+                pstmt.setString(5, movie.getFilePath());
+                pstmt.setString(6, movie.getLength());
+                pstmt.setString(7, movie.getReleaseYear());
+                pstmt.execute();
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
