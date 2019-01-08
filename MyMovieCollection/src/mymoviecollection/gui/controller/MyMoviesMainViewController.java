@@ -14,6 +14,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import mymoviecollection.be.Movie;
 
 /**
  * FXML Controller class
@@ -24,7 +27,7 @@ public class MyMoviesMainViewController implements Initializable
 {
 
     @FXML
-    private ListView<?> lstMov;
+    private ListView<Movie> lstMov;
     @FXML
     private TextField txtSearch;
     @FXML
@@ -35,6 +38,8 @@ public class MyMoviesMainViewController implements Initializable
     private ChoiceBox<?> choiceBoxCat;
     
     private Model model;
+    @FXML
+    private AnchorPane anchorPane;
 
     /**
      * Initializes the controller class.
@@ -48,41 +53,51 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnRemoveCat(ActionEvent event)
     {
+        model.deleteCategory();
     }
 
     @FXML
     private void btnAddCat(ActionEvent event)
     {
+        model.addCategory();
     }
 
     @FXML
     private void btnRemoveMov(ActionEvent event)
     {
+        model.reMovie(lstMov.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void btnAddMov(ActionEvent event)
     {
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        model.addMovies(stage);
+        
     }
 
     @FXML
     private void btnEditMov(ActionEvent event)
     {
+        model.editMovie(lstMov.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void btnRenameCat(ActionEvent event)
     {
+        model.editCategory();
     }
 
     @FXML
     private void btnRate(ActionEvent event)
     {
+        model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void btnPlayMov(ActionEvent event)
     {
+        model.playMovie(lstMov.getSelectionModel().getSelectedItem());
     }
     
 }

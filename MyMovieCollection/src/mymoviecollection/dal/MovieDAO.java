@@ -24,10 +24,12 @@ public class MovieDAO {
     List<Movie> movies;
 
     DatabaseConnection conProvider;
+    int i;
 
     public MovieDAO() {
         movies = new ArrayList();
         movies = new ArrayList();
+        i = 0;
     }
 
     public List<Movie> scanFolder(String filepath) {
@@ -36,18 +38,27 @@ public class MovieDAO {
         File[] folders = folder.listFiles();
         for (File f : folders) {
             if (f.isFile()) {
-                movies.add(new Movie(1, 1, "title", "MYpath", "Test"));
+                if(f.getAbsolutePath().endsWith(".mkv") && !f.getAbsolutePath().toLowerCase().contains("sample"))
+                {
+                    movies.add(new Movie(1, 1, "title: " + i + " " + f.getName(), "MYpath", "Test"));
+                i++;
+                }
+                
             }
+            
             if (f.isDirectory()) {
+                System.out.println(f.getAbsolutePath());
                 scanFolder(f.getAbsolutePath());
-                movies.addAll(scanFolder(f.getAbsolutePath()));
+                //movies.addAll(scanFolder(f.getAbsolutePath()));
+                //i++;
             }
         }
-        for (Movie m : movies) {
-            System.out.println(m.getTitle());
-        }
+        System.out.println(movies.size());
+//        for (Movie m : movies) {
+//            System.out.println(m.getTitle());
+//        }
 
-        return null;
+        return movies;
     }
 
 
