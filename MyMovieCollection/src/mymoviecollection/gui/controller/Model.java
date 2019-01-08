@@ -75,6 +75,11 @@ public class Model {
     void deleteCategory() {
         manager.deleteCategory();
     }
+
+    public ObservableList<Movie> getAllMovies() {
+        return manager.getAllMovies();
+        
+    }
     
     
     
