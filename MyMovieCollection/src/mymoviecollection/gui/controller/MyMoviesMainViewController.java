@@ -33,6 +33,8 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblInfo;
     @FXML
     private ChoiceBox<?> choiceBoxCat;
+    
+    private Model model;
 
     /**
      * Initializes the controller class.
@@ -40,7 +42,7 @@ public class MyMoviesMainViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        // TODO
+        model = new Model();
     }    
 
     @FXML
