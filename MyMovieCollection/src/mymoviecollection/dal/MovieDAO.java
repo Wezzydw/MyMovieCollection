@@ -5,9 +5,11 @@
  */
 package mymoviecollection.dal;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +46,35 @@ public class MovieDAO {
         {
             ex.printStackTrace();
         }
+    }
+        
+          public List<Movie> getAllMoviesFromDB()
+    {
+        List<Movie> allMovies = new ArrayList();
+        try (Connection con = conProvider.getConnection())
+        {
+            String a = "SELECT * FROM Movies;";
+            PreparedStatement prst = con.prepareStatement(a);
+            ResultSet rs = prst.executeQuery();
+
+            while (rs.next())
+            {
+                String title = rs.getString("Title");
+                String categori = rs.getString("Categori");
+                String filepath = rs.getString("Filepath");
+                String length = rs.getString("Length");
+                int id = rs.getInt("Id");
+                String releaseYear = rs.getString("ReleaseYear");
+                Movie movie = new Movie(title, length, releaseYear, categori, filepath, id);
+                if (new File(filepath).isFile())
+                {
+                    allMovies.add(movie);
+                }
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        return allMovies;
     }
 }
