@@ -23,5 +23,6 @@
       <Button layoutX="258.0" layoutY="307.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
       <ChoiceBox fx:id="choiceBoxCat" layoutX="424.0" layoutY="39.0" prefWidth="150.0" />
       <Button layoutX="321.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnRate" text="Rate" />
+      <Button layoutX="284.0" layoutY="216.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
    </children>
 </AnchorPane>
