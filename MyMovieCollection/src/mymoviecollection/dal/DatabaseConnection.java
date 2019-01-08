@@ -23,16 +23,15 @@ public class DatabaseConnection {
 
     public DatabaseConnection() throws IOException {
         Properties databaseProperties = new Properties();
-         databaseProperties.load(new FileInputStream(PROP_FILE));
+        databaseProperties.load(new FileInputStream(PROP_FILE));
         ds = new SQLServerDataSource();
         ds.setServerName(databaseProperties.getProperty("servername"));
         ds.setDatabaseName(databaseProperties.getProperty("databasename"));
         ds.setUser(databaseProperties.getProperty("user"));
         ds.setPassword(databaseProperties.getProperty("pw"));
     }
-    
-        public Connection getConnection() throws SQLServerException
-    {
+
+    public Connection getConnection() throws SQLServerException {
         return ds.getConnection();
     }
 }
