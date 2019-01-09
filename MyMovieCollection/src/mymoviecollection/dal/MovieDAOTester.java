@@ -5,7 +5,10 @@
  */
 package mymoviecollection.dal;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import javafx.scene.image.ImageView;
 import mymoviecollection.be.Movie;
 
 /**
@@ -20,11 +23,16 @@ public class MovieDAOTester {
     public static void main(String[] args) {
         
         //File f = new File(uri);
-        MovieDAO m = new MovieDAO();
-        for (Movie mv : m.scanFolder("\\\\WEZZY\\FILM"))
-        {
-            System.out.println(mv.getTitle());
-        }
+           MovieDAO m = new MovieDAO();
+//        for (Movie mv : m.scanFolder("\\\\WEZZY\\FILM"))
+//        {
+//            System.out.println(mv.getTitle());
+//        }
+        String imagePath = "images/møde.jpg";
+        BufferedImage i = m.readImageFromDisk(imagePath);
+        System.out.println(i);
+        m.saveImageToDisk(i,"tonny");
+     
     }
     
 }
