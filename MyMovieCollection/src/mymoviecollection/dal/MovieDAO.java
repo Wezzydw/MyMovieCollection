@@ -5,14 +5,21 @@
  */
 package mymoviecollection.dal;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mymoviecollection.be.Movie;
 
 /**
@@ -38,14 +45,13 @@ public class MovieDAO {
         File[] folders = folder.listFiles();
         for (File f : folders) {
             if (f.isFile()) {
-                if(checkForFileType(f))
-                {
-                    movies.add(new Movie(1, 1, "title: " + i + " " + f.getName(), "MYpath", "Test"));
-                i++;
+                if (checkForFileType(f)) {
+                    movies.add(getIMDBData(f.getName()));
+                    i++;
                 }
-                
+
             }
-            
+
             if (f.isDirectory()) {
                 System.out.println(f.getAbsolutePath());
                 scanFolder(f.getAbsolutePath());
@@ -60,25 +66,119 @@ public class MovieDAO {
 
         return movies;
     }
-    
-    private boolean checkForFileType(File f)
-    {
+
+    private boolean checkForFileType(File f) {
         String path = f.getAbsolutePath();
-        if(path.endsWith(".mkv") || path.endsWith(".mp4") || 
-                path.endsWith(".mpeg4"))
-        {
-            if(!path.toLowerCase().contains("sample"))
+        if (path.endsWith(".mkv") || path.endsWith(".mp4")
+                || path.endsWith(".mpeg4")) {
+            if (!path.toLowerCase().contains("sample")) {
                 return true;
+            }
         }
-        
+
         return false;
     }
-    
-    private void getIMDBData(String filepath)
-    {
-        
+
+    private Movie getIMDBData(String filepath) {
+        String queryP1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
+        String queryP2 = "";
+        String queryEnd = "&include_adult=true";
+        String searchString = "";
+        String searchResult = "";
+
+        if (filepath.endsWith(".mkv")) {
+            String[] split = filepath.split(" ");
+            for (int i = 0; i < split.length - 1; i++) {
+                if (!isStringANumber(split[i])) {
+                    queryP2.concat(split[i] + "%20");
+                }
+            }
+            searchString.concat(queryP1);
+            searchString.concat(queryP2);
+            searchString.concat(queryEnd);
+
+        } else if (filepath.endsWith(".mp4")) {
+            searchString.concat(queryP1);
+            searchString.concat(filepath.substring(0, filepath.length() - 4));
+            searchString.concat(queryEnd);
+        } else if (filepath.endsWith(".mpeg4")) {
+            searchString.concat(queryP1);
+            searchString.concat(filepath.substring(0, filepath.length() - 6));
+            searchString.concat(queryEnd);
+        }
+
+        try {
+            searchResult = getIMDBText(searchString);
+        } catch (IOException ex) {
+            System.out.println("FUCKFUCKFUCKFUKC");
+            //Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (!searchResult.isEmpty()) {
+            String [] results = searchResult.split(",");
+            
+            String title;
+            String length;
+            String releaseYear;
+            String category;
+            String filepathMovie;
+            int id;
+            String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+            for (String s : results)
+            {
+                if (s.matches("original_title"))
+                {
+                    title = s.substring(s.indexOf(","));
+                    System.out.println(title);
+                }
+//                else if ()
+//                    
+            }
+            
+        }
+
+//        Movie movie = new Movie(title, length, releaseYear, category, filepathMovie, id);
+
+        return null;
     }
 
+    private String getIMDBText(String url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        //add headers to the connection, or check the status if desired..
+
+        // handle error response code it occurs
+        int responseCode = connection.getResponseCode();
+        InputStream inputStream;
+        if (200 <= responseCode && responseCode <= 299) {
+            inputStream = connection.getInputStream();
+        } else {
+            inputStream = connection.getErrorStream();
+        }
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        inputStream));
+
+        StringBuilder response = new StringBuilder();
+        String currentLine;
+
+        while ((currentLine = in.readLine()) != null) {
+            response.append(currentLine);
+        }
+
+        in.close();
+
+        return response.toString();
+    }
+
+    private boolean isStringANumber(String string) {
+        for (char c : string.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void deleteMovies(List<Movie> selectedMovie) throws IOException {
         try (Connection con = conProvider.getConnection()) {
@@ -94,18 +194,15 @@ public class MovieDAO {
             ex.printStackTrace();
         }
     }
-        
-          public List<Movie> getAllMoviesFromDB()
-    {
+
+    public List<Movie> getAllMoviesFromDB() {
         List<Movie> allMovies = new ArrayList();
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String title = rs.getString("Title");
                 String categori = rs.getString("Categori");
                 String filepath = rs.getString("Filepath");
@@ -113,24 +210,20 @@ public class MovieDAO {
                 int id = rs.getInt("Id");
                 String releaseYear = rs.getString("ReleaseYear");
                 Movie movie = new Movie(title, length, releaseYear, categori, filepath, id);
-                if (new File(filepath).isFile())
-                {
+                if (new File(filepath).isFile()) {
                     allMovies.add(movie);
                 }
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return allMovies;
     }
-           public void SendDataToDB(List<Movie> allMovies) throws IOException
-    {
+
+    public void SendDataToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (Title, Categori, Filepath, Length, ReleaseYear) VALUES (?,?,?,?,?,?,?);";
-        try (Connection con = conProvider.getConnection())
-        {
-            for (Movie movie : allMovies)
-            {
+        try (Connection con = conProvider.getConnection()) {
+            for (Movie movie : allMovies) {
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
                 //pstmt.setString(4, movie.getCategori());
@@ -140,8 +233,7 @@ public class MovieDAO {
                 pstmt.setString(7, movie.getReleaseYear());
                 pstmt.execute();
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
