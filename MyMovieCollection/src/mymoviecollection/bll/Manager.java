@@ -6,6 +6,7 @@
 package mymoviecollection.bll;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
@@ -22,7 +23,7 @@ public class Manager {
     private MovieDAO mdao;
     private CategoryDAO cdao;
     private ObservableList<Movie> movies;
-    private List<Category> categories;
+    private ObservableList<Category> categories;
     private Movie movie;
     
     
@@ -32,7 +33,8 @@ public class Manager {
         
 
         movies = FXCollections.observableArrayList();
-
+        categories = FXCollections.observableArrayList();
+        categories.addAll(cdao.getAllCategories());
     }
     
     public void deleteMovie() throws IOException{
@@ -69,7 +71,9 @@ public class Manager {
         cdao.createCategory(category);
     }
 
-    public void deleteCategory() {
+    public void deleteCategory(Category category) throws SQLException {
+        cdao.deleteCategory(category.getTitle());
+        categories.remove(category);
         
     }
 
@@ -77,6 +81,13 @@ public class Manager {
         //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
         return movies;
     }
+
+    public ObservableList<Category> getAllCategories()
+    {
+        return categories;
+    }
+
+   
 
     
     

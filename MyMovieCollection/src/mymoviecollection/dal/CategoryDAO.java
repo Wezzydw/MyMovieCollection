@@ -130,6 +130,10 @@ public class CategoryDAO {
         {
             ex.printStackTrace();
         }
+        for (Category category : categories)
+        {
+            System.out.println(category.getTitle());
+        }
         return categories;
     }
 }
