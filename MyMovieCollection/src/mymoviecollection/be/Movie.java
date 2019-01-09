@@ -77,6 +77,10 @@ public class Movie {
     {
         return lastView;
     }
+    
+    public String toString(){
+        return title;
+    }
 
     public String getCategory()
     {

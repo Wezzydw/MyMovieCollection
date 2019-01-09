@@ -6,6 +6,7 @@
 package mymoviecollection.gui.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 import mymoviecollection.bll.Manager;
 import mymoviecollection.bll.Player;
@@ -29,7 +31,7 @@ public class Model {
     private ObservableList<Movie> movies;
     private Manager manager;
     
-    public Model(){
+    public Model() throws IOException{
         player = new Player();
         search = new Search();
         movies = FXCollections.observableArrayList();
@@ -68,12 +70,22 @@ public class Model {
         manager.reMovie(selectedItem);
     }
 
-    void addCategory() {
-        manager.addCategory();
+    void addCategory() 
+    {
+        
     }
-
+    void createCategory(Category cat)
+    {
+        //categories.add(new Category(cat.getTitle()));
+        manager.addCategory(cat);
+    }
     void deleteCategory() {
         manager.deleteCategory();
+    }
+
+    public ObservableList<Movie> getAllMovies() {
+        return manager.getAllMovies();
+        
     }
     
     
