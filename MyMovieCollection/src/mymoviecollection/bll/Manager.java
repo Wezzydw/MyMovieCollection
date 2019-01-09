@@ -50,8 +50,10 @@ public class Manager {
         
     }
 
-    public void editCategory() {
-        
+    public void editCategory(Category category, String newTitle) throws SQLException {
+        categories.remove(category);
+        categories.add(new Category(newTitle));
+        cdao.updateCategory(category.getTitle(), newTitle);
     }
 
     public void playMovie(Movie selectedItem) {
@@ -67,7 +69,7 @@ public class Manager {
     }
 
     public void addCategory(Category category) {
-//        categories.add(category);
+        categories.add(category);
         cdao.createCategory(category);
     }
 

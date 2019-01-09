@@ -101,7 +101,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnRenameCat(ActionEvent event)
     {
-        model.editCategory();
+        model.editCat();
     }
 
     @FXML

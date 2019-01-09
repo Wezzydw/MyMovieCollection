@@ -64,9 +64,41 @@ public class Model {
     void editMovie(Movie selectedItem) {
         manager.editMovie(selectedItem);
     }
-
-    void editCategory() {
-        manager.editCategory();
+    
+    void editCat()
+    {
+        TextField txtTitle = new TextField();
+        txtTitle.setText("new category name");
+        Button btn = new Button();
+        btn.setText("edit category");
+        ComboBox cbox = new ComboBox<Category>();
+        cbox.setItems(manager.getAllCategories());
+        StackPane root = new StackPane();
+        root.setAlignment(txtTitle, Pos.TOP_CENTER);
+        root.setAlignment(btn, Pos.BOTTOM_CENTER);
+        root.getChildren().addAll(txtTitle, btn, cbox);
+        Scene scene = new Scene(root, 200, 80);
+        Stage stage = new Stage();
+        stage.setTitle("edit category");
+        stage.setScene(scene);
+        stage.show();
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try
+                {
+                    editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
+                } catch (SQLException ex)
+                {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Stage stage = (Stage) txtTitle.getScene().getWindow();
+                stage.close();
+            }
+        });
+    }
+    void editCategory(Category category, String newTitle) throws SQLException {
+        manager.editCategory(category, newTitle);
     }
 
     void playMovie(Movie selectedItem) {
