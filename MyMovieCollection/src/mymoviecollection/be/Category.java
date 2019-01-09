@@ -33,6 +33,10 @@ public class Category {
     {
         return Id;
     }
+    public String toString()
+    {
+        return title;
+    }
 
     
 }
