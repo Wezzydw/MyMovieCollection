@@ -32,54 +32,72 @@ import mymoviecollection.bll.Search;
  *
  * @author Wezzy Laptop
  */
-public class Model {
-    
+public class Model
+{
+
     private Player player;
     private Search search;
     private ObservableList<Movie> movies;
     private ObservableList<Category> categories;
     private Manager manager;
-    
-    public Model() throws IOException{
+
+    public Model() throws IOException
+    {
         player = new Player();
         search = new Search();
         movies = FXCollections.observableArrayList();
         manager = new Manager();
     }
-    
-    public void addMovies(Stage stage){
-        
-         DirectoryChooser directoryChooser = new DirectoryChooser();
+
+    public void addMovies(Stage stage)
+    {
+
+        DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(stage);
 
-        if (selectedDirectory != null) {
+        if (selectedDirectory != null)
+        {
             String filepath = selectedDirectory.getAbsolutePath();
             manager.scanFolder(filepath);
         }
-        
+
     }
 
-    void editMovie(Movie selectedItem) {
+    void editMovie(Movie selectedItem)
+    {
         manager.editMovie(selectedItem);
     }
 
-    void editCategory() {
+    void editCategory()
+    {
         manager.editCategory();
     }
 
-    void playMovie(Movie selectedItem) {
+    void playMovie(Movie selectedItem)
+    {
         manager.playMovie(selectedItem);
     }
 
-    void rateMovie(Movie selectedItem) {
-        manager.rateMovie(selectedItem);
+    public void sliderRateMovie(Movie selectedItem, double value)
+    {
+        if (selectedItem !=null)
+        {
+            manager.sliderRateMovie(selectedItem, value);
+        }
     }
 
-    void reMovie(Movie selectedItem) {
+    public double getLabelRating(double value)
+    {
+        
+    return value;
+    }
+    
+    void reMovie(Movie selectedItem)
+    {
         manager.reMovie(selectedItem);
     }
 
-    void createCategory() 
+    void createCategory()
     {
         TextField txtTitle = new TextField();
         txtTitle.setText("Category");
@@ -94,20 +112,24 @@ public class Model {
         stage.setTitle("create category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 addCategory(new Category(txtTitle.getText()));
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
             }
         });
     }
+
     void addCategory(Category cat)
     {
         //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
     }
+
     void chooseDeleteCategory()
     {
         TextField txtTitle = new TextField();
@@ -125,23 +147,26 @@ public class Model {
         stage.setTitle("create category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        btn.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 addCategory(new Category(txtTitle.getText()));
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
             }
         });
     }
-    void deleteCategory() {
+
+    void deleteCategory()
+    {
         manager.deleteCategory();
     }
 
-    public ObservableList<Movie> getAllMovies() {
+    public ObservableList<Movie> getAllMovies()
+    {
         return manager.getAllMovies();
     }
-    
-    
-    
+
 }

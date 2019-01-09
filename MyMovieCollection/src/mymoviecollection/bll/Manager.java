@@ -24,6 +24,7 @@ public class Manager {
     private ObservableList<Movie> movies;
     private List<Category> categories;
     private Movie movie;
+    private double sliderRating;
     
     
     public Manager() throws IOException{
@@ -56,8 +57,8 @@ public class Manager {
         
     }
 
-    public void rateMovie(Movie selectedItem) {
-        
+    public void sliderRateMovie(Movie selectedItem, double rating) {
+        selectedItem.setRating(rating);
     }
 
     public void reMovie(Movie selectedItem) {
