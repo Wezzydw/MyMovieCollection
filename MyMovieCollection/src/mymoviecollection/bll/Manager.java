@@ -6,6 +6,7 @@
 package mymoviecollection.bll;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
@@ -21,10 +22,10 @@ import mymoviecollection.dal.MovieDAO;
 public class Manager {
     private MovieDAO mdao;
     private CategoryDAO cdao;
-
     private ObservableList<Movie> movies;
-
+    private ObservableList<Category> categories;
     private Movie movie;
+    private double sliderRating;
     
     
     public Manager() throws IOException{
@@ -33,7 +34,8 @@ public class Manager {
         
 
         movies = FXCollections.observableArrayList();
-
+        categories = FXCollections.observableArrayList();
+        categories.addAll(cdao.getAllCategories());
     }
     
     public void deleteMovie() throws IOException{
@@ -49,16 +51,18 @@ public class Manager {
         
     }
 
-    public void editCategory() {
-        
+    public void editCategory(Category category, String newTitle) throws SQLException {
+        categories.remove(category);
+        categories.add(new Category(newTitle));
+        cdao.updateCategory(category.getTitle(), newTitle);
     }
 
     public void playMovie(Movie selectedItem) {
         
     }
 
-    public void rateMovie(Movie selectedItem) {
-        
+    public void sliderRateMovie(Movie selectedItem, double rating) {
+        selectedItem.setRating(rating);
     }
 
     public void reMovie(Movie selectedItem) {
@@ -66,10 +70,13 @@ public class Manager {
     }
 
     public void addCategory(Category category) {
+        categories.add(category);
         cdao.createCategory(category);
     }
 
-    public void deleteCategory() {
+    public void deleteCategory(Category category) throws SQLException {
+        cdao.deleteCategory(category.getTitle());
+        categories.remove(category);
         
     }
 
@@ -77,6 +84,13 @@ public class Manager {
         //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
         return movies;
     }
+
+    public ObservableList<Category> getAllCategories()
+    {
+        return categories;
+    }
+
+   
 
     
     

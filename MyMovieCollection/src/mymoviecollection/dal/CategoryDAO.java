@@ -58,7 +58,7 @@ public class CategoryDAO {
             pstmt.close();
             //ikke testet
             a = "Select * From catMov;";
-            ResultSet rs = pstmt.executeQuery(a);
+            ResultSet rs = con.prepareStatement(a).executeQuery();
             while (rs.next())
             {
                 a = "DELETE FROM Playlist WHERE Title = (?);";
@@ -85,8 +85,10 @@ public class CategoryDAO {
             // ikke testet herfra
 //            a = "Select * FROM Category;";
 //            pstmt = con.prepareStatement(a);
+//            eller bruge dette
+//            ResultSet rs = con.prepareStatement.executeQuery(a);
 //            ResultSet rs = pstmt.executeQuery();
-            ResultSet rs = pstmt.executeQuery("Select * FROM Category;");
+            ResultSet rs = con.prepareStatement("Select * FROM Category;").executeQuery();
             while (rs.next())
             {
                 a = "UPDATE Category SET name = (?) WHERE name = (?) ;";
@@ -127,6 +129,10 @@ public class CategoryDAO {
         } catch (SQLException ex)
         {
             ex.printStackTrace();
+        }
+        for (Category category : categories)
+        {
+            System.out.println(category.getTitle());
         }
         return categories;
     }

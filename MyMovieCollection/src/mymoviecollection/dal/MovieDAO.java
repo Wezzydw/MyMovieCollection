@@ -5,6 +5,8 @@
  */
 package mymoviecollection.dal;
 
+
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +20,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 import mymoviecollection.be.Movie;
 
 /**
@@ -47,6 +49,7 @@ public class MovieDAO {
             if (f.isFile()) {
                 if (checkForFileType(f)) {
                     movies.add(getIMDBData(f.getName()));
+
                     i++;
                 }
 
@@ -236,5 +239,30 @@ public class MovieDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
     }
+
+    public void saveImageToDisk(BufferedImage image, String title) {
+        try {
+            BufferedImage bi = image;
+            File outputfile = new File("images/" + title);
+            String findFormat = title.substring(title.lastIndexOf(".")+1);
+            ImageIO.write(bi, findFormat, outputfile);
+        } catch (IOException e) {
+            
+        }
+    }
+
+    public BufferedImage readImageFromDisk(String imagePath) {
+
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+        }
+        System.out.println(img.getHeight());
+        return img;
+
+    }
+
 }
