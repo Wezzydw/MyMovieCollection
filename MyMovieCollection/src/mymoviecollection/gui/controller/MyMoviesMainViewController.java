@@ -132,11 +132,8 @@ public class MyMoviesMainViewController implements Initializable
     private void OnHandleMovieRated(MouseEvent event)
     {
         movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
-        
         //model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
         System.out.println("VIrker det");
-        Image a = new Image("images/star-student.png");
-        StarImage.setImage(a);
     }
 
 
