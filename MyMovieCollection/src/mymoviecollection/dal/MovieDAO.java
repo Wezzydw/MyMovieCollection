@@ -135,6 +135,7 @@ public class MovieDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
     }
 
     public void saveImageToDisk(BufferedImage image, String name) {
@@ -159,4 +160,5 @@ public class MovieDAO {
         return img;
 
     }
+
 }

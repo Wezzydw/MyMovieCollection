@@ -16,7 +16,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mymoviecollection.be.Category;
@@ -44,6 +50,12 @@ public class MyMoviesMainViewController implements Initializable
     private Model model;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private Slider sliderRateMovie;
+    @FXML
+    private Label movieRating;
+    @FXML
+    private ImageView StarImage;
 
     /**
      * Initializes the controller class.
@@ -107,7 +119,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnRate(ActionEvent event)
     {
-        model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
+        //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -115,5 +127,21 @@ public class MyMoviesMainViewController implements Initializable
     {
         model.playMovie(lstMov.getSelectionModel().getSelectedItem());
     }
+
+    @FXML
+    private void OnHandleMovieRated(MouseEvent event)
+    {
+        movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
+        
+        //model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
+        System.out.println("VIrker det");
+        Image a = new Image("images/star-student.png");
+        StarImage.setImage(a);
+    }
+
+
+
+   
+   
     
 }

@@ -15,13 +15,13 @@ import java.util.Date;
  */
 public class Movie {
 
-    int rating;
+    double rating;
     int id;
     String title;
     String filePath;
     Date lastView;
 
-    public Movie(int rating, int id, String title, String filePath, String lastView) {
+    public Movie(double rating, int id, String title, String filePath, String lastView) {
         this.rating = rating;
         this.id = id;
         this.title = title;
@@ -36,7 +36,7 @@ public class Movie {
     {
      
     }
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -48,7 +48,7 @@ public class Movie {
         return title;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
