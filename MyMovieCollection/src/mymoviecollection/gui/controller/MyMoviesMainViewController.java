@@ -152,6 +152,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void txtSearch(KeyEvent event)
     {
+        model.searchMovie(txtSearch.getText());
     }
 
     @FXML
