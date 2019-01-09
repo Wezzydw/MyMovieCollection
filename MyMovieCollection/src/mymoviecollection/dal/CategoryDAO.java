@@ -85,6 +85,8 @@ public class CategoryDAO {
             // ikke testet herfra
 //            a = "Select * FROM Category;";
 //            pstmt = con.prepareStatement(a);
+//            eller bruge dette
+//            ResultSet rs = con.prepareStatement.executeQuery(a);
 //            ResultSet rs = pstmt.executeQuery();
             ResultSet rs = pstmt.executeQuery("Select * FROM Category;");
             while (rs.next())

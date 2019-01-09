@@ -73,7 +73,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnAddCat(ActionEvent event)
     {
-        model.addCategory();
+        model.createCategory();
     }
 
     @FXML

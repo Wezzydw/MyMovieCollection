@@ -21,9 +21,8 @@ import mymoviecollection.dal.MovieDAO;
 public class Manager {
     private MovieDAO mdao;
     private CategoryDAO cdao;
-
     private ObservableList<Movie> movies;
-
+    private List<Category> categories;
     private Movie movie;
     
     
@@ -66,6 +65,7 @@ public class Manager {
     }
 
     public void addCategory(Category category) {
+//        categories.add(category);
         cdao.createCategory(category);
     }
 
