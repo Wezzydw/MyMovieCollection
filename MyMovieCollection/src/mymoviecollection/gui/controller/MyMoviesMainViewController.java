@@ -7,16 +7,23 @@ package mymoviecollection.gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import mymoviecollection.be.Category;
@@ -44,6 +51,9 @@ public class MyMoviesMainViewController implements Initializable
     private Model model;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private MenuButton menuCategory;
+    
 
     /**
      * Initializes the controller class.
@@ -59,9 +69,19 @@ public class MyMoviesMainViewController implements Initializable
         {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        int counter = 0;
         choiceBoxCat.setItems(model.getAllCategories());
+        List<Category> allCategories = model.getAllCategories();
+        List<CheckMenuItem> allItems = new ArrayList();
+        for (Category allCategory : allCategories)
+        {
+            counter++;
+            String name = "item" + counter;
+            CheckMenuItem iti = new CheckMenuItem();
+            allItems.add(iti);
+        }
         lstMov.setItems(model.getAllMovies());
+
 
     }    
 
@@ -114,6 +134,11 @@ public class MyMoviesMainViewController implements Initializable
     private void btnPlayMov(ActionEvent event)
     {
         model.playMovie(lstMov.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    private void txtSearch(KeyEvent event)
+    {
     }
     
 }
