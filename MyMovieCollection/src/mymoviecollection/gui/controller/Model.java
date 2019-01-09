@@ -7,6 +7,7 @@ package mymoviecollection.gui.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,7 @@ public class Model
         player = new Player();
         search = new Search();
         movies = FXCollections.observableArrayList();
+        categories = FXCollections.observableArrayList();
         manager = new Manager();
     }
 
@@ -67,10 +69,42 @@ public class Model
     {
         manager.editMovie(selectedItem);
     }
-
-    void editCategory()
+    
+    void editCat()
     {
-        manager.editCategory();
+        TextField txtTitle = new TextField();
+        txtTitle.setText("new category name");
+        Button btn = new Button();
+        btn.setText("edit category");
+        ComboBox cbox = new ComboBox<Category>();
+        cbox.setItems(manager.getAllCategories());
+        StackPane root = new StackPane();
+        root.setAlignment(txtTitle, Pos.TOP_CENTER);
+        root.setAlignment(btn, Pos.BOTTOM_CENTER);
+        root.getChildren().addAll(txtTitle, btn, cbox);
+        Scene scene = new Scene(root, 200, 80);
+        Stage stage = new Stage();
+        stage.setTitle("edit category");
+        stage.setScene(scene);
+        stage.show();
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try
+                {
+                    editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
+                } catch (SQLException ex)
+                {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Stage stage = (Stage) txtTitle.getScene().getWindow();
+                stage.close();
+            }
+        });
+    }
+    void editCategory(Category category, String newTitle) throws SQLException {
+        manager.editCategory(category, newTitle);
+
     }
 
     void playMovie(Movie selectedItem)
@@ -132,41 +166,59 @@ public class Model
 
     void chooseDeleteCategory()
     {
-        TextField txtTitle = new TextField();
-        txtTitle.setText("Category");
+//        TextField txtTitle = new TextField();
+//        txtTitle.setText("Category");
         Button btn = new Button();
         ComboBox cbox = new ComboBox<Category>();
-//        cbox.setItems();
-        btn.setText("Create category");
+        cbox.setItems(manager.getAllCategories());
+        
+        
+        btn.setText("delete category");
         StackPane root = new StackPane();
         root.setAlignment(cbox, Pos.TOP_CENTER);
         root.setAlignment(btn, Pos.BOTTOM_CENTER);
-        root.getChildren().addAll(txtTitle, btn);
+        root.getChildren().addAll(cbox, btn);
         Scene scene = new Scene(root, 200, 50);
         Stage stage = new Stage();
-        stage.setTitle("create category");
+        stage.setTitle("delete category");
         stage.setScene(scene);
         stage.show();
         btn.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
-            public void handle(ActionEvent event)
-            {
-                addCategory(new Category(txtTitle.getText()));
-                Stage stage = (Stage) txtTitle.getScene().getWindow();
+
+            public void handle(ActionEvent event) {
+                try
+                {
+                    deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
+                } catch (SQLException ex)
+                {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Stage stage = (Stage) btn.getScene().getWindow();
+
                 stage.close();
             }
         });
     }
 
-    void deleteCategory()
-    {
-        manager.deleteCategory();
+    void deleteCategory(Category category) throws SQLException {
+        manager.deleteCategory(category);
+
     }
 
     public ObservableList<Movie> getAllMovies()
     {
         return manager.getAllMovies();
     }
+
+
+    ObservableList<Category> getAllCategories()
+    {
+        return manager.getAllCategories();
+    }
+    
+    
+    
 
 }

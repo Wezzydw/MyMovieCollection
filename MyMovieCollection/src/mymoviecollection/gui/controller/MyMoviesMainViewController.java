@@ -25,6 +25,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 
 /**
@@ -44,7 +45,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private Label lblInfo;
     @FXML
-    private ChoiceBox<?> choiceBoxCat;
+    private ChoiceBox<Category> choiceBoxCat;
     
     private Model model;
     @FXML
@@ -71,7 +72,7 @@ public class MyMoviesMainViewController implements Initializable
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
+        choiceBoxCat.setItems(model.getAllCategories());
         lstMov.setItems(model.getAllMovies());
 
     }    
@@ -79,7 +80,8 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnRemoveCat(ActionEvent event)
     {
-        model.deleteCategory();
+//        model.deleteCategory();
+        model.chooseDeleteCategory();
     }
 
     @FXML
@@ -111,7 +113,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnRenameCat(ActionEvent event)
     {
-        model.editCategory();
+        model.editCat();
     }
 
     @FXML
