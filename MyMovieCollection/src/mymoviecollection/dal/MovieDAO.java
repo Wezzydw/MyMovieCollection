@@ -140,8 +140,9 @@ public class MovieDAO {
     public void saveImageToDisk(BufferedImage image, String name) {
         try {
             BufferedImage bi = image;
-            File outputfile = new File("images/" + name + ".jpg");
-            ImageIO.write(bi, "jpg", outputfile);
+            File outputfile = new File("images/" + name);
+            String findFormat = name.substring(name.lastIndexOf(".")+1);
+            ImageIO.write(bi, findFormat, outputfile);
         } catch (IOException e) {
             
         }
