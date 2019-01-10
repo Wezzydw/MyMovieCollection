@@ -98,7 +98,7 @@ public class MyMoviesMainViewController implements Initializable
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
-
+        model.setMenuItmes(menuCategory);
 
     }    
 
@@ -107,6 +107,16 @@ public class MyMoviesMainViewController implements Initializable
     {
 //        model.deleteCategory();
         model.chooseDeleteCategory();
+        menuCategory.getItems().clear();
+        List<Category> allCategories = model.getAllCategories();
+        List<CheckMenuItem> allItems = new ArrayList();
+        for (Category allCategory : allCategories)
+        {
+            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
+            allItems.add(iti);
+        }
+        model.getAllCategories();
+        menuCategory.getItems().addAll(allItems);
     }
 
     @FXML
@@ -115,7 +125,6 @@ public class MyMoviesMainViewController implements Initializable
         model.createCategory();
 //        List<Category> allCategories = model.getAllCategories();
 //        String lastAdded = allCategories.get(allCategories.size()).getTitle();
-//        menuCategory.getItems().add(new CheckMenuItem(lastAdded));
     }
 
     @FXML

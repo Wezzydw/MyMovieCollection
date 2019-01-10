@@ -35,7 +35,6 @@ public class Manager {
     private List<Movie> allMovies;
 
 
-
     
     
     public Manager() throws IOException{
@@ -47,7 +46,6 @@ public class Manager {
 
         vlc = new Player();
 
-
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
         categories.addAll(cdao.getAllCategories());
@@ -57,9 +55,9 @@ public class Manager {
         mdao.deleteMovies(movies);
     }
     
-    public void scanFolder(String filepath){
+    public void scanFolder(String filepath){        
         
-        mdao.scanFolder(filepath);
+        movies.addAll(mdao.scanFolder(filepath));
     }
 
     public void editMovie(Movie selectedItem) {
@@ -90,9 +88,9 @@ public class Manager {
         
     }
 
-    public String addCategory(Category category) {
+    public void addCategory(Category category) {
         categories.add(category);
-        return cdao.createCategory(category);
+        cdao.createCategory(category);
     }
 
     public void deleteCategory(Category category) throws SQLException {
