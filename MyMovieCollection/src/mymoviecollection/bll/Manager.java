@@ -7,6 +7,7 @@ package mymoviecollection.bll;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
@@ -29,6 +30,9 @@ public class Manager {
     private double sliderRating;
     private Player vlc;
     private Search search;
+    private List<Movie> allMovies;
+
+
 
     
     
@@ -36,7 +40,11 @@ public class Manager {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
         search = new Search();
+        allMovies = new ArrayList();
+        
+
         vlc = new Player();
+
 
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
@@ -94,6 +102,7 @@ public class Manager {
             System.out.println(m.getTitle());
         }
         //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
+        allMovies.addAll(movies);
         return movies;
     }
 
@@ -103,13 +112,7 @@ public class Manager {
     }
 
     public void searchMovie(String query) {
-        movies.setAll(search.searchMovie(query));
-        System.out.println("test " + search.searchMovie(query).size());
-        for (Movie m : search.searchMovie(query))
-        {
-            System.out.println(m.getTitle());
-        }
-        
+        movies.setAll(search.searchMovie(query, allMovies));        
     }
 
    
