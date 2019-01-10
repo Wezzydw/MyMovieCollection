@@ -74,9 +74,9 @@ public class Manager {
         
     }
 
-    public void addCategory(Category category) {
+    public String addCategory(Category category) {
         categories.add(category);
-        cdao.createCategory(category);
+        return cdao.createCategory(category);
     }
 
     public void deleteCategory(Category category) throws SQLException {

@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -153,16 +154,20 @@ public class Model
             public void handle(ActionEvent event)
             {
                 addCategory(new Category(txtTitle.getText()));
+                CheckMenuItem jja = new CheckMenuItem(txtTitle.getText());
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
+                System.out.println(txtTitle.getText());
+                
             }
         });
+        
     }
 
-    void addCategory(Category cat)
+    String addCategory(Category cat)
     {
         //categories.add(new Category(cat.getTitle()));
-        manager.addCategory(cat);
+        return manager.addCategory(cat);
     }
 
     void chooseDeleteCategory()

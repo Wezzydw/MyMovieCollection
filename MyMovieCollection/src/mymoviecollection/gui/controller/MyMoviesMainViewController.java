@@ -22,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Slider;
@@ -84,15 +85,18 @@ public class MyMoviesMainViewController implements Initializable
         }
         int counter = 0;
         choiceBoxCat.setItems(model.getAllCategories());
+        
         List<Category> allCategories = model.getAllCategories();
         List<CheckMenuItem> allItems = new ArrayList();
         for (Category allCategory : allCategories)
         {
             counter++;
             String name = "item" + counter;
-            CheckMenuItem iti = new CheckMenuItem();
+            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
             allItems.add(iti);
         }
+//        menuCategory.getItems().remove(rb);
+        menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
 
 
@@ -109,6 +113,9 @@ public class MyMoviesMainViewController implements Initializable
     private void btnAddCat(ActionEvent event)
     {
         model.createCategory();
+//        List<Category> allCategories = model.getAllCategories();
+//        String lastAdded = allCategories.get(allCategories.size()).getTitle();
+//        menuCategory.getItems().add(new CheckMenuItem(lastAdded));
     }
 
     @FXML
@@ -161,6 +168,48 @@ public class MyMoviesMainViewController implements Initializable
         movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
         //model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
         System.out.println("VIrker det");
+    }
+
+    @FXML
+    private void handleSelectMenuItem(ActionEvent event)
+    {
+//        int[] selectedItems = menuCategory.;
+        
+        
+//        int selectedIndex = comboBox.getSelectionModel().getSelectedIndex();
+//        String txtValue;
+//        String resultText = "";
+//        int numberOfLetters = 0;
+//        switch (selectedIndex)
+//        {
+//            case 0:
+//                txtValue = txtInput.getText();
+//                //txtValue = txtValue.toUpperCase();
+//                txtValue = tsmodel.test(txtValue);
+//                break;
+//            case 1:
+//                txtValue = txtInput.getText();
+//                txtValue = tsmodel.getFirstName(txtValue);
+//                break;
+//            case 2:
+//                txtValue = txtInput.getText();
+//                txtValue = tsmodel.getLastName(txtValue);
+//                break;
+//            case 3:
+//                txtValue = txtInput.getText();
+//                numberOfLetters = tsmodel.getNumberOfLetters(txtValue);
+//                txtValue = String.valueOf(numberOfLetters);
+//                break;
+//            case 4:
+//                txtValue = txtInput.getText();
+//                txtValue = tsmodel.getFormattedName(txtValue);
+//                break;
+//            default:
+//                throw new UnsupportedOperationException("Selected conversion not supported yet");
+//        }
+//        
+//        resultText = String.valueOf(txtValue);
+//        lblResult.setText(resultText);
     }
     
 }
