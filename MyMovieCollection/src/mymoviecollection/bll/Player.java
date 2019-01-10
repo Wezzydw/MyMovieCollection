@@ -16,9 +16,9 @@ public class Player {
   /**
    * Mangler at blive tilkoblet knap
    */
-    public void callVlc(){
+    public void callVlc(String filePath){
                try {
-        Process p = Runtime.getRuntime().exec("\"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe\"");
+        Process p = Runtime.getRuntime().exec("\"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe " + filePath);
     } catch (IOException e){
         e.printStackTrace();
     }

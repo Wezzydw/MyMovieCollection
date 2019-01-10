@@ -40,6 +40,11 @@ public class MovieDAO {
         movies = new ArrayList();
         movies = new ArrayList();
         i = 0;
+        try {
+            conProvider = new DatabaseConnection();
+        } catch (IOException ex) {
+            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Movie> scanFolder(String filepath) {
