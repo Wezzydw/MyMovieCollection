@@ -5,16 +5,23 @@
  */
 package mymoviecollection.dal;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Movie;
 
@@ -33,6 +40,11 @@ public class MovieDAO {
         movies = new ArrayList();
         movies = new ArrayList();
         i = 0;
+        try {
+            conProvider = new DatabaseConnection();
+        } catch (IOException ex) {
+            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<Movie> scanFolder(String filepath) {
@@ -42,7 +54,8 @@ public class MovieDAO {
         for (File f : folders) {
             if (f.isFile()) {
                 if (checkForFileType(f)) {
-                    movies.add(new Movie(1, 1, "title: " + i + " " + f.getName(), "MYpath", "Test"));
+                    movies.add(getIMDBData(f.getName()));
+
                     i++;
                 }
 
@@ -75,8 +88,131 @@ public class MovieDAO {
         return false;
     }
 
-    private void getIMDBData(String filepath) {
+    private Movie getIMDBData(String filepath) {
+        String queryP1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
+        String queryP2 = "";
+        String queryEnd = "&include_adult=true";
+        String searchString = "";
+        String searchResult = "";
+        String searchID = "";
+        String idInformation = "";
+        List<String> genreList = new ArrayList();
 
+        if (filepath.endsWith(".mkv")) {
+            String[] split = filepath.split(" ");
+            for (int i = 0; i < split.length - 1; i++) {
+                if (!isStringANumber(split[i])) {
+                    queryP2.concat(split[i] + "%20");
+                }
+            }
+            searchString.concat(queryP1);
+            searchString.concat(queryP2);
+            searchString.concat(queryEnd);
+
+        } else if (filepath.endsWith(".mp4")) {
+            searchString.concat(queryP1);
+            searchString.concat(filepath.substring(0, filepath.length() - 4));
+            searchString.concat(queryEnd);
+        } else if (filepath.endsWith(".mpeg4")) {
+            searchString.concat(queryP1);
+            searchString.concat(filepath.substring(0, filepath.length() - 6));
+            searchString.concat(queryEnd);
+        }
+
+        try {
+            searchResult = getIMDBText(searchString);
+        } catch (IOException ex) {
+            System.out.println("FUCKFUCKFUCKFUKC");
+            //Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (searchResult.isEmpty()) {
+            String[] searchResults = searchResult.split(",");
+            for (String s : searchResults) {
+                if (s.matches("id")) {
+                    searchID = s.substring(s.indexOf(":"));
+                    System.out.println("searchid: " + searchID);
+                }
+            }
+        }
+        String idString = "https://api.themoviedb.org/3/movie/" + searchID + "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+
+        try {
+            idInformation = getIMDBText(idString);
+        } catch (IOException ex) {
+            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String title = "";
+        String length = "";
+        String releaseYear = "";
+        String category = "ToBeDone";
+        //String filepathMovie;
+        //int id;
+
+        if (!idInformation.isEmpty()) {
+            String[] results = searchResult.split(",");
+
+            //String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+            for (String s : results) {
+                if (s.matches("original_title")) {
+                    title = s.substring(s.indexOf(":"));
+                    System.out.println(title);
+                } else if (s.matches("runtime")) {
+                    length = s.substring(s.indexOf(":"));
+                } else if (s.matches("release_date")) {
+                    releaseYear = s.substring(s.indexOf(":"), s.indexOf(":") + 4);
+                }
+
+            }
+
+            String allGenres = idInformation.substring(idInformation.indexOf("genres"), idInformation.indexOf("]"));
+            String[] genre = allGenres.split("}");
+            for (String s : genre) {
+                genreList.add(s.substring(s.lastIndexOf(":"), s.length() - 1));
+            }
+        }
+
+        Movie movie = new Movie(title, length, releaseYear, category, filepath, 999);
+        return movie;
+    }
+
+    private String getIMDBText(String url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        //add headers to the connection, or check the status if desired..
+
+        // handle error response code it occurs
+        int responseCode = connection.getResponseCode();
+        InputStream inputStream;
+        if (200 <= responseCode && responseCode <= 299) {
+            inputStream = connection.getInputStream();
+        } else {
+            inputStream = connection.getErrorStream();
+        }
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        inputStream));
+
+        StringBuilder response = new StringBuilder();
+        String currentLine;
+
+        while ((currentLine = in.readLine()) != null) {
+            response.append(currentLine);
+        }
+
+        in.close();
+
+        return response.toString();
+    }
+
+    private boolean isStringANumber(String string) {
+        for (char c : string.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void deleteMovies(List<Movie> selectedMovie) throws IOException {
@@ -142,10 +278,10 @@ public class MovieDAO {
         try {
             BufferedImage bi = image;
             File outputfile = new File("images/" + title);
-            String findFormat = title.substring(title.lastIndexOf(".")+1);
+            String findFormat = title.substring(title.lastIndexOf(".") + 1);
             ImageIO.write(bi, findFormat, outputfile);
         } catch (IOException e) {
-            
+
         }
     }
 

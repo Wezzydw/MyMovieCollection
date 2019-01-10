@@ -5,10 +5,23 @@
  */
 package mymoviecollection.bll;
 
+import java.io.IOException;
+
 /**
  *
  * @author Andreas Svendsen
  */
+
 public class Player {
+  /**
+   * Mangler at blive tilkoblet knap
+   */
+    public void callVlc(){
+               try {
+        Process p = Runtime.getRuntime().exec("\"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe\"");
+    } catch (IOException e){
+        e.printStackTrace();
+    }
     
-}
+}}
+

@@ -222,6 +222,10 @@ public class Model
     {
         return manager.getAllCategories();
     }
+
+    void searchMovie(String query) {
+        manager.searchMovie(query);
+    }
     
     
     
