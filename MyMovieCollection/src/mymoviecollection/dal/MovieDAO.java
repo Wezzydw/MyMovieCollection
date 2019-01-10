@@ -32,11 +32,13 @@ import mymoviecollection.be.Movie;
 public class MovieDAO {
 
     List<Movie> movies;
+    int counter;
 
     DatabaseConnection conProvider;
     int i;
 
     public MovieDAO() {
+        counter = 0;
         movies = new ArrayList();
         movies = new ArrayList();
         i = 0;
@@ -58,6 +60,8 @@ public class MovieDAO {
         for (File f : folders) {
             if (f.isFile()) {
                 if (checkForFileType(f)) {
+                    System.out.println(f.getName());
+
                     movies.add(getIMDBData(f.getName()));
 
                     i++;
@@ -105,28 +109,43 @@ public class MovieDAO {
         String searchID = "";
         String idInformation = "";
         List<String> genreList = new ArrayList();
-
-        if (filepath.endsWith(".mkv")) {
-            String[] split = filepath.split(" ");
-            for (int i = 0; i < split.length - 1; i++) {
-                if (!isStringANumber(split[i])) {
-                    queryP2.concat(split[i] + "%20");
-                }
-            }
-            searchString.concat(queryP1);
-            searchString.concat(queryP2);
-            searchString.concat(queryEnd);
-
-        } else if (filepath.endsWith(".mp4")) {
-            searchString.concat(queryP1);
-            searchString.concat(filepath.substring(0, filepath.length() - 4));
-            searchString.concat(queryEnd);
-        } else if (filepath.endsWith(".mpeg4")) {
-            searchString.concat(queryP1);
-            searchString.concat(filepath.substring(0, filepath.length() - 6));
-            searchString.concat(queryEnd);
+        long currenttime = System.currentTimeMillis();
+        System.out.println("counter " + counter);
+        while (counter > 17) {
+            System.out.println("spasser");
+            if (currenttime + 10000 < System.currentTimeMillis())
+            counter = 0;
         }
 
+        if (filepath.endsWith(".mkv")) {
+            System.out.println(filepath);
+            String replacedString = filepath.replace(".", " ");
+            String[] split = replacedString.split(" ");
+            System.out.println("replaced String " + replacedString);
+            for (int i = 0; i < split.length - 1; i++) {
+                if (i != 0) {
+
+                    if (!isStringANumber(split[i])) {
+                        System.out.println("Split" + split[i] + " i: " + i);
+                        queryP2 += split[i] + "%20";
+                    } else {
+                        queryP2.substring(0, queryP2.length() - 3);
+                        System.out.println("Split before break" + split[i] + " i: " + i);
+                        break;
+                    }
+                }
+                queryP2 += split[i] + "%20";
+
+            }
+            queryP2 = queryP2.substring(0, queryP2.length() - 3);
+            searchString = queryP1 + queryP2 + queryEnd;
+
+        } else if (filepath.endsWith(".mp4")) {
+            searchString = queryP1 + filepath.substring(0, filepath.length() - 4) + queryEnd;
+        } else if (filepath.endsWith(".mpeg4")) {
+            searchString = queryP1 + filepath.substring(0, filepath.length() - 6) + queryEnd;
+        }
+        System.out.println("SearchString : " + searchString);
         try {
             searchResult = getIMDBText(searchString);
         } catch (IOException ex) {
@@ -134,12 +153,15 @@ public class MovieDAO {
             //Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (searchResult.isEmpty()) {
+        System.out.println(searchResult);
+
+        if (!searchResult.isEmpty()) {
             String[] searchResults = searchResult.split(",");
             for (String s : searchResults) {
-                if (s.matches("id")) {
-                    searchID = s.substring(s.indexOf(":"));
+                if (s.contains("id")) {
+                    searchID = s.substring(s.indexOf(":") + 1);
                     System.out.println("searchid: " + searchID);
+                    break;
                 }
             }
         }
@@ -173,8 +195,9 @@ public class MovieDAO {
                 }
 
             }
-
-            String allGenres = idInformation.substring(idInformation.indexOf("genres"), idInformation.indexOf("]"));
+            System.out.println(idInformation);
+            String allGenres = idInformation.substring(idInformation.indexOf("genre"), idInformation.indexOf("]"));
+            System.out.println(allGenres);
             String[] genre = allGenres.split("}");
             for (String s : genre) {
                 genreList.add(s.substring(s.lastIndexOf(":"), s.length() - 1));
@@ -182,10 +205,12 @@ public class MovieDAO {
         }
 
         Movie movie = new Movie(title, length, releaseYear, category, filepath, 999);
-        System.out.println("Movie data: " + movie.getTitle() + " lenght: " + 
-                movie.getLength() + " releaseyear: " + movie.getReleaseYear() + 
-                " category: " + movie.getCategory() + " Filepath: " + 
-                movie.getFilePath());
+        System.out.println("Movie data: " + movie.getTitle() + " lenght: "
+                + movie.getLength() + " releaseyear: " + movie.getReleaseYear()
+                + " category: " + movie.getCategory() + " Filepath: "
+                + movie.getFilePath());
+
+        counter++;
         return movie;
     }
 
@@ -221,6 +246,7 @@ public class MovieDAO {
     private boolean isStringANumber(String string) {
         for (char c : string.toCharArray()) {
             if (!Character.isDigit(c)) {
+                System.out.println("Checking String " + string);
                 return false;
             }
         }

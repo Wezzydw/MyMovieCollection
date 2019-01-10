@@ -94,7 +94,7 @@ public class Manager {
 
     public ObservableList<Movie> getAllMovies() {
         MovieDAOTester md = new MovieDAOTester();
-        movies.addAll(md.scanFolder("\\\\WEZZY\\FILM"));
+        //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
         for (Movie m : movies)
         {
             System.out.println(m.getTitle());
