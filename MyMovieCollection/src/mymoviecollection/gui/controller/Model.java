@@ -110,6 +110,7 @@ public class Model
     void playMovie(Movie selectedItem)
     {
         manager.playMovie(selectedItem);
+       
     }
 
     public void sliderRateMovie(Movie selectedItem, double value)

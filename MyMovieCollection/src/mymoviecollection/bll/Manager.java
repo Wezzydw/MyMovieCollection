@@ -26,6 +26,7 @@ public class Manager {
     private ObservableList<Category> categories;
     private Movie movie;
     private double sliderRating;
+    private Player vlc;
     
     
     public Manager() throws IOException{
@@ -58,7 +59,7 @@ public class Manager {
     }
 
     public void playMovie(Movie selectedItem) {
-        
+         vlc.callVlc();
     }
 
     public void sliderRateMovie(Movie selectedItem, double rating) {
