@@ -48,7 +48,11 @@ public class MovieDAO {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+/**
+ * 
+ * @param filepath
+ * @return 
+ */
     public List<Movie> scanFolder(String filepath) {
 
         File folder = new File(filepath);
@@ -79,7 +83,11 @@ public class MovieDAO {
 
         return movies;
     }
-
+/**
+ * 
+ * @param f
+ * @return 
+ */
     private boolean checkForFileType(File f) {
         String path = f.getAbsolutePath();
         if (path.endsWith(".mkv") || path.endsWith(".mp4")
@@ -244,7 +252,12 @@ public class MovieDAO {
         }
         return true;
     }
-
+/**
+ * Denne metode 
+ * @param selectedMovie
+ * @throws IOException denne metode tager fat i vores selected movies og fjerner 
+ * den eller dem vi ønsker at fjerne.
+ */
     public void deleteMovies(List<Movie> selectedMovie) throws IOException {
         try (Connection con = conProvider.getConnection()) {
             String a = "DELETE FROM Movies WHERE Id =?;";
@@ -259,7 +272,11 @@ public class MovieDAO {
             ex.printStackTrace();
         }
     }
-
+/**
+ * Denne metode laver en liste over alle vores film, så vi i programmet kan
+ * se og vælge den film vi ønsker at se eller bearbejde på andre måder.
+ * @return 
+ */
     public List<Movie> getAllMoviesFromDB() {
         List<Movie> allMovies = new ArrayList();
         try (Connection con = conProvider.getConnection()) {
@@ -284,7 +301,12 @@ public class MovieDAO {
         }
         return allMovies;
     }
-
+/**
+ * Denne metode sender film filernes data til vores database, som gør det muligt
+ * for os at kategorisere og filtrere i filmene.
+ * @param allMovies
+ * @throws IOException 
+ */
     public void SendDataToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (Title, Categori, Filepath, Length, ReleaseYear) VALUES (?,?,?,?,?,?,?);";
         try (Connection con = conProvider.getConnection()) {
@@ -303,7 +325,12 @@ public class MovieDAO {
         }
 
     }
-
+/**
+ * Denne metode gemmer billede filerne til vores harddisk som gør det muligt at
+ * benytte disse billeder i programmet.
+ * @param image
+ * @param title 
+ */
     public void saveImageToDisk(BufferedImage image, String title) {
         try {
             BufferedImage bi = image;
@@ -314,7 +341,12 @@ public class MovieDAO {
 
         }
     }
-
+/**
+ * Billederne bliver her læst fra harddisken, og vi kan derved tilføje disse
+ * billeder til de korrekte film.
+ * @param imagePath
+ * @return 
+ */
     public BufferedImage readImageFromDisk(String imagePath) {
 
         BufferedImage img = null;

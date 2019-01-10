@@ -15,15 +15,15 @@ import mymoviecollection.dal.MovieDAO;
  * @author Andreas Svendsen
  */
 public class Search {
-    private MovieDAO mdao;
+    private Manager manager;
     private List<Movie> movie;
     
     public Search(){
-        mdao = new MovieDAO();
-        movie = mdao.getAllMoviesFromDB();
+       // mdao = new MovieDAO();
+       // movie = manager.getAllMovies();
     }
 
-    public List<Movie> searchMovie(String query) {
+    public List<Movie> searchMovie(String query, List<Movie> movie) {
         List<Movie> searchResult = new ArrayList();
         
         for(Movie movie1 : movie){
@@ -36,6 +36,7 @@ public class Search {
                 }
             }
         }
+        
         return searchResult;
     }
     
