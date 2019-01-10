@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
@@ -42,7 +43,8 @@ public class Model
     private ObservableList<Movie> movies;
     private ObservableList<Category> categories;
     private Manager manager;
-
+    private String tmpString;
+    private MenuButton mmm;
     public Model() throws IOException
     {
         player = new Player();
@@ -50,8 +52,14 @@ public class Model
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
         manager = new Manager();
+        tmpString = "";
+        
     }
-
+    
+    public void setMenuItmes(MenuButton mmm)
+    {
+        this.mmm = mmm;
+    }
     public void addMovies(Stage stage)
     {
 
@@ -94,6 +102,8 @@ public class Model
                 try
                 {
                     editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
+                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem())+1);
+                    mmm.getItems().add(new CheckMenuItem(txtTitle.getText()));
                 } catch (SQLException ex)
                 {
                     Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,20 +164,18 @@ public class Model
             public void handle(ActionEvent event)
             {
                 addCategory(new Category(txtTitle.getText()));
-                CheckMenuItem jja = new CheckMenuItem(txtTitle.getText());
+                tmpString =txtTitle.getText();
+                mmm.getItems().add(new CheckMenuItem(tmpString));
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
-                System.out.println(txtTitle.getText());
-                
             }
         });
-        
     }
 
-    String addCategory(Category cat)
+    void addCategory(Category cat)
     {
         //categories.add(new Category(cat.getTitle()));
-        return manager.addCategory(cat);
+        manager.addCategory(cat);
     }
 
     void chooseDeleteCategory()
@@ -197,6 +205,7 @@ public class Model
                 try
                 {
                     deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
+                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem())+1);
                 } catch (SQLException ex)
                 {
                     Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);

@@ -31,7 +31,7 @@ public class CategoryDAO {
     }
     //Vi skal have begrænsninger på ikke at lave en Category som allerede findes,
     // men det skal nok laves i bll laget
-    public String createCategory(Category category)
+    public void createCategory(Category category)
     {
         try (Connection con = conProvider.getConnection())
         {
@@ -45,7 +45,6 @@ public class CategoryDAO {
         {
             ex.printStackTrace();
         }
-        return category.getTitle();
     }
     // skal måske også slette i CatMov, da det er sammenhænget mellem category og movie
     public void deleteCategory(String title) throws SQLException //String skal måske være category fra BE laget

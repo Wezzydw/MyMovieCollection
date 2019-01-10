@@ -33,7 +33,6 @@ public class Manager {
     private List<Movie> allMovies;
 
 
-
     
     
     public Manager() throws IOException{
@@ -44,7 +43,6 @@ public class Manager {
         
 
         vlc = new Player();
-
 
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
@@ -83,9 +81,9 @@ public class Manager {
         
     }
 
-    public String addCategory(Category category) {
+    public void addCategory(Category category) {
         categories.add(category);
-        return cdao.createCategory(category);
+        cdao.createCategory(category);
     }
 
     public void deleteCategory(Category category) throws SQLException {
