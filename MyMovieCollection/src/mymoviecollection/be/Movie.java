@@ -35,6 +35,7 @@ public class Movie {
     public Movie(String title, String length, String releaseYear, String categori, String filepath, int id)
     {
      this.title = title;
+     this.filePath = filepath;
     }
     public double getRating() {
         return rating;

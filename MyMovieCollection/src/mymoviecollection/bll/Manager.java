@@ -28,8 +28,12 @@ public class Manager {
     private ObservableList<Category> categories;
     private Movie movie;
     private double sliderRating;
+    private Player vlc;
     private Search search;
     private List<Movie> allMovies;
+
+
+
     
     
     public Manager() throws IOException{
@@ -38,6 +42,9 @@ public class Manager {
         search = new Search();
         allMovies = new ArrayList();
         
+
+        vlc = new Player();
+
 
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
@@ -64,7 +71,8 @@ public class Manager {
     }
 
     public void playMovie(Movie selectedItem) {
-        
+        System.out.println(selectedItem.getFilePath());
+         vlc.callVlc(selectedItem.getFilePath());
     }
 
     public void sliderRateMovie(Movie selectedItem, double rating) {
@@ -75,9 +83,9 @@ public class Manager {
         
     }
 
-    public void addCategory(Category category) {
+    public String addCategory(Category category) {
         categories.add(category);
-        cdao.createCategory(category);
+        return cdao.createCategory(category);
     }
 
     public void deleteCategory(Category category) throws SQLException {

@@ -5,11 +5,8 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-
 <?import javafx.scene.control.MenuButton?>
-
 <?import javafx.scene.control.Slider?>
-
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -31,7 +28,7 @@
       <Button layoutX="321.0" layoutY="268.0" mnemonicParsing="false" onAction="#btnRate" text="Rate" />
       <Button layoutX="284.0" layoutY="216.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
       <ImageView fitHeight="210.0" fitWidth="200.0" layoutX="28.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
-      <MenuButton fx:id="menuCategory" layoutX="304.0" layoutY="39.0" mnemonicParsing="false" text="Categories">
+      <MenuButton fx:id="menuCategory" layoutX="304.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories">
         <items>
             <CheckMenuItem mnemonicParsing="false" text="All movies" />
         </items>
