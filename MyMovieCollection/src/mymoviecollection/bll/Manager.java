@@ -55,9 +55,9 @@ public class Manager {
         mdao.deleteMovies(movies);
     }
     
-    public void scanFolder(String filepath){
+    public void scanFolder(String filepath){        
         
-        mdao.scanFolder(filepath);
+        movies.addAll(mdao.scanFolder(filepath));
     }
 
     public void editMovie(Movie selectedItem) {

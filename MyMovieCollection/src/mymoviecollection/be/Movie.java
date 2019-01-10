@@ -8,6 +8,7 @@ package mymoviecollection.be;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -20,6 +21,9 @@ public class Movie {
     String title;
     String filePath;
     Date lastView;
+    String length;
+    String releaseYear;
+    List<String> categories;
 
     public Movie(double rating, int id, String title, String filePath, String lastView) {
         this.rating = rating;
@@ -32,10 +36,13 @@ public class Movie {
     Date date = new Date();
     //System.out.println(dateFormat.format(date));
 
-    public Movie(String title, String length, String releaseYear, String categori, String filepath, int id)
+    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, int id)
     {
      this.title = title;
      this.filePath = filepath;
+     this.length = length;
+     this.releaseYear = releaseYear;
+     this.categories = categories;
     }
     public double getRating() {
         return rating;
@@ -83,19 +90,19 @@ public class Movie {
         return title;
     }
 
-    public String getCategory()
+    public List<String> getCategory()
     {
-        return null;
+        return categories;
     }
 
     public String getLength()
     {
-       return null;
+       return length;
     }
 
     public String getReleaseYear()
     {
-        return null;
+        return releaseYear;
     }
 
 }

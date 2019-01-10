@@ -48,11 +48,12 @@ public class MovieDAO {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-/**
- * 
- * @param filepath
- * @return 
- */
+
+    /**
+     *
+     * @param filepath
+     * @return
+     */
     public List<Movie> scanFolder(String filepath) {
 
         File folder = new File(filepath);
@@ -61,8 +62,9 @@ public class MovieDAO {
             if (f.isFile()) {
                 if (checkForFileType(f)) {
                     System.out.println(f.getName());
-
-                    movies.add(getIMDBData(f.getName()));
+                    Movie m = getIMDBData(f.getName());
+                    m.setFilePath(f.getAbsolutePath());
+                    movies.add(m);
 
                     i++;
                 }
@@ -83,11 +85,12 @@ public class MovieDAO {
 
         return movies;
     }
-/**
- * 
- * @param f
- * @return 
- */
+
+    /**
+     *
+     * @param f
+     * @return
+     */
     private boolean checkForFileType(File f) {
         String path = f.getAbsolutePath();
         if (path.endsWith(".mkv") || path.endsWith(".mp4")
@@ -113,8 +116,9 @@ public class MovieDAO {
         System.out.println("counter " + counter);
         while (counter > 17) {
             System.out.println("spasser");
-            if (currenttime + 10000 < System.currentTimeMillis())
-            counter = 0;
+            if (currenttime + 10000 < System.currentTimeMillis()) {
+                counter = 0;
+            }
         }
 
         if (filepath.endsWith(".mkv")) {
@@ -142,8 +146,10 @@ public class MovieDAO {
 
         } else if (filepath.endsWith(".mp4")) {
             searchString = queryP1 + filepath.substring(0, filepath.length() - 4) + queryEnd;
+            searchString = searchString.replace(" ", "%20");
         } else if (filepath.endsWith(".mpeg4")) {
             searchString = queryP1 + filepath.substring(0, filepath.length() - 6) + queryEnd;
+            searchString = searchString.replace(" ", "%20");
         }
         System.out.println("SearchString : " + searchString);
         try {
@@ -181,17 +187,19 @@ public class MovieDAO {
         //int id;
 
         if (!idInformation.isEmpty()) {
-            String[] results = searchResult.split(",");
+            String[] results = idInformation.split(",");
+
+            
 
             //String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
             for (String s : results) {
-                if (s.matches("original_title")) {
-                    title = s.substring(s.indexOf(":"));
-                    System.out.println(title);
-                } else if (s.matches("runtime")) {
-                    length = s.substring(s.indexOf(":"));
-                } else if (s.matches("release_date")) {
-                    releaseYear = s.substring(s.indexOf(":"), s.indexOf(":") + 4);
+
+                if (s.contains("original_title") && title.isEmpty()) {
+                    title = s.substring(s.indexOf(":") + 2, s.length()-1);
+                } else if (s.contains("release_date") && releaseYear.isEmpty()) {
+                    releaseYear = s.substring(s.indexOf(":") + 2, s.indexOf(":") + 6);
+                } else if (s.contains("runtime") && length.isEmpty()) {
+                    length = s.substring(s.indexOf(":") + 1);
                 }
 
             }
@@ -200,12 +208,12 @@ public class MovieDAO {
             System.out.println(allGenres);
             String[] genre = allGenres.split("}");
             for (String s : genre) {
-                genreList.add(s.substring(s.lastIndexOf(":"), s.length() - 1));
+                genreList.add(s.substring(s.lastIndexOf(":") +2, s.length() - 1));
             }
         }
 
-        Movie movie = new Movie(title, length, releaseYear, category, filepath, 999);
-        System.out.println("Movie data: " + movie.getTitle() + " lenght: "
+        Movie movie = new Movie(title, length, releaseYear, genreList, "", 999);
+        System.out.println("Movie data: " + movie.getTitle() + " length: "
                 + movie.getLength() + " releaseyear: " + movie.getReleaseYear()
                 + " category: " + movie.getCategory() + " Filepath: "
                 + movie.getFilePath());
@@ -252,12 +260,14 @@ public class MovieDAO {
         }
         return true;
     }
-/**
- * Denne metode 
- * @param selectedMovie
- * @throws IOException denne metode tager fat i vores selected movies og fjerner 
- * den eller dem vi ønsker at fjerne.
- */
+
+    /**
+     * Denne metode
+     *
+     * @param selectedMovie
+     * @throws IOException denne metode tager fat i vores selected movies og
+     * fjerner den eller dem vi ønsker at fjerne.
+     */
     public void deleteMovies(List<Movie> selectedMovie) throws IOException {
         try (Connection con = conProvider.getConnection()) {
             String a = "DELETE FROM Movies WHERE Id =?;";
@@ -272,11 +282,13 @@ public class MovieDAO {
             ex.printStackTrace();
         }
     }
-/**
- * Denne metode laver en liste over alle vores film, så vi i programmet kan
- * se og vælge den film vi ønsker at se eller bearbejde på andre måder.
- * @return 
- */
+
+    /**
+     * Denne metode laver en liste over alle vores film, så vi i programmet kan
+     * se og vælge den film vi ønsker at se eller bearbejde på andre måder.
+     *
+     * @return
+     */
     public List<Movie> getAllMoviesFromDB() {
         List<Movie> allMovies = new ArrayList();
         try (Connection con = conProvider.getConnection()) {
@@ -286,7 +298,8 @@ public class MovieDAO {
 
             while (rs.next()) {
                 String title = rs.getString("Title");
-                String categori = rs.getString("Categori");
+//                List<String> categori = rs.getString("Categori");
+                List<String> categori = new ArrayList();
                 String filepath = rs.getString("Filepath");
                 String length = rs.getString("Length");
                 int id = rs.getInt("Id");
@@ -301,12 +314,14 @@ public class MovieDAO {
         }
         return allMovies;
     }
-/**
- * Denne metode sender film filernes data til vores database, som gør det muligt
- * for os at kategorisere og filtrere i filmene.
- * @param allMovies
- * @throws IOException 
- */
+
+    /**
+     * Denne metode sender film filernes data til vores database, som gør det
+     * muligt for os at kategorisere og filtrere i filmene.
+     *
+     * @param allMovies
+     * @throws IOException
+     */
     public void SendDataToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (Title, Categori, Filepath, Length, ReleaseYear) VALUES (?,?,?,?,?,?,?);";
         try (Connection con = conProvider.getConnection()) {
@@ -314,7 +329,7 @@ public class MovieDAO {
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
                 //pstmt.setString(4, movie.getCategori());
-                pstmt.setString(4, movie.getCategory());
+                //pstmt.setString(4, movie.getCategory());
                 pstmt.setString(5, movie.getFilePath());
                 pstmt.setString(6, movie.getLength());
                 pstmt.setString(7, movie.getReleaseYear());
@@ -325,12 +340,14 @@ public class MovieDAO {
         }
 
     }
-/**
- * Denne metode gemmer billede filerne til vores harddisk som gør det muligt at
- * benytte disse billeder i programmet.
- * @param image
- * @param title 
- */
+
+    /**
+     * Denne metode gemmer billede filerne til vores harddisk som gør det muligt
+     * at benytte disse billeder i programmet.
+     *
+     * @param image
+     * @param title
+     */
     public void saveImageToDisk(BufferedImage image, String title) {
         try {
             BufferedImage bi = image;
@@ -341,12 +358,14 @@ public class MovieDAO {
 
         }
     }
-/**
- * Billederne bliver her læst fra harddisken, og vi kan derved tilføje disse
- * billeder til de korrekte film.
- * @param imagePath
- * @return 
- */
+
+    /**
+     * Billederne bliver her læst fra harddisken, og vi kan derved tilføje disse
+     * billeder til de korrekte film.
+     *
+     * @param imagePath
+     * @return
+     */
     public BufferedImage readImageFromDisk(String imagePath) {
 
         BufferedImage img = null;
