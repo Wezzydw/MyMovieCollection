@@ -5,7 +5,6 @@
  */
 package mymoviecollection.dal;
 
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Movie;
@@ -88,6 +89,9 @@ public class MovieDAO {
         String queryEnd = "&include_adult=true";
         String searchString = "";
         String searchResult = "";
+        String searchID = "";
+        String idInformation = "";
+        List<String> genreList = new ArrayList();
 
         if (filepath.endsWith(".mkv")) {
             String[] split = filepath.split(" ");
@@ -117,32 +121,55 @@ public class MovieDAO {
             //Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (!searchResult.isEmpty()) {
-            String [] results = searchResult.split(",");
-            
-            String title;
-            String length;
-            String releaseYear;
-            String category;
-            String filepathMovie;
-            int id;
-            String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
-            for (String s : results)
-            {
-                if (s.matches("original_title"))
-                {
-                    title = s.substring(s.indexOf(","));
-                    System.out.println(title);
+        if (searchResult.isEmpty()) {
+            String[] searchResults = searchResult.split(",");
+            for (String s : searchResults) {
+                if (s.matches("id")) {
+                    searchID = s.substring(s.indexOf(":"));
+                    System.out.println("searchid: " + searchID);
                 }
-//                else if ()
-//                    
             }
-            
+        }
+        String idString = "https://api.themoviedb.org/3/movie/" + searchID + "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+
+        try {
+            idInformation = getIMDBText(idString);
+        } catch (IOException ex) {
+            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-//        Movie movie = new Movie(title, length, releaseYear, category, filepathMovie, id);
+        String title = "";
+        String length = "";
+        String releaseYear = "";
+        String category = "ToBeDone";
+        //String filepathMovie;
+        //int id;
 
-        return null;
+        if (!idInformation.isEmpty()) {
+            String[] results = searchResult.split(",");
+
+            //String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+            for (String s : results) {
+                if (s.matches("original_title")) {
+                    title = s.substring(s.indexOf(":"));
+                    System.out.println(title);
+                } else if (s.matches("runtime")) {
+                    length = s.substring(s.indexOf(":"));
+                } else if (s.matches("release_date")) {
+                    releaseYear = s.substring(s.indexOf(":"), s.indexOf(":") + 4);
+                }
+
+            }
+
+            String allGenres = idInformation.substring(idInformation.indexOf("genres"), idInformation.indexOf("]"));
+            String[] genre = allGenres.split("}");
+            for (String s : genre) {
+                genreList.add(s.substring(s.lastIndexOf(":"), s.length() - 1));
+            }
+        }
+
+        Movie movie = new Movie(title, length, releaseYear, category, filepath, 999);
+        return movie;
     }
 
     private String getIMDBText(String url) throws IOException {
@@ -246,10 +273,10 @@ public class MovieDAO {
         try {
             BufferedImage bi = image;
             File outputfile = new File("images/" + title);
-            String findFormat = title.substring(title.lastIndexOf(".")+1);
+            String findFormat = title.substring(title.lastIndexOf(".") + 1);
             ImageIO.write(bi, findFormat, outputfile);
         } catch (IOException e) {
-            
+
         }
     }
 
