@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.MovieDAO;
+import mymoviecollection.dal.MovieDAOTester;
 
 /**
  *
@@ -27,11 +28,14 @@ public class Manager {
     private Movie movie;
     private double sliderRating;
     private Player vlc;
+    private Search search;
+
     
     
     public Manager() throws IOException{
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
+        search = new Search();
         
 
         movies = FXCollections.observableArrayList();
@@ -82,6 +86,12 @@ public class Manager {
     }
 
     public ObservableList<Movie> getAllMovies() {
+        MovieDAOTester md = new MovieDAOTester();
+        movies.addAll(md.scanFolder("\\\\WEZZY\\FILM"));
+        for (Movie m : movies)
+        {
+            System.out.println(m.getTitle());
+        }
         //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
         return movies;
     }
@@ -89,6 +99,16 @@ public class Manager {
     public ObservableList<Category> getAllCategories()
     {
         return categories;
+    }
+
+    public void searchMovie(String query) {
+        movies.setAll(search.searchMovie(query));
+        System.out.println("test " + search.searchMovie(query).size());
+        for (Movie m : search.searchMovie(query))
+        {
+            System.out.println(m.getTitle());
+        }
+        
     }
 
    

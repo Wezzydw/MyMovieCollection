@@ -220,7 +220,7 @@ public class Model
     }
 
     void searchMovie(String query) {
-        search.searchMovie(query);
+        manager.searchMovie(query);
     }
     
     
