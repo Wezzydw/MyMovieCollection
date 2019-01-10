@@ -169,6 +169,10 @@ public class MovieDAO {
         }
 
         Movie movie = new Movie(title, length, releaseYear, category, filepath, 999);
+        System.out.println("Movie data: " + movie.getTitle() + " lenght: " + 
+                movie.getLength() + " releaseyear: " + movie.getReleaseYear() + 
+                " category: " + movie.getCategory() + " Filepath: " + 
+                movie.getFilePath());
         return movie;
     }
 
