@@ -25,10 +25,18 @@ public class Search {
 
     public List<Movie> searchMovie(String query) {
         List<Movie> searchResult = new ArrayList();
+        
         for(Movie movie1 : movie){
             int counter = 0;
+            
+            if(movie1.getTitle() != null && movie1.getTitle().toLowerCase().contains(query.toLowerCase())){
+                if(counter == 0){
+                    counter++;
+                    searchResult.add(movie1);
+                }
+            }
         }
-        return movie;
+        return searchResult;
     }
     
     
