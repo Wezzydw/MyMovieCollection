@@ -59,7 +59,7 @@ public class MovieDAOTester {
             if (f.isFile()) {
                 if (checkForFileType(f)) {
                     System.out.println("f.getname " + f.getName());
-                    Movie a = new Movie(f.getName(), "", "", "", "", 1);
+                    Movie a = new Movie(f.getName(), "", "", "", filepath + ".mkw", 1);
                     System.out.println(" print a " + a.getTitle());
                     movies.add(a);
 

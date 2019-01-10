@@ -63,7 +63,8 @@ public class Manager {
     }
 
     public void playMovie(Movie selectedItem) {
-         vlc.callVlc();
+        System.out.println(selectedItem.getFilePath());
+         vlc.callVlc(selectedItem.getFilePath());
     }
 
     public void sliderRateMovie(Movie selectedItem, double rating) {
