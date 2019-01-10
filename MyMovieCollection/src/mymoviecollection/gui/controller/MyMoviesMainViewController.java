@@ -166,7 +166,9 @@ public class MyMoviesMainViewController implements Initializable
     private void OnHandleMovieRated(MouseEvent event)
     {
         movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
-        //model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
+        model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
+        Stage stage = (Stage) anchorPane.getScene().getWindow();
+        model.onProgramClose(stage);        
         System.out.println("VIrker det");
     }
 

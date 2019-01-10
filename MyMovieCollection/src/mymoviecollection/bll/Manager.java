@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -77,6 +79,11 @@ public class Manager {
 
     public void sliderRateMovie(Movie selectedItem, double rating) {
         selectedItem.setRating(rating);
+        for (Movie movie1 : allMovies) {
+            if(movie1.equals(movie)){
+                movie.setRating(rating);
+            }
+        }
     }
 
     public void reMovie(Movie selectedItem) {
@@ -113,6 +120,23 @@ public class Manager {
 
     public void searchMovie(String query) {
         movies.setAll(search.searchMovie(query, allMovies));        
+    }
+
+    public void getPersonalRatings(Movie selectedItem) {
+        selectedItem.getRating();
+        for (Movie movie1 : allMovies) {
+            if(movie1.equals(movie)){
+                movie.getRating();
+            }
+        }
+    }
+
+    public void onProgramClose() {
+        try {
+            mdao.SendRatingToDB(allMovies);
+        } catch (IOException ex) {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
    

@@ -308,16 +308,16 @@ public class MovieDAO {
  * @throws IOException 
  */
     public void SendDataToDB(List<Movie> allMovies) throws IOException {
-        String a = "INSERT INTO Movies (Title, Categori, Filepath, Length, ReleaseYear) VALUES (?,?,?,?,?,?,?);";
+        String a = "INSERT INTO Movies (title, id, imdbRating, personalRating, filePath, lastView ) VALUES (?,?,?,?,?,?,?);";
         try (Connection con = conProvider.getConnection()) {
             for (Movie movie : allMovies) {
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
-                //pstmt.setString(4, movie.getCategori());
-                pstmt.setString(4, movie.getCategory());
+                pstmt.setInt(2, movie.getId());
+                //pstmt.setDouble(3, movie.get());
+                pstmt.setDouble(4, movie.getRating());
                 pstmt.setString(5, movie.getFilePath());
-                pstmt.setString(6, movie.getLength());
-                pstmt.setString(7, movie.getReleaseYear());
+                //pstmt.setDate(6, movie.getLastView());
                 pstmt.execute();
             }
         } catch (SQLException ex) {
@@ -356,6 +356,21 @@ public class MovieDAO {
         }
         System.out.println(img.getHeight());
         return img;
+
+    }
+    public void SendRatingToDB(List<Movie> allMovies) throws IOException {
+        String a = "INSERT INTO Movies (personalRating ) WHERE Id = ?;";
+        try (Connection con = conProvider.getConnection()) {
+            for (Movie movie : allMovies) {
+                
+                PreparedStatement pstmt = con.prepareStatement(a);
+                pstmt.setDouble(1, movie.getRating());
+                pstmt.setInt(2, movie.getId());
+                pstmt.execute();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
     }
 

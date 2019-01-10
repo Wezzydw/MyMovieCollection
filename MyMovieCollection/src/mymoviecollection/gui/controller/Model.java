@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 import mymoviecollection.bll.Manager;
@@ -226,6 +227,15 @@ public class Model
 
     void searchMovie(String query) {
         manager.searchMovie(query);
+    }
+    
+    public void onProgramClose(Stage stage) {
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+             manager.onProgramClose();
+            }
+        });
     }
     
     
