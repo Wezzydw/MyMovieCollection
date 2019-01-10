@@ -36,7 +36,7 @@ public class Manager {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
         search = new Search();
-        
+        vlc = new Player();
 
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
