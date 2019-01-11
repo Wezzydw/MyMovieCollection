@@ -136,6 +136,9 @@ public class Manager {
             Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void sortCategories(List<Boolean> checkCategories){
+        //movies.setAll(search.sortCategories(checkCategories, allMovies));
+    }
 
    
 

@@ -46,6 +46,7 @@ public class Model
     private Manager manager;
     private String tmpString;
     private MenuButton mmm;
+    private List<Boolean> categoryCheck;
     public Model() throws IOException
     {
         player = new Player();
@@ -54,7 +55,10 @@ public class Model
         categories = FXCollections.observableArrayList();
         manager = new Manager();
         tmpString = "";
-        
+    }
+    public void setCheckList(List<Boolean> categoryCheck)
+    {
+        this.categoryCheck = categoryCheck;
     }
     
     public void setMenuItmes(MenuButton mmm)

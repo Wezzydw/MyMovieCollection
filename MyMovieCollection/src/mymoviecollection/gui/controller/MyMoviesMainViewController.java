@@ -126,6 +126,7 @@ public class MyMoviesMainViewController implements Initializable
         menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
         model.setMenuItmes(menuCategory);
+        model.setCheckList(selectedCategories);
     }    
 
     @FXML
