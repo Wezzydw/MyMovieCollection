@@ -33,6 +33,9 @@ public class MovieDAO {
 
     List<Movie> movies;
     int counter;
+    long startTime;
+    int requestRateTimer;
+    String requestNotFound;
 
     DatabaseConnection conProvider;
     int i;
@@ -47,6 +50,10 @@ public class MovieDAO {
         } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+        startTime = 0;
+        requestRateTimer = 11000;
+        requestNotFound = "The resource you requested could not be found.";
+
     }
 
     /**
@@ -63,10 +70,12 @@ public class MovieDAO {
                 if (checkForFileType(f)) {
                     System.out.println(f.getName());
                     Movie m = getIMDBData(f.getName());
-                    m.setFilePath(f.getAbsolutePath());
-                    movies.add(m);
+                    if (m != null) {
+                        m.setFilePath(f.getAbsolutePath());
+                        movies.add(m);
+                        i++;
+                    }
 
-                    i++;
                 }
 
             }
@@ -111,13 +120,19 @@ public class MovieDAO {
         String searchResult = "";
         String searchID = "";
         String idInformation = "";
+
         List<String> genreList = new ArrayList();
-        long currenttime = System.currentTimeMillis();
+        //long currenttime = System.currentTimeMillis();
         System.out.println("counter " + counter);
-        while (counter > 17) {
+        if (counter == 0) {
+            startTime = System.currentTimeMillis();
+        }
+
+        while (counter > 38) {
             System.out.println("spasser");
-            if (currenttime + 10000 < System.currentTimeMillis()) {
+            if (startTime + requestRateTimer < System.currentTimeMillis()) {
                 counter = 0;
+                startTime = System.currentTimeMillis();
             }
         }
 
@@ -159,8 +174,11 @@ public class MovieDAO {
             //Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        System.out.println(searchResult);
-
+        System.out.println("hej med did" + searchResult);
+        if (searchResult.contains("total_results\":0")) {
+            System.out.println("Movie not found, please check file name");
+            return null;
+        }
         if (!searchResult.isEmpty()) {
             String[] searchResults = searchResult.split(",");
             for (String s : searchResults) {
@@ -189,13 +207,11 @@ public class MovieDAO {
         if (!idInformation.isEmpty()) {
             String[] results = idInformation.split(",");
 
-            
-
             //String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
             for (String s : results) {
 
                 if (s.contains("original_title") && title.isEmpty()) {
-                    title = s.substring(s.indexOf(":") + 2, s.length()-1);
+                    title = s.substring(s.indexOf(":") + 2, s.length() - 1);
                 } else if (s.contains("release_date") && releaseYear.isEmpty()) {
                     releaseYear = s.substring(s.indexOf(":") + 2, s.indexOf(":") + 6);
                 } else if (s.contains("runtime") && length.isEmpty()) {
@@ -208,7 +224,7 @@ public class MovieDAO {
             System.out.println(allGenres);
             String[] genre = allGenres.split("}");
             for (String s : genre) {
-                genreList.add(s.substring(s.lastIndexOf(":") +2, s.length() - 1));
+                genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
             }
         }
 
@@ -218,7 +234,7 @@ public class MovieDAO {
                 + " category: " + movie.getCategory() + " Filepath: "
                 + movie.getFilePath());
 
-        counter++;
+        counter += 2;
         return movie;
     }
 
@@ -233,6 +249,7 @@ public class MovieDAO {
             inputStream = connection.getInputStream();
         } else {
             inputStream = connection.getErrorStream();
+
         }
 
         BufferedReader in = new BufferedReader(
@@ -247,7 +264,15 @@ public class MovieDAO {
         }
 
         in.close();
-
+        if (response.toString().contains("status_code\":25")) {
+            startTime = System.currentTimeMillis();
+            while (startTime + requestRateTimer > System.currentTimeMillis()) {
+                //System.out.println("Spasser2");
+                //System.out.println((startTime + requestRateTimer) + " " + System.currentTimeMillis() + " " + (startTime + requestRateTimer - System.currentTimeMillis()));
+            }
+            //System.out.println(url);
+            return getIMDBText(url);
+        }
         return response.toString();
     }
 
@@ -335,7 +360,6 @@ public class MovieDAO {
 
                 //pstmt.setString(4, movie.getCategori());
                 //pstmt.setString(4, movie.getCategory());
-
                 pstmt.setString(5, movie.getFilePath());
                 //pstmt.setDate(6, movie.getLastView());
                 pstmt.execute();
@@ -382,11 +406,12 @@ public class MovieDAO {
         return img;
 
     }
+
     public void SendRatingToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (personalRating ) WHERE Id = ?;";
         try (Connection con = conProvider.getConnection()) {
             for (Movie movie : allMovies) {
-                
+
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setDouble(1, movie.getRating());
                 pstmt.setInt(2, movie.getId());
