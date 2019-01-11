@@ -213,5 +213,11 @@ public class MyMoviesMainViewController implements Initializable
     {
         System.out.println("menu handle");
     }
+
+    @FXML
+    private void selectedDataToManager(MouseEvent event)
+    {
+       model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
+    }
     
 }

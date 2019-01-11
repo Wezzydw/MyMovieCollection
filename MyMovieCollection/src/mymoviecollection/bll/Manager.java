@@ -149,9 +149,15 @@ public class Manager {
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
 
-   
-
+    public Movie sendDataOnClick(){
     
-    
+        for (Movie movie1 : allMovies) {
+            
+            if(movie1.equals(movie)){
+                     return movie1;
+            }
+        }
+           return null;
+        }     
     
 }
