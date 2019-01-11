@@ -35,9 +35,6 @@ public class Manager {
     private List<Movie> allMovies;
     private List<Category> genres;
 
-
-    
-    
     public Manager() throws IOException{
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
@@ -119,7 +116,7 @@ public class Manager {
     }
 
     public ObservableList<Category> getAllCategories() {
-        genres.addAll(categories);
+       // genres.addAll(categories);
         return categories;
     }
 
@@ -146,10 +143,17 @@ public class Manager {
         }
     }
     public void sortCategories(List<Boolean> checkCategories){
+        System.out.println(checkCategories.size()+ "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
+   
+    public void getChecklistCategories(List<Category> allCat){
+        genres = allCat;
+    }
+    
 
-    public Movie sendDataOnClick(){
+        
+           public Movie sendDataOnClick(){
     
         for (Movie movie1 : allMovies) {
             

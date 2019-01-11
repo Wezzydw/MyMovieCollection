@@ -60,9 +60,9 @@ public class MovieDAOTester {
                 if (checkForFileType(f)) {
                     System.out.println("f.getname " + f.getName());
                     List<String> fuckaf = new ArrayList();
-                    Movie a = new Movie(f.getName(), "", "", fuckaf, filepath + ".mkw", 1);
-                    System.out.println(" print a " + a.getTitle());
-                    movies.add(a);
+                    //Movie a = new Movie(f.getName(), "", "", fuckaf, filepath + ".mkw", 1);
+//                    System.out.println(" print a " + a.getTitle());
+//                    movies.add(a);
 
                     i++;
                 }
