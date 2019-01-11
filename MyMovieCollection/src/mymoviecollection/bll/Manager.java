@@ -34,9 +34,6 @@ public class Manager {
     private Search search;
     private List<Movie> allMovies;
 
-
-    
-    
     public Manager() throws IOException{
         mdao = new MovieDAO();
         cdao = new CategoryDAO();

@@ -24,6 +24,8 @@ public class Movie {
     String length;
     String releaseYear;
     List<String> categories;
+    String posterPath;
+    double imdbRating;
 
     public Movie(double rating, int id, String title, String filePath, String lastView) {
         this.rating = rating;
@@ -36,13 +38,15 @@ public class Movie {
     Date date = new Date();
     //System.out.println(dateFormat.format(date));
 
-    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, int id)
+    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating)
     {
      this.title = title;
      this.filePath = filepath;
      this.length = length;
      this.releaseYear = releaseYear;
      this.categories = categories;
+     this.posterPath = posterPath;
+     this.imdbRating = imdbRating;
     }
     public double getRating() {
         return rating;
