@@ -146,12 +146,22 @@ public class Manager {
         System.out.println(checkCategories.size()+ "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
-
    
     public void getChecklistCategories(List<Category> allCat){
         genres = allCat;
     }
     
+
+        
+           public Movie sendDataOnClick(){
     
+        for (Movie movie1 : allMovies) {
+            
+            if(movie1.equals(movie)){
+                     return movie1;
+            }
+        }
+           return null;
+        }     
     
 }
