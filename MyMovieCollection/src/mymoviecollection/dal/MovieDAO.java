@@ -224,13 +224,13 @@ public class MovieDAO {
                 } else if (s.contains("vote_average")) {
                     imdbRating = Double.parseDouble(s.substring(s.indexOf(":") + 1));
                 } else if (s.contains("poster_path")) {
-                    posterPathOnline = s.substring(s.indexOf(":") + 2, s.length()-1);
+                    posterPathOnline = s.substring(s.indexOf(":") + 2, s.length() - 1);
                 }
             }
             Image poster = new Image("https://image.tmdb.org/t/p/original/" + posterPathOnline);
-            BufferedImage bi = null; 
+            BufferedImage bi = null;
             URL url = null;
-            
+
             System.out.println("Posterpath " + posterPathOnline);
             System.out.println("https://image.tmdb.org/t/p/original" + posterPathOnline);
             try {
@@ -244,15 +244,25 @@ public class MovieDAO {
                 Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
             System.out.println(bi.getHeight());
-            posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length()-4));
+            posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length() - 4));
             System.out.println("SSHITE FUCKING WENT SOUTH" + posterPath);
             System.out.println(idInformation);
+
             String allGenres = idInformation.substring(idInformation.indexOf("genre"), idInformation.indexOf("]"));
             System.out.println(allGenres);
-            String[] genre = allGenres.split("}");
-            for (String s : genre) {
-                genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
+            
+            if (allGenres.contains("}")) {
+                String[] genre = allGenres.split("}");
+
+                for (String s : genre) {
+                    System.out.println("GenreList sout " + s );
+                    genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
+                }
             }
+            else {
+                genreList.add("NOT A CATEGORY, NOT SURE IF WE CAN HANDLE NULL/EMPTY");
+            }
+
         }
 
         //Make something for a posterPath;
@@ -411,8 +421,7 @@ public class MovieDAO {
         title = title.replace("<", "_");
         title = title.replace(">", "_");
         title = title.replace("|", "_");
-        
-        
+
         try {
             BufferedImage bi = image;
             System.out.println("images/" + title);
@@ -444,13 +453,15 @@ public class MovieDAO {
         return img;
 
     }
-/**
- * Der tages fat i vores film og søges igennem filmene efter en angivet rating.
- * Denne rating sendese til databasen så alle film der er bleven ratet i løbet 
- * af programmets uptime, bliver gemt i databasen.
- * @param allMovies
- * @throws IOException 
- */
+
+    /**
+     * Der tages fat i vores film og søges igennem filmene efter en angivet
+     * rating. Denne rating sendese til databasen så alle film der er bleven
+     * ratet i løbet af programmets uptime, bliver gemt i databasen.
+     *
+     * @param allMovies
+     * @throws IOException
+     */
     public void SendRatingToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (personalRating ) WHERE Id = ?;";
         try (Connection con = conProvider.getConnection()) {
