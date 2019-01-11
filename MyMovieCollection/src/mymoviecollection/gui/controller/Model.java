@@ -61,9 +61,10 @@ public class Model
         this.categoryCheck = categoryCheck;
     }
     
-    public void setMenuItmes(MenuButton mmm)
+    public void setMenuItmes(MenuButton mmm, List<Category> allCat)
     {
         this.mmm = mmm;
+        manager.getChecklistCategories(allCat);
     }
     public void addMovies(Stage stage)
     {
@@ -249,6 +250,10 @@ public class Model
              manager.onProgramClose();
             }
         });
+    }
+
+    void sortCategories() {
+        manager.sortCategories(categoryCheck);
     }
     
     

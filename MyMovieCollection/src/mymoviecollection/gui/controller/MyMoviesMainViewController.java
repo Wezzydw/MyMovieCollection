@@ -104,12 +104,14 @@ public class MyMoviesMainViewController implements Initializable
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
                     selectedCategories.remove(tmpIndex);
                     selectedCategories.add(tmpIndex, Boolean.TRUE);
+                    model.sortCategories();
                 }
                 else
                 {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
                     selectedCategories.remove(tmpIndex);
                     selectedCategories.add(tmpIndex, Boolean.FALSE);
+                    model.sortCategories();
                 }
             } 
         }; 
@@ -125,7 +127,7 @@ public class MyMoviesMainViewController implements Initializable
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
-        model.setMenuItmes(menuCategory);
+        model.setMenuItmes(menuCategory, allCategories);
         model.setCheckList(selectedCategories);
     }    
 

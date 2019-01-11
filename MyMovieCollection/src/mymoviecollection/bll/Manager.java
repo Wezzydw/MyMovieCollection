@@ -119,7 +119,7 @@ public class Manager {
     }
 
     public ObservableList<Category> getAllCategories() {
-        genres.addAll(categories);
+       // genres.addAll(categories);
         return categories;
     }
 
@@ -146,11 +146,14 @@ public class Manager {
         }
     }
     public void sortCategories(List<Boolean> checkCategories){
+        System.out.println(checkCategories.size()+ "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
 
    
-
+    public void getChecklistCategories(List<Category> allCat){
+        genres = allCat;
+    }
     
     
     
