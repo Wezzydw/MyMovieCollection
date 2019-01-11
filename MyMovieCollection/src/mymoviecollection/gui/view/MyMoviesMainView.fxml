@@ -14,7 +14,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="701.0" prefWidth="909.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
    <children>
-      <ListView fx:id="lstMov" layoutX="554.0" layoutY="109.0" prefHeight="497.0" prefWidth="349.0">
+      <ListView fx:id="lstMov" layoutX="554.0" layoutY="109.0" onMouseClicked="#selectedDataToManager" prefHeight="497.0" prefWidth="349.0">
          <cursor>
             <Cursor fx:constant="NW_RESIZE" />
          </cursor></ListView>

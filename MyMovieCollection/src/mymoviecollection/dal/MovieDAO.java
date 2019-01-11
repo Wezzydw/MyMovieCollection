@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Movie;
@@ -201,6 +203,9 @@ public class MovieDAO {
         String length = "";
         String releaseYear = "";
         String category = "ToBeDone";
+        double imdbRating = -1;
+        String posterPathOnline = "";
+        String posterPath = "";
         //String filepathMovie;
         //int id;
 
@@ -210,15 +215,37 @@ public class MovieDAO {
             //String fordetails = "https://api.themoviedb.org/3/movie/343611?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
             for (String s : results) {
 
-                if (s.contains("original_title") && title.isEmpty()) {
+                if (s.contains("original_title")) {
                     title = s.substring(s.indexOf(":") + 2, s.length() - 1);
-                } else if (s.contains("release_date") && releaseYear.isEmpty()) {
+                } else if (s.contains("release_date")) {
                     releaseYear = s.substring(s.indexOf(":") + 2, s.indexOf(":") + 6);
-                } else if (s.contains("runtime") && length.isEmpty()) {
+                } else if (s.contains("runtime")) {
                     length = s.substring(s.indexOf(":") + 1);
+                } else if (s.contains("vote_average")) {
+                    imdbRating = Double.parseDouble(s.substring(s.indexOf(":") + 1));
+                } else if (s.contains("poster_path")) {
+                    posterPathOnline = s.substring(s.indexOf(":") + 2, s.length()-1);
                 }
-
             }
+            Image poster = new Image("https://image.tmdb.org/t/p/original/" + posterPathOnline);
+            BufferedImage bi = null; 
+            URL url = null;
+            
+            System.out.println("Posterpath " + posterPathOnline);
+            System.out.println("https://image.tmdb.org/t/p/original" + posterPathOnline);
+            try {
+                url = new URL("https://image.tmdb.org/t/p/original" + posterPathOnline);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                bi = ImageIO.read(url);
+            } catch (IOException ex) {
+                Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(bi.getHeight());
+            posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length()-4));
+            System.out.println("SSHITE FUCKING WENT SOUTH" + posterPath);
             System.out.println(idInformation);
             String allGenres = idInformation.substring(idInformation.indexOf("genre"), idInformation.indexOf("]"));
             System.out.println(allGenres);
@@ -228,8 +255,11 @@ public class MovieDAO {
             }
         }
 
-        Movie movie = new Movie(title, length, releaseYear, genreList, "", 999);
-        System.out.println("Movie data: " + movie.getTitle() + " length: "
+        //Make something for a posterPath;
+        Movie movie = new Movie(title, length, releaseYear, genreList, "", "", imdbRating);
+
+        System.out.println(
+                "Movie data: " + movie.getTitle() + " length: "
                 + movie.getLength() + " releaseyear: " + movie.getReleaseYear()
                 + " category: " + movie.getCategory() + " Filepath: "
                 + movie.getFilePath());
@@ -249,7 +279,6 @@ public class MovieDAO {
             inputStream = connection.getInputStream();
         } else {
             inputStream = connection.getErrorStream();
-
         }
 
         BufferedReader in = new BufferedReader(
@@ -329,7 +358,8 @@ public class MovieDAO {
                 String length = rs.getString("Length");
                 int id = rs.getInt("Id");
                 String releaseYear = rs.getString("ReleaseYear");
-                Movie movie = new Movie(title, length, releaseYear, categori, filepath, id);
+                //Movie herunder skal fixes
+                Movie movie = new Movie(title, length, releaseYear, categori, filepath, "", -1);
                 if (new File(filepath).isFile()) {
                     allMovies.add(movie);
                 }
@@ -371,15 +401,29 @@ public class MovieDAO {
      * @param image
      * @param title
      */
-    public void saveImageToDisk(BufferedImage image, String title) {
+    public String saveImageToDisk(BufferedImage image, String title) {
+        title = title.replace(":", "_");
+        title = title.replace("/", "_");
+        title = title.replace("\\", "_");
+        title = title.replace("*", "_");
+        title = title.replace("?", "_");
+        title = title.replace("\"", "_");
+        title = title.replace("<", "_");
+        title = title.replace(">", "_");
+        title = title.replace("|", "_");
+        
+        
         try {
             BufferedImage bi = image;
+            System.out.println("images/" + title);
             File outputfile = new File("images/" + title);
             String findFormat = title.substring(title.lastIndexOf(".") + 1);
             ImageIO.write(bi, findFormat, outputfile);
+
         } catch (IOException e) {
 
         }
+        return "images/" + title;
     }
 
     /**
