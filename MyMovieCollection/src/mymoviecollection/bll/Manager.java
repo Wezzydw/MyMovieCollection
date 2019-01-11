@@ -34,6 +34,7 @@ public class Manager {
     private Search search;
     private List<Movie> allMovies;
     private List<Category> genres;
+    private List<Boolean> checkCategories;
 
     public Manager() throws IOException{
         mdao = new MovieDAO();
@@ -123,7 +124,8 @@ public class Manager {
     public void searchMovie(String query) {
         System.out.println("Size" +search.searchMovie(query, allMovies).size());
         System.out.println("Allmovies" + allMovies.size());
-        movies.setAll(search.searchMovie(query, allMovies));        
+//        movies.setAll(search.searchMovie(query, allMovies));
+        movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
     }
 
     public void getPersonalRatings(Movie selectedItem) {
@@ -145,6 +147,7 @@ public class Manager {
     public void sortCategories(List<Boolean> checkCategories){
         System.out.println(checkCategories.size()+ "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
+        this.checkCategories = checkCategories;
     }
    
     public void getChecklistCategories(List<Category> allCat){
