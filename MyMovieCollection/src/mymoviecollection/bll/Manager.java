@@ -33,6 +33,7 @@ public class Manager {
     private Player vlc;
     private Search search;
     private List<Movie> allMovies;
+    private List<Category> genres;
 
 
     
@@ -42,6 +43,7 @@ public class Manager {
         cdao = new CategoryDAO();
         search = new Search();
         allMovies = new ArrayList();
+        genres = new ArrayList();
         
 
         vlc = new Player();
@@ -115,8 +117,8 @@ public class Manager {
         return movies;
     }
 
-    public ObservableList<Category> getAllCategories()
-    {
+    public ObservableList<Category> getAllCategories() {
+        genres.addAll(categories);
         return categories;
     }
 
@@ -141,7 +143,7 @@ public class Manager {
         }
     }
     public void sortCategories(List<Boolean> checkCategories){
-        //movies.setAll(search.sortCategories(checkCategories, allMovies));
+        movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
 
    
