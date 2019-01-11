@@ -44,7 +44,7 @@ public class Search {
     
     public List<Movie> sortCategories(List<Boolean> checkList, List<Movie> movies, List<Category> categories){
         
-        List<Movie> sortResult = movies;
+        List<Movie> sortResult = new ArrayList();
         List<Category> checkTrue = new ArrayList();
         int counter = 0;
         
@@ -54,21 +54,34 @@ public class Search {
             }
             counter++;
         }
+        System.out.println(checkTrue.size());
+        if (checkTrue.size()==0)
+            return movies;
         System.out.println("Grimme pige" + movies.size());
         for (Movie movy : movies) {
-            
+            //hver enesete film
+            int c1 = 0;
+            for (String category : movy.getCategory()) {
+                //en liste af deres kategorier
                 
-                for (String category : movy.getCategory()) {
-                    for (Category bæh: checkTrue){
+                for (Category bæh: checkTrue){
+                    //checkede kategorier fra menuButton
                     System.out.println(movy.getTitle()+ bæh + category);
+                    int c2 = 0;
                     if(category.equals(bæh.toString())){
-                        System.out.println(movy.getTitle()+ bæh);
-                        sortResult.add(movy);
+                        System.out.println(movy.getTitle()+ bæh+ " sådan noget");
+                        c1++;
+                        if(c1==checkTrue.size())
+                        {
+                            
+                            sortResult.add(movy);   
+                        }
                     }
+
                 }
-            }
+            }    
             
-        }
+            }
         return sortResult;
     }
     
