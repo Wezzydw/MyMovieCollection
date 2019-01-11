@@ -58,6 +58,7 @@ public class Manager {
     public void scanFolder(String filepath){        
         
         movies.addAll(mdao.scanFolder(filepath));
+        allMovies.addAll(movies);
     }
 
     public void editMovie(Movie selectedItem) {
@@ -117,6 +118,8 @@ public class Manager {
     }
 
     public void searchMovie(String query) {
+        System.out.println("Size" +search.searchMovie(query, allMovies).size());
+        System.out.println("Allmovies" + allMovies.size());
         movies.setAll(search.searchMovie(query, allMovies));        
     }
 
