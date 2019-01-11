@@ -7,6 +7,8 @@ package mymoviecollection.bll;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.text.StyledEditorKit;
+import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.MovieDAO;
 
@@ -40,7 +42,35 @@ public class Search {
         return searchResult;
     }
     
-    
+    public List<Movie> sortCategories(List<Boolean> checkList, List<Movie> movies, List<Category> categories){
+        
+        List<Movie> sortResult = movies;
+        List<Category> checkTrue = new ArrayList();
+        int counter = 0;
+        
+        for (Boolean boolean1 : checkList) {
+            if(boolean1){
+                checkTrue.add(categories.get(counter));
+            }
+            counter++;
+        }
+        System.out.println("Grimme pige" + movies.size());
+        for (Movie movy : movies) {
+            
+                
+                for (String category : movy.getCategory()) {
+                    for (Category bæh: checkTrue){
+                    System.out.println(movy.getTitle()+ bæh + category);
+                    if(category.equals(bæh.toString())){
+                        System.out.println(movy.getTitle()+ bæh);
+                        sortResult.add(movy);
+                    }
+                }
+            }
+            
+        }
+        return sortResult;
+    }
     
     
 }

@@ -33,12 +33,14 @@ public class Manager {
     private Player vlc;
     private Search search;
     private List<Movie> allMovies;
+    private List<Category> genres;
 
     public Manager() throws IOException{
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
         search = new Search();
         allMovies = new ArrayList();
+        genres = new ArrayList();
         
 
         vlc = new Player();
@@ -113,8 +115,8 @@ public class Manager {
         return movies;
     }
 
-    public ObservableList<Category> getAllCategories()
-    {
+    public ObservableList<Category> getAllCategories() {
+       // genres.addAll(categories);
         return categories;
     }
 
@@ -141,11 +143,14 @@ public class Manager {
         }
     }
     public void sortCategories(List<Boolean> checkCategories){
-        //movies.setAll(search.sortCategories(checkCategories, allMovies));
+        System.out.println(checkCategories.size()+ "hej" + genres.size() + "tonny" + categories.size());
+        movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
     }
 
    
-
+    public void getChecklistCategories(List<Category> allCat){
+        genres = allCat;
+    }
     
     
     
