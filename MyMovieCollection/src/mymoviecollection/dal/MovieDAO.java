@@ -353,15 +353,9 @@ public class MovieDAO {
             for (Movie movie : allMovies) {
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
-
                 pstmt.setInt(2, movie.getId());
-                //pstmt.setDouble(3, movie.get());
-                pstmt.setDouble(4, movie.getRating());
-
-                //pstmt.setString(4, movie.getCategori());
-                //pstmt.setString(4, movie.getCategory());
-                pstmt.setString(5, movie.getFilePath());
-                //pstmt.setDate(6, movie.getLastView());
+                pstmt.setDouble(3, movie.getRating());
+                pstmt.setString(4, movie.getFilePath());
                 pstmt.execute();
             }
         } catch (SQLException ex) {
@@ -406,7 +400,13 @@ public class MovieDAO {
         return img;
 
     }
-
+/**
+ * Der tages fat i vores film og søges igennem filmene efter en angivet rating.
+ * Denne rating sendese til databasen så alle film der er bleven ratet i løbet 
+ * af programmets uptime, bliver gemt i databasen.
+ * @param allMovies
+ * @throws IOException 
+ */
     public void SendRatingToDB(List<Movie> allMovies) throws IOException {
         String a = "INSERT INTO Movies (personalRating ) WHERE Id = ?;";
         try (Connection con = conProvider.getConnection()) {
