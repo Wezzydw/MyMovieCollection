@@ -84,8 +84,12 @@ public class Manager {
         }
     }
 
-    public void reMovie(Movie selectedItem) {
+    public void reMovie(List<Movie> selectedItem) throws IOException {
+        mdao.deleteMovies(selectedItem);
         
+        for (Movie movie1 : selectedItem) {
+            movies.remove(movie1); 
+        }
     }
 
     public void addCategory(Category category) {
