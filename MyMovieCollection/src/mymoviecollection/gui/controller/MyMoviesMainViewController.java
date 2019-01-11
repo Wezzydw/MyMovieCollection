@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckMenuItem;
@@ -52,7 +53,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private Label lblTitle;
     @FXML
-    private Label lblInfo;
+    private Label lblInfo = new Label("\t\t\t\t" + "no menu item selected");
     @FXML
     private ChoiceBox<Category> choiceBoxCat;
     
@@ -69,13 +70,15 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private ImageView StarImage;
 
+    private List<Boolean> selectedCategories;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-
+        selectedCategories = new ArrayList();
+        
         try
         {
             model = new Model();
@@ -83,23 +86,46 @@ public class MyMoviesMainViewController implements Initializable
         {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        List<Category> allCategories = new ArrayList();
+        allCategories.add(new Category("All movies"));
+        allCategories.addAll(model.getAllCategories());
         int counter = 0;
+        for (int i = 0; i < allCategories.size(); i++) //+1 er for all movies, så måske skal det ændres
+        {
+            selectedCategories.add(Boolean.FALSE);            
+        }
         choiceBoxCat.setItems(model.getAllCategories());
-        
-        List<Category> allCategories = model.getAllCategories();
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
+            public void handle(ActionEvent e) 
+            { 
+                if (((CheckMenuItem)e.getSource()).isSelected())
+                {
+                    Category mygod = new Category("hi");
+                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
+                    selectedCategories.remove(tmpIndex);
+                    selectedCategories.add(tmpIndex, Boolean.TRUE);
+                }
+                else
+                {
+                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
+                    selectedCategories.remove(tmpIndex);
+                    selectedCategories.add(tmpIndex, Boolean.FALSE);
+                }
+            } 
+        }; 
         List<CheckMenuItem> allItems = new ArrayList();
         for (Category allCategory : allCategories)
         {
             counter++;
             String name = "item" + counter;
             CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
+            iti.setOnAction(event1);
             allItems.add(iti);
         }
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
         model.setMenuItmes(menuCategory);
-
     }    
 
     @FXML
@@ -184,43 +210,7 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void handleSelectMenuItem(ActionEvent event)
     {
-//        int[] selectedItems = menuCategory.;
-        
-        
-//        int selectedIndex = comboBox.getSelectionModel().getSelectedIndex();
-//        String txtValue;
-//        String resultText = "";
-//        int numberOfLetters = 0;
-//        switch (selectedIndex)
-//        {
-//            case 0:
-//                txtValue = txtInput.getText();
-//                //txtValue = txtValue.toUpperCase();
-//                txtValue = tsmodel.test(txtValue);
-//                break;
-//            case 1:
-//                txtValue = txtInput.getText();
-//                txtValue = tsmodel.getFirstName(txtValue);
-//                break;
-//            case 2:
-//                txtValue = txtInput.getText();
-//                txtValue = tsmodel.getLastName(txtValue);
-//                break;
-//            case 3:
-//                txtValue = txtInput.getText();
-//                numberOfLetters = tsmodel.getNumberOfLetters(txtValue);
-//                txtValue = String.valueOf(numberOfLetters);
-//                break;
-//            case 4:
-//                txtValue = txtInput.getText();
-//                txtValue = tsmodel.getFormattedName(txtValue);
-//                break;
-//            default:
-//                throw new UnsupportedOperationException("Selected conversion not supported yet");
-//        }
-//        
-//        resultText = String.valueOf(txtValue);
-//        lblResult.setText(resultText);
+        System.out.println("menu handle");
     }
     
 }
