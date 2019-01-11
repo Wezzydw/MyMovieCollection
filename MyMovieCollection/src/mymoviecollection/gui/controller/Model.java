@@ -139,7 +139,7 @@ public class Model
     return value;
     }
     
-    void reMovie(Movie selectedItem)
+    void reMovie(List<Movie> selectedItem) throws IOException
     {
         manager.reMovie(selectedItem);
     }

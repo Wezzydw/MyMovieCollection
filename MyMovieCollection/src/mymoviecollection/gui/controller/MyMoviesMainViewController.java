@@ -128,9 +128,9 @@ public class MyMoviesMainViewController implements Initializable
     }
 
     @FXML
-    private void btnRemoveMov(ActionEvent event)
+    private void btnRemoveMov(ActionEvent event) throws IOException
     {
-        model.reMovie(lstMov.getSelectionModel().getSelectedItem());
+        model.reMovie(lstMov.getSelectionModel().getSelectedItems());
     }
 
     @FXML
