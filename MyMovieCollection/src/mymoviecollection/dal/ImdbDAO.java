@@ -58,44 +58,20 @@ public class ImdbDAO
 
         if (filepath.endsWith(".mkv"))
         {
-            System.out.println(filepath);
+
             String replacedString = filepath.replace(".", " ");
             String[] splitString = replacedString.split(" ");
-            System.out.println("replaced String " + replacedString);
 
-//            for (int i = 0; i < split.length - 1; i++)
-//            {
-//                if (i != 0)
-//                {
-//                    if (!isStringANumber(split[i]))
-//                    {
-//                        System.out.println("Split" + split[i] + " i: " + i);
-//                        queryP2 += split[i] + "%20";
-//                    } else if (isStringANumber(split[i]) && isStringANumber(split[i + 1]))
-//                    {
-//                        queryP2 += split[i] + "%20";
-//                    } else
-//                    {
-//                        queryP2.substring(0, queryP2.length() - 3);
-//                        System.out.println("Split before break" + split[i] + " i: " + i);
-//                        break;
-//                    }
-//                }
-//                queryP2 += split[i] + "%20";
-//
-//            }
-            int LastIndex = indexOfLastYear(splitString);
+            int lastIndex = indexOfLastYear(splitString);
             for (int i = 0; i < splitString.length - 1; i++)
             {
                 if (i == 0)
                 {
-                    System.out.println("in init");
                     queryP2 += splitString[i];
                 } else
                 {
-                    if (i < LastIndex)
+                    if (i < lastIndex)
                     {
-                        System.out.println("In here1");
                         queryP2 += "%20" + splitString[i];
                     } else if (isAllLetters(splitString[i]))
                     {
@@ -108,7 +84,6 @@ public class ImdbDAO
             }
             year = getYearFromMovie(splitString);
             searchString = queryP1 + queryP2 + queryEnd + year;
-            System.out.println("SearchString : " + searchString);
         } else if (filepath.endsWith(".mp4"))
         {
             searchString = queryP1 + filepath.substring(0, filepath.length() - 4) + queryEnd;
@@ -124,7 +99,6 @@ public class ImdbDAO
 
     private boolean isAllLetters(String string)
     {
-        System.out.println("String " + string);
         for (char c : string.toCharArray())
         {
             if (!Character.isAlphabetic(c))
@@ -141,7 +115,6 @@ public class ImdbDAO
         int amount = 0;
         for (String s : string.split("."))
         {
-            System.out.println("S.lenght" + s.length());
             if (s.length() == 4)
             {
 
@@ -149,14 +122,12 @@ public class ImdbDAO
                 {
                     if (!Character.isDigit(c))
                     {
-                        System.out.println("S: " + s);
                         break;
                     }
                 }
                 amount++;
             }
         }
-        System.out.println("Amount in amounft of year : " + amount);
         return amount;
     }
 
@@ -179,7 +150,6 @@ public class ImdbDAO
                     counter++;
                     if (counter == 4)
                     {
-                        System.out.println("index of year : " + i);
                         index = i;
                     }
 
@@ -188,7 +158,6 @@ public class ImdbDAO
             }
 
         }
-        System.out.println("Last index : " + index);
         return index;
     }
 
@@ -211,7 +180,6 @@ public class ImdbDAO
                     counter++;
                     if (counter == 4)
                     {
-                        System.out.println("index of year : " + i);
                         year = string[i];
                     }
 
@@ -220,7 +188,6 @@ public class ImdbDAO
             }
 
         }
-        System.out.println("Last year : " + year);
         return year;
     }
 
@@ -230,7 +197,6 @@ public class ImdbDAO
         {
             if (!Character.isDigit(c))
             {
-                System.out.println("Checking String " + string);
                 return false;
             }
         }
@@ -293,7 +259,6 @@ public class ImdbDAO
                 if (s.contains("id"))
                 {
                     searchID = s.substring(s.indexOf(":") + 1);
-                    System.out.println("searchid: " + searchID);
                     break;
                 }
             }
@@ -364,7 +329,6 @@ public class ImdbDAO
 
                 for (String s : genre)
                 {
-                    System.out.println("GenreList sout " + s);
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
                 }
             } else
@@ -391,19 +355,21 @@ public class ImdbDAO
         title = title.replace("|", "_");
 
         File outputfile = new File("images/" + title);
-
-        try
+        if (!outputfile.exists())
         {
-            BufferedImage bi = image;
-            System.out.println("images/" + title);
-            //File outputfile = new File("images/" + title);
+            try
+            {
+                BufferedImage bi = image;
 
-            String findFormat = title.substring(title.lastIndexOf(".") + 1);
-            ImageIO.write(bi, findFormat, outputfile);
+                //File outputfile = new File("images/" + title);
 
-        } catch (IOException e)
-        {
+                String findFormat = title.substring(title.lastIndexOf(".") + 1);
+                ImageIO.write(bi, findFormat, outputfile);
 
+            } catch (IOException e)
+            {
+
+            }
         }
         return outputfile.getAbsolutePath();
     }

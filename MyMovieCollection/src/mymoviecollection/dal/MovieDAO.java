@@ -45,13 +45,13 @@ public class MovieDAO
     DatabaseConnection conProvider;
     int i;
     private ImdbDAO imdb;
+    private List<Movie> moviesFromDB;
+    private List<Movie> oldMovieList;
 
     public MovieDAO()
     {
-
         movies1 = FXCollections.observableArrayList();
         counter = 0;
-        movies = new ArrayList();
         movies = new ArrayList();
         i = 0;
         try
@@ -65,7 +65,8 @@ public class MovieDAO
         requestRateTimer = 11000;
         requestNotFound = "The resource you requested could not be found.";
         imdb = new ImdbDAO(startTime);
-
+        moviesFromDB = getAllMoviesFromDB();
+        oldMovieList = new ArrayList();
     }
 
     /**
@@ -81,7 +82,7 @@ public class MovieDAO
         {
             if (f.isFile())
             {
-                if (checkForFileType(f))
+                if (checkForFileType(f) && !isAlreadyInSystem(filepath))
                 {
                     Movie m = getIMDBData(f.getName());
                     if (m != null)
@@ -101,8 +102,43 @@ public class MovieDAO
         return movies;
     }
 
+    public boolean isAlreadyInSystem(String filepath)
+    {
+        for (Movie m : movies)
+        {
+            if (m.getFilePath() == filepath)
+            {
+                return true;
+            }
+        }
+
+        for (Movie m : moviesFromDB)
+        {
+            if (m.getFilePath() == filepath)
+            {
+                return true;
+            }
+        }
+        if (!oldMovieList.isEmpty())
+        {
+            for (Movie m : oldMovieList)
+            {
+                if (m.getFilePath() == filepath)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void clearMovieList()
     {
+        if (!movies.isEmpty())
+        {
+            oldMovieList.addAll(movies);
+        }
+
         movies.clear();
     }
 
@@ -175,7 +211,32 @@ public class MovieDAO
         }
 
         counter += 2;
-        return imdb.constructMovie(idInformation);
+        Movie newMovie = imdb.constructMovie(idInformation);
+
+        for (Movie m : movies)
+        {
+            if (m.getTitle().equals(newMovie.getTitle()))
+            {
+                return null;
+            }
+        }
+
+        for (Movie m : oldMovieList)
+        {
+            if (m.getTitle().equals(newMovie.getTitle()))
+            {
+                return null;
+            }
+        }
+
+        for (Movie m : moviesFromDB)
+        {
+            if (m.getTitle().equals(newMovie.getTitle()))
+            {
+                return null;
+            }
+        }
+        return newMovie;
     }
 
     /**
@@ -239,6 +300,7 @@ public class MovieDAO
         {
             ex.printStackTrace();
         }
+        movies.addAll(allMovies);
         return allMovies;
     }
 

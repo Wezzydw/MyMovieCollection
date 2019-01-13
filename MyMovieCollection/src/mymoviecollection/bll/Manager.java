@@ -40,6 +40,7 @@ public class Manager
     private List<Boolean> checkCategories;
     private long movieLoop;
     private int initMovieLoopSize;
+    private String globalQuery;
 
     public Manager() throws IOException
     {
@@ -53,6 +54,7 @@ public class Manager
         movies = FXCollections.observableArrayList();
         categories = FXCollections.observableArrayList();
         categories.addAll(cdao.getAllCategories());
+        globalQuery = "";
     }
 
     public void deleteMovie() throws IOException
@@ -62,22 +64,25 @@ public class Manager
 
     public void scanFolder(String filepath)
     {
+        mdao.clearMovieList();
         Thread t = new Thread(new Runnable()
         {
             @Override
             public void run()
             {
-                movies.addAll(mdao.scanFolder(filepath));
-                allMovies.addAll(movies);
+                mdao.scanFolder(filepath);
+                        //movies.addAll(mdao.scanFolder(filepath));
+                //allMovies.addAll(mdao.scanFolder(filepath));
             }
         });
         t.start();
+        movieLoop = System.currentTimeMillis();
         repeatCheckMovies();
     }
 
     private void repeatCheckMovies()
     {
-
+        System.out.println("Movies Size: " + movies.size());
         if (initMovieLoopSize != movies.size() || initMovieLoopSize == 0)
         {
             initMovieLoopSize = movies.size();
@@ -89,20 +94,42 @@ public class Manager
             @Override
             public void run()
             {
-                try
-                {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex)
-                {
-                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
+                //THREAD.SLEEP FÅR HELE PROGRAMMET TIL AT LAGGE;
+//                try
+//                {
+//                    Thread.sleep(50);
+//                } catch (InterruptedException ex)
+//                {
+//                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//                }
                 if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 12000)
                 {
+                    if (mdao.getMovie().size() > 0)
+                    {
+                        for (Movie m : mdao.getMovie())
+                        {
+                            if (!allMovies.contains(m))
+                            {
+                                allMovies.add(m);
+                            }
+                        }
+
+                        searchMovie(globalQuery);
+
+//                        movies.add(mdao.getMovie().get(mdao.getMovie().size()-1));
+//                        System.out.println("In here movie SIZE" + movies.size());
+                    }
                     repeatCheckMovies();
-                }
+                } //else
+//                {
+//
+//                    allMovies.addAll(mdao.getMovie());
+//                }
             }
         });
-        movies.setAll(mdao.getMovie());
+        System.out.println("MOVIES SIZE " + movies.size());
+        System.out.println("ALLMOVIES SIZE : " + allMovies.size());
     }
 
     public void editMovie(Movie selectedItem)
@@ -160,13 +187,7 @@ public class Manager
 
     public ObservableList<Movie> getAllMovies()
     {
-        MovieDAOTester md = new MovieDAOTester();
-        //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
-        for (Movie m : movies)
-        {
-            System.out.println(m.getTitle());
-        }
-        //movies.addAll(mdao.scanFolder("\\\\WEZZY\\FILM"));
+        movies.setAll(mdao.getAllMoviesFromDB());
         allMovies.addAll(movies);
         return movies;
     }
@@ -179,6 +200,7 @@ public class Manager
 
     public void searchMovie(String query)
     {
+        globalQuery = query;
         System.out.println("Size" + search.searchMovie(query, allMovies).size());
         System.out.println("Allmovies" + allMovies.size());
 //        movies.setAll(search.searchMovie(query, allMovies));
