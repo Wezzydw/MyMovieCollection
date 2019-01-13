@@ -127,6 +127,7 @@ public class MyMoviesMainViewController implements Initializable
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
         lstMov.setItems(model.getAllMovies());
+        
         model.setMenuItmes(menuCategory, allCategories);
         model.setCheckList(selectedCategories);
     }    
@@ -186,6 +187,7 @@ public class MyMoviesMainViewController implements Initializable
     private void btnRate(ActionEvent event)
     {
         //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
+        model.deleteHalf();
     }
 
     @FXML

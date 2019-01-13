@@ -46,7 +46,7 @@ public class MovieDAOTester {
         String imagePath = "images/møde.jpg";
         BufferedImage i = m.readImageFromDisk(imagePath);
         System.out.println(i);
-        m.saveImageToDisk(i,"tonny1.png");
+       // m.saveImageToDisk(i,"tonny1.png");
      
     }
     

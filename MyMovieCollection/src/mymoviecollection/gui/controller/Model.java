@@ -262,6 +262,11 @@ public class Model
         manager.sortCategories(categoryCheck);
 
     }
+
+    void deleteHalf()
+    {
+        manager.deleteHalf();
+    }
     
     
     
