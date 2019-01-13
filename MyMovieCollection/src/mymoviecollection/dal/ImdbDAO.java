@@ -52,41 +52,63 @@ public class ImdbDAO
     {
         String queryP1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
         String queryP2 = "";
-        String queryEnd = "&include_adult=true";
+        String queryEnd = "&include_adult=true&year=";
         String searchString = "";
+        String year = "";
 
         if (filepath.endsWith(".mkv"))
         {
             System.out.println(filepath);
             String replacedString = filepath.replace(".", " ");
-            String[] split = replacedString.split(" ");
+            String[] splitString = replacedString.split(" ");
             System.out.println("replaced String " + replacedString);
 
-            for (int i = 0; i < split.length - 1; i++)
+//            for (int i = 0; i < split.length - 1; i++)
+//            {
+//                if (i != 0)
+//                {
+//                    if (!isStringANumber(split[i]))
+//                    {
+//                        System.out.println("Split" + split[i] + " i: " + i);
+//                        queryP2 += split[i] + "%20";
+//                    } else if (isStringANumber(split[i]) && isStringANumber(split[i + 1]))
+//                    {
+//                        queryP2 += split[i] + "%20";
+//                    } else
+//                    {
+//                        queryP2.substring(0, queryP2.length() - 3);
+//                        System.out.println("Split before break" + split[i] + " i: " + i);
+//                        break;
+//                    }
+//                }
+//                queryP2 += split[i] + "%20";
+//
+//            }
+            int LastIndex = indexOfLastYear(splitString);
+            for (int i = 0; i < splitString.length - 1; i++)
             {
-                if (i != 0)
+                if (i == 0)
                 {
-
-                    if (!isStringANumber(split[i]))
+                    System.out.println("in init");
+                    queryP2 += splitString[i];
+                } else
+                {
+                    if (i < LastIndex)
                     {
-                        System.out.println("Split" + split[i] + " i: " + i);
-                        queryP2 += split[i] + "%20";
-                    } else if (isStringANumber(split[i]) && isStringANumber(split[i + 1]))
+                        System.out.println("In here1");
+                        queryP2 += "%20" + splitString[i];
+                    } else if (isAllLetters(splitString[i]))
                     {
-                        queryP2 += split[i] + "%20";
+                        queryP2 += "%20" + splitString[i];
                     } else
                     {
-                        queryP2.substring(0, queryP2.length() - 3);
-                        System.out.println("Split before break" + split[i] + " i: " + i);
                         break;
                     }
                 }
-                queryP2 += split[i] + "%20";
-
             }
-            queryP2 = queryP2.substring(0, queryP2.length() - 3);
-            searchString = queryP1 + queryP2 + queryEnd;
-
+            year = getYearFromMovie(splitString);
+            searchString = queryP1 + queryP2 + queryEnd + year;
+            System.out.println("SearchString : " + searchString);
         } else if (filepath.endsWith(".mp4"))
         {
             searchString = queryP1 + filepath.substring(0, filepath.length() - 4) + queryEnd;
@@ -98,6 +120,108 @@ public class ImdbDAO
         }
 
         return searchString;
+    }
+
+    private boolean isAllLetters(String string)
+    {
+        System.out.println("String " + string);
+        for (char c : string.toCharArray())
+        {
+            if (!Character.isAlphabetic(c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private int amountOfYears(String string)
+    {
+        int amount = 0;
+        for (String s : string.split("."))
+        {
+            System.out.println("S.lenght" + s.length());
+            if (s.length() == 4)
+            {
+
+                for (char c : s.toCharArray())
+                {
+                    if (!Character.isDigit(c))
+                    {
+                        System.out.println("S: " + s);
+                        break;
+                    }
+                }
+                amount++;
+            }
+        }
+        System.out.println("Amount in amounft of year : " + amount);
+        return amount;
+    }
+
+    private int indexOfLastYear(String[] string)
+    {
+        int index = -1;
+        int counter = 0;
+        for (int i = 0; i < string.length - 1; i++)
+        {
+            counter = 0;
+            if (string[i].length() == 4)
+            {
+                for (char c : string[i].toCharArray())
+                {
+                    if (!Character.isDigit(c))
+                    {
+                        break;
+                    }
+
+                    counter++;
+                    if (counter == 4)
+                    {
+                        System.out.println("index of year : " + i);
+                        index = i;
+                    }
+
+                }
+
+            }
+
+        }
+        System.out.println("Last index : " + index);
+        return index;
+    }
+
+    private String getYearFromMovie(String[] string)
+    {
+        String year = "";
+        int counter = 0;
+        for (int i = 0; i < string.length - 1; i++)
+        {
+            counter = 0;
+            if (string[i].length() == 4)
+            {
+                for (char c : string[i].toCharArray())
+                {
+                    if (!Character.isDigit(c))
+                    {
+                        break;
+                    }
+
+                    counter++;
+                    if (counter == 4)
+                    {
+                        System.out.println("index of year : " + i);
+                        year = string[i];
+                    }
+
+                }
+
+            }
+
+        }
+        System.out.println("Last year : " + year);
+        return year;
     }
 
     private boolean isStringANumber(String string)
@@ -178,7 +302,7 @@ public class ImdbDAO
         String idString = searchP1 + searchID + serachP2;
         return idString;
     }
-    
+
     public Movie constructMovie(String information)
     {
         String title = "";
@@ -189,7 +313,6 @@ public class ImdbDAO
         String posterPath = "";
         List<String> genreList = new ArrayList();
         String posterURLp1 = "https://image.tmdb.org/t/p/original/";
-        
 
         if (!information.isEmpty())
         {
@@ -213,8 +336,7 @@ public class ImdbDAO
                     posterPathOnline = s.substring(s.indexOf(":") + 2, s.length() - 1);
                 }
             }
-            
-            
+
             BufferedImage bi = null;
             URL url = null;
 
@@ -225,7 +347,7 @@ public class ImdbDAO
             {
                 Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             try
             {
                 bi = ImageIO.read(url);
@@ -234,8 +356,6 @@ public class ImdbDAO
                 Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
             posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length() - 4));
-            
-            
 
             String allGenres = information.substring(information.indexOf("genre"), information.indexOf("]"));
             if (allGenres.contains("}"))
@@ -256,9 +376,8 @@ public class ImdbDAO
         Movie movie = new Movie(title, length, releaseYear, genreList, "", "", imdbRating);
 
         return movie;
-        
     }
-    
+
     public String saveImageToDisk(BufferedImage image, String title)
     {
         title = title.replace(":", "_");
@@ -270,19 +389,22 @@ public class ImdbDAO
         title = title.replace("<", "_");
         title = title.replace(">", "_");
         title = title.replace("|", "_");
-        
+
+        File outputfile = new File("images/" + title);
+
         try
         {
             BufferedImage bi = image;
             System.out.println("images/" + title);
-            File outputfile = new File("images/" + title);
+            //File outputfile = new File("images/" + title);
+
             String findFormat = title.substring(title.lastIndexOf(".") + 1);
             ImageIO.write(bi, findFormat, outputfile);
-            
+
         } catch (IOException e)
         {
-            
+
         }
-        return "images/" + title;
+        return outputfile.getAbsolutePath();
     }
 }

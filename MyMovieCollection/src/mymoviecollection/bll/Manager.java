@@ -96,7 +96,7 @@ public class Manager
                 {
                     Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 10000)
+                if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 12000)
                 {
                     repeatCheckMovies();
                 }

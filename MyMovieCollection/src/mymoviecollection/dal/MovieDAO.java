@@ -35,7 +35,7 @@ import mymoviecollection.be.Movie;
  */
 public class MovieDAO
 {
-    
+
     List<Movie> movies;
     int counter;
     long startTime;
@@ -45,10 +45,10 @@ public class MovieDAO
     DatabaseConnection conProvider;
     int i;
     private ImdbDAO imdb;
-    
+
     public MovieDAO()
     {
-        
+
         movies1 = FXCollections.observableArrayList();
         counter = 0;
         movies = new ArrayList();
@@ -65,7 +65,7 @@ public class MovieDAO
         requestRateTimer = 11000;
         requestNotFound = "The resource you requested could not be found.";
         imdb = new ImdbDAO(startTime);
-        
+
     }
 
     /**
@@ -92,7 +92,7 @@ public class MovieDAO
                     }
                 }
             }
-            
+
             if (f.isDirectory())
             {
                 scanFolder(f.getAbsolutePath());
@@ -100,7 +100,12 @@ public class MovieDAO
         }
         return movies;
     }
-    
+
+    public void clearMovieList()
+    {
+        movies.clear();
+    }
+
     public List<Movie> getMovie()
     {
         return movies;
@@ -122,20 +127,20 @@ public class MovieDAO
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     private Movie getIMDBData(String filepath)
     {
         String searchResult = "";
         String idInformation = "";
-        
+
         if (counter == 0)
         {
             startTime = System.currentTimeMillis();
         }
-        
+
         while (counter > 38)
         {
             System.out.println("spasser");
@@ -145,7 +150,7 @@ public class MovieDAO
                 startTime = System.currentTimeMillis();
             }
         }
-        
+
         String searchString = imdb.makeSearchString(filepath);
         try
         {
@@ -154,13 +159,13 @@ public class MovieDAO
         {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (searchResult.contains("total_results\":0"))
         {
             System.out.println("Movie not found, please check file name");
             return null;
         }
-        
+
         try
         {
             idInformation = imdb.getIMDBText(imdb.getSearchIDQuery(searchResult));
@@ -168,7 +173,7 @@ public class MovieDAO
         {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         counter += 2;
         return imdb.constructMovie(idInformation);
     }
@@ -192,7 +197,7 @@ public class MovieDAO
                 prst.addBatch();
             }
             prst.executeBatch();
-            
+
         } catch (SQLException ex)
         {
             ex.printStackTrace();
@@ -213,7 +218,7 @@ public class MovieDAO
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
-            
+
             while (rs.next())
             {
                 String title = rs.getString("Title");
@@ -262,7 +267,7 @@ public class MovieDAO
         {
             ex.printStackTrace();
         }
-        
+
     }
 
     /**
@@ -272,8 +277,6 @@ public class MovieDAO
      * @param image
      * @param title
      */
-    
-
     /**
      * Billederne bliver her læst fra harddisken, og vi kan derved tilføje disse
      * billeder til de korrekte film.
@@ -283,7 +286,7 @@ public class MovieDAO
      */
     public BufferedImage readImageFromDisk(String imagePath)
     {
-        
+
         BufferedImage img = null;
         try
         {
@@ -293,7 +296,7 @@ public class MovieDAO
         }
         System.out.println(img.getHeight());
         return img;
-        
+
     }
 
     /**
@@ -311,7 +314,7 @@ public class MovieDAO
         {
             for (Movie movie : allMovies)
             {
-                
+
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setDouble(1, movie.getRating());
                 pstmt.setInt(2, movie.getId());
@@ -321,7 +324,7 @@ public class MovieDAO
         {
             ex.printStackTrace();
         }
-        
+
     }
-    
+
 }
