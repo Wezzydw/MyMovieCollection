@@ -56,7 +56,6 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblTitle;
     @FXML
     private Label lblInfo = new Label("\t\t\t\t" + "no menu item selected");
-    @FXML
     private ChoiceBox<Category> choiceBoxCat;
     
     private Model model;
@@ -107,7 +106,7 @@ public class MyMoviesMainViewController implements Initializable
         {
             selectedCategories.add(Boolean.FALSE);            
         }
-        choiceBoxCat.setItems(model.getAllCategories());
+       
         EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
