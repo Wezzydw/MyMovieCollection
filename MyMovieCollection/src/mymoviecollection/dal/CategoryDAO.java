@@ -61,7 +61,7 @@ public class CategoryDAO {
             ResultSet rs = con.prepareStatement(a).executeQuery();
             while (rs.next())
             {
-                a = "DELETE FROM Playlist WHERE Title = (?);";
+                a = "DELETE FROM catMov WHERE Title = (?);";
                 pstmt = con.prepareStatement(a);
                 pstmt.setString(1, title);
                 pstmt.execute();

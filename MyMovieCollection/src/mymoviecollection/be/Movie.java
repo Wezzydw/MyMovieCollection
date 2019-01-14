@@ -105,4 +105,9 @@ public class Movie {
         return releaseYear;
     }
 
+    public double getImdbRating()
+    {
+        return imdbRating;
+    }
+
 }

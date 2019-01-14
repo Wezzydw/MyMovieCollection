@@ -71,6 +71,14 @@ public class MyMoviesMainViewController implements Initializable
     private ImageView StarImage;
 
     private List<Boolean> selectedCategories;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblLength;
+    @FXML
+    private Label lblImdb;
+    @FXML
+    private Label lblCategories;
     /**
      * Initializes the controller class.
      */
@@ -87,7 +95,6 @@ public class MyMoviesMainViewController implements Initializable
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<Category> allCategories = new ArrayList();
-        allCategories.add(new Category("All movies"));
         allCategories.addAll(model.getAllCategories());
         int counter = 0;
         for (int i = 0; i < allCategories.size(); i++) //+1 er for all movies, så måske skal det ændres
@@ -222,6 +229,31 @@ public class MyMoviesMainViewController implements Initializable
     private void selectedDataToManager(MouseEvent event)
     {
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
+       lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
+       lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
+       lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
+       String tmpString = "";
+       
+       int counter = 0;
+       
+       
+       for(String category : lstMov.getSelectionModel().getSelectedItem().getCategory())
+       {
+           counter ++;
+           if(counter ==  lstMov.getSelectionModel().getSelectedItem().getCategory().size()) 
+           {
+           tmpString = tmpString + category;
+           }
+           else 
+           {
+             tmpString = tmpString + category + ", ";
+           }
+       }
+       lblCategories.setText(tmpString);
+       
+       lblImdb.setText(""+ lstMov.getSelectionModel().getSelectedItem().getImdbRating());
+       lblInfo.setText(""+ lstMov.getSelectionModel().getSelectedItem().getLastView());
     }
-    
+
 }
+    
