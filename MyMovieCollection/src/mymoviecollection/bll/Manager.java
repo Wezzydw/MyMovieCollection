@@ -75,6 +75,9 @@ public class Manager {
     }
 
     private void repeatCheckMovies() {
+        List<Movie> tmpMovieList = new ArrayList();
+        tmpMovieList.addAll(mdao.getMovie());
+        
         if (initMovieLoopSize != movies.size() || initMovieLoopSize == 0) {
             initMovieLoopSize = movies.size();
             movieLoop = System.currentTimeMillis();
@@ -95,7 +98,7 @@ public class Manager {
                 if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 12000) {
                     if (mdao.getMovie().size() > 0) {
                         List<Movie> listToAdd = new ArrayList();
-                        for (Movie m : mdao.getMovie()) {
+                        for (Movie m : tmpMovieList) {
                             if (!allMovies.contains(m)) {
                                 listToAdd.add(m);
 
