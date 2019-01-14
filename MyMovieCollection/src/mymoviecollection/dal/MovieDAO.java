@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,7 +42,6 @@ public class MovieDAO
     long startTime;
     int requestRateTimer;
     String requestNotFound;
-    private ObservableList<Movie> movies1;
     DatabaseConnection conProvider;
     int i;
     private ImdbDAO imdb;
@@ -50,7 +50,6 @@ public class MovieDAO
 
     public MovieDAO()
     {
-        movies1 = FXCollections.observableArrayList();
         counter = 0;
         movies = new ArrayList();
         i = 0;
@@ -218,6 +217,7 @@ public class MovieDAO
         startTime = imdb.getStartTime();
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
+        newMovie.setLastView(new Date());
 
         for (Movie m : movies)
         {

@@ -107,6 +107,7 @@ public class Manager {
                         }
                         allMovies.addAll(listToAdd);
                         searchMovie(globalQuery);
+                        
 
 //                        movies.add(mdao.getMovie().get(mdao.getMovie().size()-1));
 //                        System.out.println("In here movie SIZE" + movies.size());
