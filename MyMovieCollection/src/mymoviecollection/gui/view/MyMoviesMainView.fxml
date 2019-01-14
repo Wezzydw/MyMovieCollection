@@ -23,12 +23,11 @@
       <Button layoutX="658.0" layoutY="606.0" mnemonicParsing="false" onAction="#btnAddCat" text="Tilføj categori" />
       <Button layoutX="557.0" layoutY="605.0" mnemonicParsing="false" onAction="#btnRemoveMov" prefHeight="31.0" prefWidth="92.0" text="Fjern film" />
       <Button layoutX="798.0" layoutY="68.0" mnemonicParsing="false" onAction="#btnAddMov" text="Tilføj film" />
-      <Label fx:id="lblTitle" layoutX="44.0" layoutY="34.0" text="Title" />
-      <Label fx:id="lblInfo" layoutX="14.0" layoutY="579.0" text="Misc info" />
+      <Label fx:id="lblTitle" layoutX="44.0" layoutY="34.0" />
+      <Label fx:id="lblInfo" layoutX="14.0" layoutY="579.0" />
       <Button layoutX="446.0" layoutY="522.0" mnemonicParsing="false" onAction="#btnEditMov" prefHeight="31.0" prefWidth="111.0" text="Rediger film" />
       <Button layoutX="425.0" layoutY="574.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
       <ChoiceBox fx:id="choiceBoxCat" layoutX="625.0" layoutY="14.0" prefWidth="150.0" />
-      <Button layoutX="184.0" layoutY="606.0" mnemonicParsing="false" onAction="#btnRate" text="Rate" />
       <Button layoutX="460.0" layoutY="312.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
       <ImageView fitHeight="437.0" fitWidth="368.0" layoutX="2.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
       <MenuButton fx:id="menuCategory" layoutX="305.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories" />
@@ -38,9 +37,14 @@
          <image>
             <Image url="@../../../images/star-student.png" />
          </image></ImageView>
-      <Label fx:id="lblYear" layoutX="41.0" layoutY="99.0" text="Label" />
-      <Label fx:id="lblLength" layoutX="41.0" layoutY="73.0" text="Label" />
-      <Label fx:id="lblImdb" layoutX="248.0" layoutY="602.0" prefHeight="31.0" prefWidth="50.0" text="Label" />
-      <Label fx:id="lblCategories" layoutX="273.0" layoutY="110.0" text="Label" />
+      <Label fx:id="lblYear" layoutX="41.0" layoutY="99.0" />
+      <Label fx:id="lblLength" layoutX="41.0" layoutY="73.0" />
+      <Label fx:id="lblImdb" layoutX="251.0" layoutY="606.0" prefHeight="31.0" prefWidth="31.0" />
+      <Label fx:id="lblCategories" layoutX="273.0" layoutY="110.0" />
+      <ImageView fx:id="ImdbRating" fitHeight="31.0" fitWidth="35.0" layoutX="220.0" layoutY="606.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/imdb_fb_logo._CB1542065250_.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

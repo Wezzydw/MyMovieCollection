@@ -22,6 +22,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -267,6 +268,11 @@ public class Model
     void deleteHalf()
     {
         manager.deleteHalf();
+    }
+    
+    public Image getImage(String image)
+    {
+    return manager.getImage(image);
     }
     
     

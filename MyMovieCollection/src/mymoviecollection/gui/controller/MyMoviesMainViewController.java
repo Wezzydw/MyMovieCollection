@@ -79,6 +79,8 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblImdb;
     @FXML
     private Label lblCategories;
+    @FXML
+    private ImageView ImdbRating;
     /**
      * Initializes the controller class.
      */
@@ -190,7 +192,6 @@ public class MyMoviesMainViewController implements Initializable
         model.editCat();
     }
 
-    @FXML
     private void btnRate(ActionEvent event)
     {
         //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());

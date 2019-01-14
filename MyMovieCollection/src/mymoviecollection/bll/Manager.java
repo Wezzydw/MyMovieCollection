@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.MovieDAO;
@@ -229,5 +230,13 @@ public class Manager {
             System.out.println(m);
         }
     }
+
+    public Image getImage(String image)
+    {
+       return mdao.readImageFromDisk(image);
+       
+    }
+
+    
 
 }
