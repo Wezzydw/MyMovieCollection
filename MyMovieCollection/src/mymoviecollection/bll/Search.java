@@ -47,7 +47,10 @@ public class Search {
         List<Movie> sortResult = new ArrayList();
         List<Category> checkTrue = new ArrayList();
         int counter = 0;
-        
+        if (checkList == null)
+        {
+            return movies;
+        }
         for (Boolean boolean1 : checkList) {
             if(boolean1){
                 checkTrue.add(categories.get(counter));
