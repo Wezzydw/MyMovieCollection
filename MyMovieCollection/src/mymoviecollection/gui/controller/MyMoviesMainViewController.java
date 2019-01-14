@@ -81,6 +81,8 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblCategories;
     @FXML
     private ImageView ImdbRating;
+    @FXML
+    private ImageView MovieImage;
     /**
      * Initializes the controller class.
      */
@@ -233,6 +235,7 @@ public class MyMoviesMainViewController implements Initializable
        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
        lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
        lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
+       MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
        String tmpString = "";
        
        int counter = 0;

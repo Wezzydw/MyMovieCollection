@@ -29,7 +29,7 @@
       <Button layoutX="425.0" layoutY="574.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
       <ChoiceBox fx:id="choiceBoxCat" layoutX="625.0" layoutY="14.0" prefWidth="150.0" />
       <Button layoutX="460.0" layoutY="312.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
-      <ImageView fitHeight="437.0" fitWidth="368.0" layoutX="2.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="MovieImage" fitHeight="437.0" fitWidth="368.0" layoutX="2.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
       <MenuButton fx:id="menuCategory" layoutX="305.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories" />
       <Slider fx:id="sliderRateMovie" blockIncrement="0.0" layoutX="11.0" layoutY="613.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" onMouseReleased="#OnHandleMovieRated" prefHeight="18.0" prefWidth="164.0" snapToTicks="true" />
       <Label fx:id="movieRating" layoutX="18.0" layoutY="636.0" prefHeight="21.0" prefWidth="42.0" />

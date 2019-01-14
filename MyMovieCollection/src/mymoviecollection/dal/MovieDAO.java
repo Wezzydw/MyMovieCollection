@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Movie;
@@ -352,7 +354,7 @@ public class MovieDAO
      * @param imagePath
      * @return
      */
-    public BufferedImage readImageFromDisk(String imagePath)
+    public WritableImage readImageFromDisk(String imagePath)
     {
 
         BufferedImage img = null;
@@ -362,8 +364,19 @@ public class MovieDAO
         } catch (IOException e)
         {
         }
-        System.out.println(img.getHeight());
-        return img;
+        WritableImage wr = null;
+        if (img != null){
+            wr = new WritableImage(img.getWidth(), img.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < img.getWidth(); x++) {
+                for (int y = 0; y < img.getHeight(); y++) {
+                    pw.setArgb(x, y, img.getRGB(x, y));
+                }
+            }
+        }
+
+//        System.out.println(img.getHeight());
+        return wr;
 
     }
 

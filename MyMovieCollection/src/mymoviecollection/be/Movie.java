@@ -110,4 +110,9 @@ public class Movie {
         return imdbRating;
     }
 
+    public String getPosterPath()
+    {
+        return posterPath;
+    }
+
 }

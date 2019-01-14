@@ -5,6 +5,8 @@
  */
 package mymoviecollection.bll;
 
+import com.sun.corba.se.spi.ior.Writeable;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.MovieDAO;
@@ -232,10 +236,11 @@ public class Manager {
         }
     }
 
-    public Image getImage(String image)
+    public WritableImage getImage(String image)
     {
-       return mdao.readImageFromDisk(image);
-       
+    
+         return mdao.readImageFromDisk(image);
+     
     }
 
     
