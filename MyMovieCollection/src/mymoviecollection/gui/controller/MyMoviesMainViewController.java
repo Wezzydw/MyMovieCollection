@@ -5,6 +5,7 @@
  */
 package mymoviecollection.gui.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -231,11 +233,15 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void selectedDataToManager(MouseEvent event)
     {
+        BufferedImage buff = null;
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
        lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
        lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
-       MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
+        System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
+       //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
+       Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
+       MovieImage.setImage(image);
        String tmpString = "";
        
        int counter = 0;

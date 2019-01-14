@@ -236,10 +236,10 @@ public class Manager {
         }
     }
 
-    public WritableImage getImage(String image)
+    public BufferedImage getImage(String image)
     {
-    
-         return mdao.readImageFromDisk(image);
+         
+        return mdao.readImageFromDisk(image);
      
     }
 

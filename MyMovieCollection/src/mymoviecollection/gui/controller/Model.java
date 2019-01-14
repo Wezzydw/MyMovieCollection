@@ -5,6 +5,7 @@
  */
 package mymoviecollection.gui.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -271,7 +272,7 @@ public class Model
         manager.deleteHalf();
     }
     
-    public WritableImage getImage(String image)
+    public BufferedImage getImage(String image)
     {
     return manager.getImage(image);
     }

@@ -354,29 +354,23 @@ public class MovieDAO
      * @param imagePath
      * @return
      */
-    public WritableImage readImageFromDisk(String imagePath)
+    public BufferedImage readImageFromDisk(String imagePath)
     {
 
-        BufferedImage img = null;
+         BufferedImage img = null;
         try
         {
             img = ImageIO.read(new File(imagePath));
         } catch (IOException e)
         {
         }
-        WritableImage wr = null;
-        if (img != null){
-            wr = new WritableImage(img.getWidth(), img.getHeight());
-            PixelWriter pw = wr.getPixelWriter();
-            for (int x = 0; x < img.getWidth(); x++) {
-                for (int y = 0; y < img.getHeight(); y++) {
-                    pw.setArgb(x, y, img.getRGB(x, y));
-                }
-            }
-        }
-
+        System.out.println(img.getHeight());
+        return img;
+//        System.out.println("Filepath " + imagePath);
 //        System.out.println(img.getHeight());
-        return wr;
+//        
+//        System.out.println("WR" + wr.getHeight());
+//        return wr;
 
     }
 

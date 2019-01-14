@@ -321,7 +321,7 @@ public class ImdbDAO
                 Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
             posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length() - 4));
-
+            System.out.println("");
             String allGenres = information.substring(information.indexOf("genre"), information.indexOf("]"));
             if (allGenres.contains("}"))
             {
@@ -337,7 +337,7 @@ public class ImdbDAO
             }
         }
 
-        Movie movie = new Movie(title, length, releaseYear, genreList, "", "", imdbRating);
+        Movie movie = new Movie(title, length, releaseYear, genreList, "", posterPath, imdbRating);
         
         return movie;
     }
