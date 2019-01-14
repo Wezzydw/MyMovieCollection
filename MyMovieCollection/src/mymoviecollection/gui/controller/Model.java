@@ -256,6 +256,7 @@ public class Model
     void sendDataOnClick(ObservableList<Movie> selectedItems)
     {
         manager.sendDataOnClick();
+        
     }
 
     void sortCategories() {

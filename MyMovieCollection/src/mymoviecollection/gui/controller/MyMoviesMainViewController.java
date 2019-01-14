@@ -222,6 +222,11 @@ public class MyMoviesMainViewController implements Initializable
     private void selectedDataToManager(MouseEvent event)
     {
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
+       lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
+       lblInfo.setText(lstMov.getSelectionModel().getSelectedItem().getLength()+ " Movie Length");
+       lblInfo.setText(lstMov.getSelectionModel().getSelectedItem().getReleaseYear()+ " releaseYear");
+       //.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
     }
-    
+
 }
+    
