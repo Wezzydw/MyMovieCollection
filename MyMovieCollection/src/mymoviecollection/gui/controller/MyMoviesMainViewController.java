@@ -87,7 +87,6 @@ public class MyMoviesMainViewController implements Initializable
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<Category> allCategories = new ArrayList();
-        allCategories.add(new Category("All movies"));
         allCategories.addAll(model.getAllCategories());
         int counter = 0;
         for (int i = 0; i < allCategories.size(); i++) //+1 er for all movies, så måske skal det ændres
