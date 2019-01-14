@@ -71,6 +71,14 @@ public class MyMoviesMainViewController implements Initializable
     private ImageView StarImage;
 
     private List<Boolean> selectedCategories;
+    @FXML
+    private Label lblYear;
+    @FXML
+    private Label lblLength;
+    @FXML
+    private Label lblImdb;
+    @FXML
+    private Label lblCategories;
     /**
      * Initializes the controller class.
      */
@@ -222,9 +230,29 @@ public class MyMoviesMainViewController implements Initializable
     {
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
-       lblInfo.setText(lstMov.getSelectionModel().getSelectedItem().getLength()+ " Movie Length");
-       lblInfo.setText(lstMov.getSelectionModel().getSelectedItem().getReleaseYear()+ " releaseYear");
-       //.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
+       lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
+       lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
+       String tmpString = "";
+       
+       int counter = 0;
+       
+       
+       for(String category : lstMov.getSelectionModel().getSelectedItem().getCategory())
+       {
+           counter ++;
+           if(counter ==  lstMov.getSelectionModel().getSelectedItem().getCategory().size()) 
+           {
+           tmpString = tmpString + category;
+           }
+           else 
+           {
+             tmpString = tmpString + category + ", ";
+           }
+       }
+       lblCategories.setText(tmpString);
+       
+       lblImdb.setText(""+ lstMov.getSelectionModel().getSelectedItem().getImdbRating());
+       lblInfo.setText(""+ lstMov.getSelectionModel().getSelectedItem().getLastView());
     }
 
 }
