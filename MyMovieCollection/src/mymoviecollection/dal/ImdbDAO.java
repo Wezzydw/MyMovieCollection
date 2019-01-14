@@ -338,7 +338,7 @@ public class ImdbDAO
         }
 
         Movie movie = new Movie(title, length, releaseYear, genreList, "", "", imdbRating);
-
+        
         return movie;
     }
 

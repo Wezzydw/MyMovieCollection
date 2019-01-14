@@ -24,8 +24,7 @@ import mymoviecollection.dal.MovieDAOTester;
  *
  * @author mpoul
  */
-public class Manager
-{
+public class Manager {
 
     private MovieDAO mdao;
     private CategoryDAO cdao;
@@ -42,8 +41,7 @@ public class Manager
     private int initMovieLoopSize;
     private String globalQuery;
 
-    public Manager() throws IOException
-    {
+    public Manager() throws IOException {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
         search = new Search();
@@ -57,21 +55,17 @@ public class Manager
         globalQuery = "";
     }
 
-    public void deleteMovie() throws IOException
-    {
+    public void deleteMovie() throws IOException {
         mdao.deleteMovies(movies);
     }
 
-    public void scanFolder(String filepath)
-    {
+    public void scanFolder(String filepath) {
         mdao.clearMovieList();
-        Thread t = new Thread(new Runnable()
-        {
+        Thread t = new Thread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 mdao.scanFolder(filepath);
-                        //movies.addAll(mdao.scanFolder(filepath));
+                //movies.addAll(mdao.scanFolder(filepath));
                 //allMovies.addAll(mdao.scanFolder(filepath));
             }
         });
@@ -80,20 +74,16 @@ public class Manager
         repeatCheckMovies();
     }
 
-    private void repeatCheckMovies()
-    {
-        if (initMovieLoopSize != movies.size() || initMovieLoopSize == 0)
-        {
+    private void repeatCheckMovies() {
+        if (initMovieLoopSize != movies.size() || initMovieLoopSize == 0) {
             initMovieLoopSize = movies.size();
             movieLoop = System.currentTimeMillis();
         }
 
-        Platform.runLater(new Runnable()
-        {
+        Platform.runLater(new Runnable() {
             @Override
-            public void run()
-            {
-                
+            public void run() {
+
                 //THREAD.SLEEP FÅR HELE PROGRAMMET TIL AT LAGGE;
 //                try
 //                {
@@ -102,18 +92,16 @@ public class Manager
 //                {
 //                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-                if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 12000)
-                {
-                    if (mdao.getMovie().size() > 0)
-                    {
-                        for (Movie m : mdao.getMovie())
-                        {
-                            if (!allMovies.contains(m))
-                            {
-                                allMovies.add(m);
+                if (initMovieLoopSize != movies.size() || movies.size() == 0 || System.currentTimeMillis() < movieLoop + 12000) {
+                    if (mdao.getMovie().size() > 0) {
+                        List<Movie> listToAdd = new ArrayList();
+                        for (Movie m : mdao.getMovie()) {
+                            if (!allMovies.contains(m)) {
+                                listToAdd.add(m);
+
                             }
                         }
-
+                        allMovies.addAll(listToAdd);
                         searchMovie(globalQuery);
 
 //                        movies.add(mdao.getMovie().get(mdao.getMovie().size()-1));
@@ -129,140 +117,112 @@ public class Manager
         });
     }
 
-    public void editMovie(Movie selectedItem)
-    {
+    public void editMovie(Movie selectedItem) {
 
     }
 
-    public void editCategory(Category category, String newTitle) throws SQLException
-    {
+    public void editCategory(Category category, String newTitle) throws SQLException {
         categories.remove(category);
         categories.add(new Category(newTitle));
         cdao.updateCategory(category.getTitle(), newTitle);
     }
 
-    public void playMovie(Movie selectedItem)
-    {
+    public void playMovie(Movie selectedItem) {
         System.out.println(selectedItem.getFilePath());
         vlc.callVlc(selectedItem.getFilePath());
     }
 
-    public void sliderRateMovie(Movie selectedItem, double rating)
-    {
+    public void sliderRateMovie(Movie selectedItem, double rating) {
         selectedItem.setRating(rating);
-        for (Movie movie1 : allMovies)
-        {
-            if (movie1.equals(movie))
-            {
+        for (Movie movie1 : allMovies) {
+            if (movie1.equals(movie)) {
                 movie.setRating(rating);
             }
         }
     }
 
-    public void reMovie(List<Movie> selectedItem) throws IOException
-    {
+    public void reMovie(List<Movie> selectedItem) throws IOException {
         mdao.deleteMovies(selectedItem);
 
-        for (Movie movie1 : selectedItem)
-        {
+        for (Movie movie1 : selectedItem) {
             movies.remove(movie1);
         }
     }
 
-    public void addCategory(Category category)
-    {
+    public void addCategory(Category category) {
         categories.add(category);
         cdao.createCategory(category);
     }
 
-    public void deleteCategory(Category category) throws SQLException
-    {
+    public void deleteCategory(Category category) throws SQLException {
         cdao.deleteCategory(category.getTitle());
         categories.remove(category);
 
     }
 
-    public ObservableList<Movie> getAllMovies()
-    {
+    public ObservableList<Movie> getAllMovies() {
         movies.setAll(mdao.getAllMoviesFromDB());
         allMovies.addAll(movies);
         return movies;
     }
 
-    public ObservableList<Category> getAllCategories()
-    {
+    public ObservableList<Category> getAllCategories() {
         // genres.addAll(categories);
         return categories;
     }
 
-    public void searchMovie(String query)
-    {
+    public void searchMovie(String query) {
         globalQuery = query;
 //        movies.setAll(search.searchMovie(query, allMovies));
         movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
     }
 
-    public void getPersonalRatings(Movie selectedItem)
-    {
+    public void getPersonalRatings(Movie selectedItem) {
         selectedItem.getRating();
-        for (Movie movie1 : allMovies)
-        {
-            if (movie1.equals(movie))
-            {
+        for (Movie movie1 : allMovies) {
+            if (movie1.equals(movie)) {
                 movie.getRating();
             }
         }
     }
 
-    public void onProgramClose()
-    {
-        try
-        {
+    public void onProgramClose() {
+        try {
             mdao.SendRatingToDB(allMovies);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void sortCategories(List<Boolean> checkCategories)
-    {
+    public void sortCategories(List<Boolean> checkCategories) {
         System.out.println(checkCategories.size() + "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
         this.checkCategories = checkCategories;
     }
 
-    public void getChecklistCategories(List<Category> allCat)
-    {
+    public void getChecklistCategories(List<Category> allCat) {
         genres = allCat;
     }
 
-    public Movie sendDataOnClick()
-    {
+    public Movie sendDataOnClick() {
 
-        for (Movie movie1 : allMovies)
-        {
+        for (Movie movie1 : allMovies) {
 
-            if (movie1.equals(movie))
-            {
+            if (movie1.equals(movie)) {
                 return movie1;
             }
         }
         return null;
     }
 
-    public void deleteHalf()
-    {
-        for (int i = 0; i < movies.size(); i++)
-        {
-            if (i % 2 == 0)
-            {
+    public void deleteHalf() {
+        for (int i = 0; i < movies.size(); i++) {
+            if (i % 2 == 0) {
                 movies.remove(i);
             }
         }
 
-        for (Movie m : movies)
-        {
+        for (Movie m : movies) {
             System.out.println(m);
         }
     }
