@@ -82,7 +82,6 @@ public class Manager
 
     private void repeatCheckMovies()
     {
-        System.out.println("Movies Size: " + movies.size());
         if (initMovieLoopSize != movies.size() || initMovieLoopSize == 0)
         {
             initMovieLoopSize = movies.size();
@@ -128,8 +127,6 @@ public class Manager
 //                }
             }
         });
-        System.out.println("MOVIES SIZE " + movies.size());
-        System.out.println("ALLMOVIES SIZE : " + allMovies.size());
     }
 
     public void editMovie(Movie selectedItem)
@@ -201,8 +198,6 @@ public class Manager
     public void searchMovie(String query)
     {
         globalQuery = query;
-        System.out.println("Size" + search.searchMovie(query, allMovies).size());
-        System.out.println("Allmovies" + allMovies.size());
 //        movies.setAll(search.searchMovie(query, allMovies));
         movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
     }

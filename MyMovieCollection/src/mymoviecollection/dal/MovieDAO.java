@@ -175,6 +175,7 @@ public class MovieDAO
         if (counter == 0)
         {
             startTime = System.currentTimeMillis();
+            imdb.setStartTime(startTime);
         }
 
         while (counter > 38)
@@ -184,9 +185,12 @@ public class MovieDAO
             {
                 counter = 0;
                 startTime = System.currentTimeMillis();
+                imdb.setStartTime(startTime);
             }
         }
 
+        
+        
         String searchString = imdb.makeSearchString(filepath);
         try
         {
@@ -195,7 +199,9 @@ public class MovieDAO
         {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        startTime = imdb.getStartTime();
+        
+        
         if (searchResult.contains("total_results\":0"))
         {
             System.out.println("Movie not found, please check file name");
@@ -209,7 +215,7 @@ public class MovieDAO
         {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        startTime = imdb.getStartTime();
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
 
