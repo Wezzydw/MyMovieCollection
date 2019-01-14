@@ -26,28 +26,29 @@ public class Movie {
     List<String> categories;
     String posterPath;
     double imdbRating;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    //Date date = new Date();
 
     public Movie(double rating, int id, String title, String filePath, String lastView) {
         this.rating = rating;
         this.id = id;
         this.title = title;
         this.filePath = filePath;
-
     }
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    Date date = new Date();
+
     //System.out.println(dateFormat.format(date));
+    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating) {
 
-    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating)
-    {
-     this.title = title;
-     this.filePath = filepath;
-     this.length = length;
-     this.releaseYear = releaseYear;
-     this.categories = categories;
-     this.posterPath = posterPath;
-     this.imdbRating = imdbRating;
+        this.title = title;
+        this.filePath = filepath;
+        this.length = length;
+        this.releaseYear = releaseYear;
+        this.categories = categories;
+        this.posterPath = posterPath;
+        this.imdbRating = imdbRating;
+
     }
+    
     public double getRating() {
         return rating;
     }
@@ -76,8 +77,7 @@ public class Movie {
         this.filePath = filePath;
     }
 
-    public void setLastView(Date lastView)
-    {
+    public void setLastView(Date lastView) {
         this.lastView = lastView;
     }
 
@@ -85,27 +85,23 @@ public class Movie {
         return filePath;
     }
 
-    public Date getLastView()
-    {
+    public Date getLastView() {
         return lastView;
     }
-    
-    public String toString(){
+
+    public String toString() {
         return title;
     }
 
-    public List<String> getCategory()
-    {
+    public List<String> getCategory() {
         return categories;
     }
 
-    public String getLength()
-    {
-       return length;
+    public String getLength() {
+        return length;
     }
 
-    public String getReleaseYear()
-    {
+    public String getReleaseYear() {
         return releaseYear;
     }
 
