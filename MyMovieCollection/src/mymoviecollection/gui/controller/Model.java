@@ -135,8 +135,10 @@ public class Model
 
     public void sliderRateMovie(Movie selectedItem, double value)
     {
+        System.out.println(selectedItem.getTitle());
         if (selectedItem !=null)
         {
+            System.out.println("We are in manager");
             manager.sliderRateMovie(selectedItem, value);
         }
     }

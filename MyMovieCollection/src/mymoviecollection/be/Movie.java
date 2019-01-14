@@ -7,6 +7,7 @@ package mymoviecollection.be;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Movie {
     int id;
     String title;
     String filePath;
-    Date lastView;
+    LocalDate lastView;
     String length;
     String releaseYear;
     List<String> categories;
@@ -77,7 +78,7 @@ public class Movie {
         this.filePath = filePath;
     }
 
-    public void setLastView(Date lastView) {
+    public void setLastView(LocalDate lastView) {
         this.lastView = lastView;
     }
 
@@ -85,7 +86,7 @@ public class Movie {
         return filePath;
     }
 
-    public Date getLastView() {
+    public LocalDate getLastView() {
         return lastView;
     }
 

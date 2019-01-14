@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -219,7 +220,8 @@ public class MovieDAO
         startTime = imdb.getStartTime();
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
-        newMovie.setLastView(new Date());
+        LocalDate ldate = LocalDate.now();
+        newMovie.setLastView(ldate);
 
         for (Movie m : movies)
         {
@@ -321,16 +323,20 @@ public class MovieDAO
      */
     public void SendDataToDB(List<Movie> allMovies) throws IOException
     {
-        String a = "INSERT INTO Movies (title, id, imdbRating, personalRating, filePath, lastView ) VALUES (?,?,?,?,?,?,?);";
+        String a = "INSERT INTO Movies (title, length, imdbRating, personalRating, filePath, lastView, posterPath, releaseYear ) VALUES (?,?,?,?,?,?,?,?);";
         try (Connection con = conProvider.getConnection())
         {
             for (Movie movie : allMovies)
             {
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
-                pstmt.setInt(2, movie.getId());
-                pstmt.setDouble(3, movie.getRating());
-                pstmt.setString(4, movie.getFilePath());
+                pstmt.setString(2, movie.getLength());
+                pstmt.setDouble(3, movie.getImdbRating());
+                pstmt.setDouble(4, movie.getRating());
+                pstmt.setString(5, movie.getFilePath());
+                pstmt.setObject(6, movie.getLastView());
+                pstmt.setString(7, movie.getPosterPath());
+                pstmt.setString(8, movie.getReleaseYear());
                 pstmt.execute();
             }
         } catch (SQLException ex)
@@ -382,19 +388,17 @@ public class MovieDAO
      * @param allMovies
      * @throws IOException
      */
-    public void SendRatingToDB(List<Movie> allMovies) throws IOException
+    public void SendRatingToDB(Movie movie) throws IOException
     {
-        String a = "INSERT INTO Movies (personalRating ) WHERE Id = ?;";
+        String a = "INSERT INTO Movies (personalRating ) WHERE Id = (?,?);";
         try (Connection con = conProvider.getConnection())
-        {
-            for (Movie movie : allMovies)
-            {
-
+        {   
+            System.out.println("getRating " + movie.getRating());
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setDouble(1, movie.getRating());
                 pstmt.setInt(2, movie.getId());
                 pstmt.execute();
-            }
+            
         } catch (SQLException ex)
         {
             ex.printStackTrace();

@@ -111,10 +111,15 @@ public class Manager {
                         }
                         allMovies.addAll(listToAdd);
                         searchMovie(globalQuery);
-                        
-
+                        try {
+                            mdao.SendDataToDB(listToAdd);
+                            
+                            
 //                        movies.add(mdao.getMovie().get(mdao.getMovie().size()-1));
 //                        System.out.println("In here movie SIZE" + movies.size());
+                        } catch (IOException ex) {
+                            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     repeatCheckMovies();
                 } //else
@@ -143,11 +148,16 @@ public class Manager {
 
     public void sliderRateMovie(Movie selectedItem, double rating) {
         selectedItem.setRating(rating);
-        for (Movie movie1 : allMovies) {
-            if (movie1.equals(movie)) {
-                movie.setRating(rating);
-            }
-        }
+        //for (Movie movie1 : allMovies) {
+           // if (movie1.equals(movie)) {
+                //movie.setRating(rating);
+                try {
+                    mdao.SendRatingToDB(selectedItem);
+                } catch (IOException ex) {
+                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            //}
+        //}
     }
 
     public void reMovie(List<Movie> selectedItem) throws IOException {
@@ -196,11 +206,11 @@ public class Manager {
     }
 
     public void onProgramClose() {
-        try {
-            mdao.SendRatingToDB(allMovies);
-        } catch (IOException ex) {
-            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            mdao.SendRatingToDB(allMovies);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     public void sortCategories(List<Boolean> checkCategories) {

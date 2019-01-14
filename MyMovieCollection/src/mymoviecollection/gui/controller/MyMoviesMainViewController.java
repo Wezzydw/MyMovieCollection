@@ -233,12 +233,12 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void selectedDataToManager(MouseEvent event)
     {
-        BufferedImage buff = null;
+       BufferedImage buff = null;
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
        lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
        lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
-        System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
+       System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
        //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
        Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
        MovieImage.setImage(image);
