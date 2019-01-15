@@ -11,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" prefHeight="872.0" prefWidth="1189.0" style="-fx-background-image: url('/images/1506881651_04173332486066.jpg');" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" style="-fx-background-image: url('/images/1506881651_04173332486066.jpg');" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
    <children>
       <ListView fx:id="lstMov" layoutX="697.0" layoutY="121.0" onMouseClicked="#selectedDataToManager" prefHeight="661.0" prefWidth="491.0">
          <cursor>
@@ -31,9 +31,9 @@
       <MenuButton fx:id="menuCategory" layoutX="688.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories" />
       <Slider fx:id="sliderRateMovie" blockIncrement="0.0" layoutX="7.0" layoutY="790.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" onMouseReleased="#OnHandleMovieRated" prefHeight="18.0" prefWidth="190.0" snapToTicks="true" />
       <Label fx:id="movieRating" layoutX="23.0" layoutY="813.0" prefHeight="21.0" prefWidth="42.0" textFill="#f8f8f8" />
-      <ImageView fx:id="StarImage" blendMode="SRC_ATOP" fitHeight="31.0" fitWidth="37.0" layoutX="60.0" layoutY="808.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="StarImage" blendMode="SRC_ATOP" fitHeight="38.0" fitWidth="67.0" layoutX="45.0" layoutY="805.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../images/star-student.png" />
+            <Image url="@../../../images/1495916691gray-star-png-picture-background-transparent.png" />
          </image></ImageView>
       <Label fx:id="lblYear" layoutX="39.0" layoutY="89.0" textFill="#f8f8f8" />
       <Label fx:id="lblLength" layoutX="39.0" layoutY="63.0" textFill="#f8f8f8" />
