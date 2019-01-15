@@ -185,6 +185,8 @@ public class MovieDAO {
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
         LocalDate ldate = LocalDate.now();
+        LocalDate d = LocalDate.parse("2007-12-14");
+        
         newMovie.setLastView(ldate.toString());
 
         for (Movie m : movies) {
