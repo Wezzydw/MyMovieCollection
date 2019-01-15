@@ -10,39 +10,43 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="764.0" prefWidth="967.0" style="-fx-background-image: url('/images/1506881651_04173332486066.jpg');" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
+<AnchorPane id="AnchorPane" fx:id="anchorPane" cacheShape="false" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1080.0" style="-fx-background-image: url('/images/1506881651_04173332486066.jpg');" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mymoviecollection.gui.controller.MyMoviesMainViewController">
    <children>
-      <ListView fx:id="lstMov" layoutX="697.0" layoutY="121.0" onMouseClicked="#selectedDataToManager" prefHeight="661.0" prefWidth="491.0">
+      <ListView fx:id="lstMov" layoutX="658.0" layoutY="118.0" onMouseClicked="#selectedDataToManager" prefHeight="496.0" prefWidth="423.0">
          <cursor>
             <Cursor fx:constant="DEFAULT" />
          </cursor></ListView>
-      <TextField fx:id="txtSearch" layoutX="688.0" layoutY="58.0" onKeyReleased="#txtSearch" prefHeight="31.0" prefWidth="501.0" />
-      <Button layoutX="1077.0" layoutY="19.0" mnemonicParsing="false" onAction="#btnRemoveCat" text="Fjern categori" />
-      <Button layoutX="954.0" layoutY="19.0" mnemonicParsing="false" onAction="#btnAddCat" text="Tilføj categori" />
-      <Button layoutX="697.0" layoutY="784.0" mnemonicParsing="false" onAction="#btnRemoveMov" prefHeight="31.0" prefWidth="92.0" text="Fjern film" />
-      <Button layoutX="615.0" layoutY="122.0" mnemonicParsing="false" onAction="#btnAddMov" text="Tilføj film" />
-      <Label fx:id="lblTitle" layoutX="39.0" layoutY="35.0" textFill="#f8f8f8" />
-      <Label fx:id="lblInfo" layoutX="50.0" layoutY="766.0" textFill="#f8f8f8" />
-      <Button layoutX="805.0" layoutY="784.0" mnemonicParsing="false" onAction="#btnEditMov" prefHeight="31.0" prefWidth="111.0" text="Rediger film" />
-      <Button layoutX="814.0" layoutY="19.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
-      <Button layoutX="611.0" layoutY="167.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
-      <ImageView fx:id="MovieImage" fitHeight="629.0" fitWidth="535.0" layoutX="32.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" />
-      <MenuButton fx:id="menuCategory" layoutX="688.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories" />
-      <Slider fx:id="sliderRateMovie" blockIncrement="0.0" layoutX="7.0" layoutY="790.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" onMouseReleased="#OnHandleMovieRated" prefHeight="18.0" prefWidth="190.0" snapToTicks="true" />
-      <Label fx:id="movieRating" layoutX="23.0" layoutY="813.0" prefHeight="21.0" prefWidth="42.0" textFill="#f8f8f8" />
-      <ImageView fx:id="StarImage" blendMode="SRC_ATOP" fitHeight="38.0" fitWidth="67.0" layoutX="45.0" layoutY="805.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="txtSearch" layoutX="576.0" layoutY="58.0" onKeyReleased="#txtSearch" prefHeight="31.0" prefWidth="501.0" />
+      <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnRemoveCat" text="Fjern categori" />
+      <Button layoutX="836.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnAddCat" text="Tilføj categori" />
+      <Button layoutX="658.0" layoutY="617.0" mnemonicParsing="false" onAction="#btnRemoveMov" prefHeight="31.0" prefWidth="92.0" text="Fjern film" />
+      <Button layoutX="576.0" layoutY="118.0" mnemonicParsing="false" onAction="#btnAddMov" text="Tilføj film" />
+      <Label fx:id="lblTitle" layoutX="40.0" layoutY="12.0" textFill="#3f30b2">
+         <font>
+            <Font name="System Bold Italic" size="30.0" />
+         </font></Label>
+      <Label fx:id="lblInfo" layoutX="43.0" layoutY="604.0" textFill="#f8f8f8" />
+      <Button layoutX="762.0" layoutY="617.0" mnemonicParsing="false" onAction="#btnEditMov" prefHeight="31.0" prefWidth="111.0" text="Rediger film" />
+      <Button layoutX="697.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnRenameCat" text="Omdøb categori" />
+      <Button layoutX="572.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnPlayMov" text="Afspil film" />
+      <ImageView fx:id="MovieImage" fitHeight="480.0" fitWidth="371.0" layoutX="32.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true" />
+      <MenuButton fx:id="menuCategory" layoutX="576.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSelectMenuItem" text="Categories" />
+      <Slider fx:id="sliderRateMovie" blockIncrement="0.0" layoutX="44.0" layoutY="639.0" majorTickUnit="1.0" max="10.0" minorTickCount="1" onMouseReleased="#OnHandleMovieRated" prefHeight="18.0" prefWidth="190.0" snapToTicks="true" />
+      <Label fx:id="movieRating" layoutX="50.0" layoutY="663.0" prefHeight="21.0" prefWidth="42.0" textFill="#f8f8f8" />
+      <ImageView fx:id="StarImage" blendMode="SRC_ATOP" fitHeight="38.0" fitWidth="67.0" layoutX="85.0" layoutY="655.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../images/1495916691gray-star-png-picture-background-transparent.png" />
          </image></ImageView>
-      <Label fx:id="lblYear" layoutX="39.0" layoutY="89.0" textFill="#f8f8f8" />
-      <Label fx:id="lblLength" layoutX="39.0" layoutY="63.0" textFill="#f8f8f8" />
-      <Label fx:id="lblCategories" layoutX="39.0" layoutY="112.0" textFill="#f8f8f8" />
-      <ImageView fx:id="ImdbRating" fitHeight="31.0" fitWidth="35.0" layoutX="210.0" layoutY="784.0" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="lblYear" layoutX="39.0" layoutY="75.0" textFill="#f8f8f8" />
+      <Label fx:id="lblLength" layoutX="39.0" layoutY="55.0" textFill="#f8f8f8" />
+      <Label fx:id="lblCategories" layoutX="44.0" layoutY="95.0" textFill="#f8f8f8" />
+      <ImageView fx:id="ImdbRating" fitHeight="31.0" fitWidth="35.0" layoutX="250.0" layoutY="632.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../images/imdb_fb_logo._CB1542065250_.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblImdb" layoutX="241.0" layoutY="784.0" prefHeight="31.0" prefWidth="31.0" textFill="#f8f8f8" />
+      <Label fx:id="lblImdb" layoutX="281.0" layoutY="632.0" prefHeight="31.0" prefWidth="31.0" textFill="#f8f8f8" />
    </children>
 </AnchorPane>
