@@ -37,8 +37,7 @@ import mymoviecollection.be.Movie;
  *
  * @author Andreas Svendsen
  */
-public class MovieDAO
-{
+public class MovieDAO {
 
     List<Movie> movies;
     int counter;
@@ -51,16 +50,13 @@ public class MovieDAO
     private List<Movie> moviesFromDB;
     private List<Movie> oldMovieList;
 
-    public MovieDAO()
-    {
+    public MovieDAO() {
         counter = 0;
         movies = new ArrayList();
         i = 0;
-        try
-        {
+        try {
             conProvider = new DatabaseConnection();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         startTime = 0;
@@ -76,19 +72,14 @@ public class MovieDAO
      * @param filepath
      * @return
      */
-    public List<Movie> scanFolder(String filepath)
-    {
+    public List<Movie> scanFolder(String filepath) {
         File folder = new File(filepath);
         File[] folders = folder.listFiles();
-        for (File f : folders)
-        {
-            if (f.isFile())
-            {
-                if (checkForFileType(f) && !isAlreadyInSystem(filepath))
-                {
+        for (File f : folders) {
+            if (f.isFile()) {
+                if (checkForFileType(f) && !isAlreadyInSystem(filepath)) {
                     Movie m = getIMDBData(f.getName());
-                    if (m != null)
-                    {
+                    if (m != null) {
                         m.setFilePath(f.getAbsolutePath());
                         movies.add(m);
                         i++;
@@ -96,37 +87,28 @@ public class MovieDAO
                 }
             }
 
-            if (f.isDirectory())
-            {
+            if (f.isDirectory()) {
                 scanFolder(f.getAbsolutePath());
             }
         }
         return movies;
     }
 
-    public boolean isAlreadyInSystem(String filepath)
-    {
-        for (Movie m : movies)
-        {
-            if (m.getFilePath() == filepath)
-            {
+    public boolean isAlreadyInSystem(String filepath) {
+        for (Movie m : movies) {
+            if (m.getFilePath() == filepath) {
                 return true;
             }
         }
 
-        for (Movie m : moviesFromDB)
-        {
-            if (m.getFilePath() == filepath)
-            {
+        for (Movie m : moviesFromDB) {
+            if (m.getFilePath() == filepath) {
                 return true;
             }
         }
-        if (!oldMovieList.isEmpty())
-        {
-            for (Movie m : oldMovieList)
-            {
-                if (m.getFilePath() == filepath)
-                {
+        if (!oldMovieList.isEmpty()) {
+            for (Movie m : oldMovieList) {
+                if (m.getFilePath() == filepath) {
                     return true;
                 }
             }
@@ -134,18 +116,15 @@ public class MovieDAO
         return false;
     }
 
-    public void clearMovieList()
-    {
-        if (!movies.isEmpty())
-        {
+    public void clearMovieList() {
+        if (!movies.isEmpty()) {
             oldMovieList.addAll(movies);
         }
 
         movies.clear();
     }
 
-    public List<Movie> getMovie()
-    {
+    public List<Movie> getMovie() {
         return movies;
     }
 
@@ -154,14 +133,11 @@ public class MovieDAO
      * @param f
      * @return
      */
-    private boolean checkForFileType(File f)
-    {
+    private boolean checkForFileType(File f) {
         String path = f.getAbsolutePath();
         if (path.endsWith(".mkv") || path.endsWith(".mp4")
-                || path.endsWith(".mpeg4"))
-        {
-            if (!path.toLowerCase().contains("sample"))
-            {
+                || path.endsWith(".mpeg4")) {
+            if (!path.toLowerCase().contains("sample")) {
                 return true;
             }
         }
@@ -169,52 +145,40 @@ public class MovieDAO
         return false;
     }
 
-    private Movie getIMDBData(String filepath)
-    {
+    private Movie getIMDBData(String filepath) {
         String searchResult = "";
         String idInformation = "";
 
-        if (counter == 0)
-        {
+        if (counter == 0) {
             startTime = System.currentTimeMillis();
             imdb.setStartTime(startTime);
         }
 
-        while (counter > 38)
-        {
+        while (counter > 38) {
             System.out.println("spasser");
-            if (startTime + requestRateTimer < System.currentTimeMillis())
-            {
+            if (startTime + requestRateTimer < System.currentTimeMillis()) {
                 counter = 0;
                 startTime = System.currentTimeMillis();
                 imdb.setStartTime(startTime);
             }
         }
 
-        
-        
         String searchString = imdb.makeSearchString(filepath);
-        try
-        {
+        try {
             searchResult = imdb.getIMDBText(searchString);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         startTime = imdb.getStartTime();
-        
-        
-        if (searchResult.contains("total_results\":0"))
-        {
+
+        if (searchResult.contains("total_results\":0")) {
             System.out.println("Movie not found, please check file name");
             return null;
         }
 
-        try
-        {
+        try {
             idInformation = imdb.getIMDBText(imdb.getSearchIDQuery(searchResult));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         startTime = imdb.getStartTime();
@@ -223,26 +187,20 @@ public class MovieDAO
         LocalDate ldate = LocalDate.now();
         newMovie.setLastView(ldate.toString());
 
-        for (Movie m : movies)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : movies) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
 
-        for (Movie m : oldMovieList)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : oldMovieList) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
 
-        for (Movie m : moviesFromDB)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : moviesFromDB) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
@@ -256,21 +214,17 @@ public class MovieDAO
      * @throws IOException denne metode tager fat i vores selected movies og
      * fjerner den eller dem vi ønsker at fjerne.
      */
-    public void deleteMovies(List<Movie> selectedMovie) throws IOException
-    {
-        try (Connection con = conProvider.getConnection())
-        {
+    public void deleteMovies(List<Movie> selectedMovie) throws IOException {
+        try (Connection con = conProvider.getConnection()) {
             String a = "DELETE FROM Movies WHERE Id =?;";
             PreparedStatement prst = con.prepareStatement(a);
-            for (Movie movie : movies)
-            {
+            for (Movie movie : movies) {
                 prst.setInt(1, movie.getId());
                 prst.addBatch();
             }
             prst.executeBatch();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -281,17 +235,14 @@ public class MovieDAO
      *
      * @return
      */
-    public List<Movie> getAllMoviesFromDB()
-    {
+    public List<Movie> getAllMoviesFromDB() {
         List<Movie> allMovies = new ArrayList();
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 String title = rs.getString("Title");
 //                List<String> categori = rs.getString("Categori");
                 List<String> categori = new ArrayList();
@@ -304,15 +255,20 @@ public class MovieDAO
                 String filePath = rs.getString("filePath");
                 String lastView = rs.getString("lastView");
                 String posterPath = rs.getString("posterPath");
+                String genre = rs.getString("categories");
+                String[] genres = genre.split(",");
+                
+                for (String s :genres)
+                {
+                    categori.add(s);
+                }
                 //Movie herunder skal fixes
                 Movie movie = new Movie(title, length, releaseYear, categori, filePath, posterPath, imdbRating, personalRating, id, lastView);
-                if (new File(filepath).isFile())
-                {
+                if (new File(filepath).isFile()) {
                     allMovies.add(movie);
                 }
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         movies.addAll(allMovies);
@@ -326,26 +282,32 @@ public class MovieDAO
      * @param allMovies
      * @throws IOException
      */
-    public void SendDataToDB(List<Movie> allMovies) throws IOException
-    {
-        String a = "INSERT INTO Movies (title, length, imdbRating, personalRating, filePath, lastView, posterPath, releaseYear ) VALUES (?,?,?,?,?,?,?,?);";
-        try (Connection con = conProvider.getConnection())
-        {
-            for (Movie movie : allMovies)
-            {
+    public void SendDataToDB(List<Movie> allMovies) throws IOException {
+        String a = "INSERT INTO Movies (title, length, imdbRating, personalRating, filePath, lastView, posterPath, releaseYear, categories ) VALUES (?,?,?,?,?,?,?,?,?);";
+        try (Connection con = conProvider.getConnection()) {
+            for (Movie movie : allMovies) {
+                
+                String genre = "";
+                for (String s : movie.getCategory())
+                {
+                    genre += s + ",";
+                }
+                
+                
                 PreparedStatement pstmt = con.prepareStatement(a);
                 pstmt.setString(1, movie.getTitle());
                 pstmt.setString(2, movie.getLength());
                 pstmt.setDouble(3, movie.getImdbRating());
                 pstmt.setDouble(4, movie.getRating());
                 pstmt.setString(5, movie.getFilePath());
-                pstmt.setObject(6, movie.getLastView());
+                pstmt.setString(6, movie.getLastView());
                 pstmt.setString(7, movie.getPosterPath());
                 pstmt.setString(8, movie.getReleaseYear());
+                pstmt.setString(9, genre);
                 pstmt.execute();
+
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
@@ -365,15 +327,12 @@ public class MovieDAO
      * @param imagePath
      * @return
      */
-    public BufferedImage readImageFromDisk(String imagePath)
-    {
+    public BufferedImage readImageFromDisk(String imagePath) {
 
-         BufferedImage img = null;
-        try
-        {
+        BufferedImage img = null;
+        try {
             img = ImageIO.read(new File(imagePath));
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
         }
         System.out.println("Image path: " + imagePath);
         System.out.println(img.getHeight());
@@ -394,19 +353,18 @@ public class MovieDAO
      * @param allMovies
      * @throws IOException
      */
-    public void SendRatingToDB(Movie movie) throws IOException
-    {
-        String a = "INSERT INTO Movies (personalRating ) WHERE Id = (?,?);";
-        try (Connection con = conProvider.getConnection())
-        {   
+    public void SendRatingToDB(Movie movie) throws IOException {
+        //String a = "UPDATE Songs SET Title = ?, Author = ?, Album = ?, Categori = ?, Filepath = ?, Length = ?, ReleaseYear = ? WHERE Id = ?;";
+        String a = "UPDATE Movies SET personalRating = ? WHERE Title = ?;";
+        try (Connection con = conProvider.getConnection()) {
             System.out.println("getRating " + movie.getRating());
-                PreparedStatement pstmt = con.prepareStatement(a);
-                pstmt.setDouble(1, movie.getRating());
-                pstmt.setInt(2, movie.getId());
-                pstmt.execute();
-            
-        } catch (SQLException ex)
-        {
+            System.out.println("ID: " + movie.getId());
+            PreparedStatement pstmt = con.prepareStatement(a);
+            pstmt.setDouble(1, movie.getRating());
+            pstmt.setString(2, movie.getTitle());
+            pstmt.execute();
+
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
