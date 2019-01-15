@@ -59,7 +59,7 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblInfo = new Label("\t\t\t\t" + "no menu item selected");
     private ChoiceBox<Category> choiceBoxCat;
     
-    private Model model;
+    Model model;
     @FXML
     private AnchorPane anchorPane;
     @FXML

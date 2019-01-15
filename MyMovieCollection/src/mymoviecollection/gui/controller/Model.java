@@ -88,16 +88,24 @@ public class Model {
 
     void editMovie(Movie selectedItem) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/mytunes/gui/view/EditMovieView.fxml"));
-        loader.load();
-        EditMovieViewController display = loader.getController();
-        display.setMovie(selectedItem);
-        display.setModel(this);
-        Parent p = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(p));
-        stage.showAndWait();
+        if (selectedItem != null)
+        {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/mymoviecollection/gui/view/EditMovieView.fxml"));
+            loader.load();
+            EditMovieViewController display = loader.getController();
+            
+            display.setModel(this);
+            display.setMovie(selectedItem);
+            Parent p = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(p));
+            stage.showAndWait();
+        }
+        
+    }
+    void updateMovie(Movie selectedItem)
+    {
         manager.editMovie(selectedItem);
     }
 
