@@ -73,6 +73,7 @@ public class EditMovieViewController implements Initializable
             { 
                 if (((CheckMenuItem)e.getSource()).isSelected())
                 {
+                    CheckMenuItem c = new CheckMenuItem();
                     Category mygod = new Category("hi");
                     int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
                     selectedCategories.remove(tmpIndex);
@@ -148,6 +149,13 @@ public class EditMovieViewController implements Initializable
                     System.out.println("1111111111111111111111111111111111111111111111111111111111");
                     selectedCategories.set(ocu, Boolean.TRUE);
                     CheckMenuItem eel = new CheckMenuItem(allCategories.get(ocu).toString());
+                    //Måske noget du kan bruge Andreas,
+                    //Find hver CheckMenuItem der burde være selected, og sæt dens
+                    //setSelected til true;
+                    
+                    //Her fandt jeg noget om det, under section Check Menu Items
+                    //http://tutorials.jenkov.com/javafx/menubar.html
+                    //eel.setSelected(true);
                     menuCategories.getItems().set(ocu, eel);
                     
 //                    menuCategories.getItems().get(ocu).set;
