@@ -8,6 +8,7 @@ package mymoviecollection.gui.controller;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +92,6 @@ public class MyMoviesMainViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         selectedCategories = new ArrayList();
-        
         try
         {
             model = new Model();
@@ -142,6 +142,7 @@ public class MyMoviesMainViewController implements Initializable
         
         model.setMenuItmes(menuCategory, allCategories);
         model.setCheckList(selectedCategories);
+        model.movieReminder();
     }    
 
     @FXML
@@ -204,13 +205,19 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnPlayMov(ActionEvent event)
     {
-        model.playMovie(lstMov.getSelectionModel().getSelectedItem());
+        LocalDate date1 = LocalDate.now();
+        lblInfo.setText(date1.toString());
+        Movie m = (lstMov.getSelectionModel().getSelectedItem());
+        m.setLastView(date1.toString());
+        model.playMovie(m);
+        
     }
 
     @FXML
     private void txtSearch(KeyEvent event)
     {
         model.searchMovie(txtSearch.getText());
+        
     }
 
     @FXML
