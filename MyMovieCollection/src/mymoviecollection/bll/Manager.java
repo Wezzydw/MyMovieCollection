@@ -9,6 +9,7 @@ import com.sun.corba.se.spi.ior.Writeable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -149,7 +150,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * Lets you add/remove categories to/from the list of categories
+     * and updates it in the DB.
      * @param category
      * @param newTitle
      * @throws SQLException 
@@ -161,7 +163,7 @@ public class Manager {
     }
     
     /**
-     * 
+     * Opens the selected movie in VLC-player.
      * @param selectedItem 
      */
     public void playMovie(Movie selectedItem) {
@@ -170,7 +172,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * When the user gives a rating, using the slider, it sends the value to the
+     * SendRatingToDB method.
      * @param selectedItem
      * @param rating 
      */
@@ -189,7 +192,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * Removes the selecteditem (Movie) from the observable list, and then
+     * sends the selecteditem further down to the deleteMoves method in mdao.
      * @param selectedItem
      * @throws IOException 
      */
@@ -202,7 +206,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * Lets the user add a category to the list of categories, and then sends it 
+     * to the DB through cdao.
      * @param category 
      */
     public void addCategory(Category category) {
@@ -211,7 +216,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * Lets the user delete a category from the list of categories, and sends
+     * the information to delete method in cdao.
      * @param category
      * @throws SQLException 
      */
@@ -233,7 +239,7 @@ public class Manager {
     
     /**
      * 
-     * @return 
+     * @return an observablelist of categories.
      */
     public ObservableList<Category> getAllCategories() {
         // genres.addAll(categories);
@@ -241,7 +247,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * Calls the search method in the search class, to find the input from the
+     * user(query).
      * @param query 
      */
     public void searchMovie(String query) {
@@ -251,7 +258,7 @@ public class Manager {
     }
     
     /**
-     * 
+     * Gets the rating from thre selecteditem.
      * @param selectedItem 
      */
     public void getPersonalRatings(Movie selectedItem) {
@@ -272,7 +279,8 @@ public class Manager {
     }
     
     /**
-     * 
+     * calls Sets the categories for all movies, after calling sortCategories in
+     * the Search class.
      * @param checkCategories 
      */
     public void sortCategories(List<Boolean> checkCategories) {
@@ -329,6 +337,25 @@ public class Manager {
          
         return mdao.readImageFromDisk(image);
      
+    }
+
+    public List<Movie> warning() {
+        LocalDate date = LocalDate.now();
+        List<Movie> spastiker = new ArrayList();
+        for (Movie movy : allMovies) {
+            
+            LocalDate d = LocalDate.parse(movy.getLastView());
+            if(d.isAfter(date.plusYears(2))) {
+                spastiker.add(movy);
+            }
+        }
+        
+        for (Movie movy1 : spastiker) {
+            if(movy1.getRating() > 6){
+                spastiker.remove(movy1);
+            }
+        }
+        return spastiker;
     }
 
     

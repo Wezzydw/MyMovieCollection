@@ -5,6 +5,7 @@
  */
 package mymoviecollection.gui.controller;
 
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -172,6 +174,32 @@ public class Model {
     void addCategory(Category cat) {
         //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
+    }
+    
+    void movieReminder(){
+        Button btn = new Button("OK");
+        Label lbl = new Label(manager.warning().toString());
+        
+        
+        StackPane root = new StackPane();
+        root.setAlignment(lbl, Pos.TOP_CENTER);
+        root.setAlignment(btn, Pos.BOTTOM_CENTER);
+        root.getChildren().addAll(lbl, btn);
+        Scene scene = new Scene(root, 400, 100);
+        Stage stage = new Stage();
+        stage.setTitle("Consider removing these movies");
+        stage.setScene(scene);
+        stage.show();
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+
+            public void handle(ActionEvent event) {
+                Stage stage = (Stage) btn.getScene().getWindow();
+
+                stage.close();
+            }
+        });
+        
     }
 
     void chooseDeleteCategory() {

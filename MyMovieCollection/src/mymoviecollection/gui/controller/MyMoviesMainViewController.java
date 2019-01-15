@@ -91,7 +91,6 @@ public class MyMoviesMainViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         selectedCategories = new ArrayList();
-        
         try
         {
             model = new Model();
@@ -142,6 +141,7 @@ public class MyMoviesMainViewController implements Initializable
         
         model.setMenuItmes(menuCategory, allCategories);
         model.setCheckList(selectedCategories);
+        model.movieReminder();
     }    
 
     @FXML
