@@ -67,10 +67,7 @@ public class EditMovieViewController implements Initializable
         } catch (IOException ex) {
             Logger.getLogger(EditMovieViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Category allCategory : model.getAllCategories())
-        {
-            selectedCategories.add(Boolean.FALSE);
-        }
+        
         EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
@@ -91,34 +88,9 @@ public class EditMovieViewController implements Initializable
                 }
             } 
         }; 
-        List<Category> allCategories = model.getAllCategories();
-        List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories)
-        {
-            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
-            allItems.add(iti);
-        }
-        model.getAllCategories();
-        menuCategories.getItems().addAll(allItems);
-        String s = "";
-        for (String string : selectedMovie.getCategory())
-        {
-            s += string;
-        }
-        String[] splitted = s.split(",");
-        for (String string : splitted)
-        {
-            int ocu = 0;
-            for (Category allCategory : allCategories)
-            {
-                if (allCategory.toString().equals(string))
-                {
-                    selectedCategories.remove(ocu);
-                    selectedCategories.add(ocu, Boolean.TRUE);
-                }
-                ocu++;
-            }
-        }
+        
+        
+        
     }   
     
     public void setMovie(Movie movie)
@@ -130,7 +102,63 @@ public class EditMovieViewController implements Initializable
         txtReleaseYear.setText(selectedMovie.getReleaseYear());
         this.Id = selectedMovie.getId();
         this.movieIndex = movieIndex;
+        
+        List<Category> allCategories = model.getAllCategories();
+        for (Category allCategory : allCategories)
+        {
+            selectedCategories.add(Boolean.FALSE);
+        }
+        String s = "";
+        for (String string : selectedMovie.getCategory())
+        {
+            s += string + ",";
+        }
+//        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
+//            public void handle(ActionEvent e) 
+//            { 
+//                if (((CheckMenuItem)e.getSource()).isSelected())
+//                {
+//                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
+//                    selectedCategories.set(tmpIndex, Boolean.TRUE);
+//                }
+//                else
+//                {
+//                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
+//                    selectedCategories.set(tmpIndex, Boolean.FALSE);
+//                }
+//            } 
+//        }; 
 
+        List<CheckMenuItem> allItems = new ArrayList();
+        for (Category allCategory : allCategories)
+        {
+            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
+            allItems.add(iti);
+        }
+        model.getAllCategories();
+        menuCategories.getItems().addAll(allItems);
+        String[] splitted = s.split(",");
+        for (String string : splitted)
+        {
+            int ocu = 0;
+            for (Category allCategory : allCategories)
+            {
+                if (allCategory.toString().equals(string))
+                {
+                    System.out.println("1111111111111111111111111111111111111111111111111111111111");
+                    selectedCategories.set(ocu, Boolean.TRUE);
+                    CheckMenuItem eel = new CheckMenuItem(allCategories.get(ocu).toString());
+                    menuCategories.getItems().set(ocu, eel);
+                    
+//                    menuCategories.getItems().get(ocu).set;
+//                    menuCategories.getItems().get(ocu).;
+//                    menuCategories.getItems().se
+//                    selectedCategories.remove(ocu);
+//                    selectedCategories.add(ocu, Boolean.TRUE);
+                }
+                ocu++;
+            }
+        }
 //        this.d2 = selectedSong.getLength();
 //        this.songIndex = songIndex;
     }
@@ -141,7 +169,7 @@ public class EditMovieViewController implements Initializable
     }
 
     @FXML
-    private void onSave(ActionEvent event)
+    private void onSave(ActionEvent event) throws IOException
     {
         String title = txtTitle.getText();
         String releaseYear = txtReleaseYear.getText();
@@ -160,7 +188,7 @@ public class EditMovieViewController implements Initializable
         
         int id = Id;
         Movie m = new Movie(title, length, releaseYear, categories, selectedMovie.getFilePath(), selectedMovie.getPosterPath(), selectedMovie.getImdbRating());
-//        model.updateSong(s);
+        model.updateMovie(m);
         
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mytunes/gui/view/MyTunesMainView.fxml"));
@@ -174,7 +202,7 @@ public class EditMovieViewController implements Initializable
         }
         
         MyMoviesMainViewController display = loader.getController();
-//        display.model.updateSong(s);
+        display.model.updateMovie(m);
 
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();
