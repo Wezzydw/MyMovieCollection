@@ -177,7 +177,13 @@ public class Manager {
         {
             Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        for (Movie m : allMovies){
+          if(m.getTitle() == selectedItem.getTitle()){
+          m.setLastView(selectedItem.getLastView());}
+       }
+        {   
+       }
+       }
     
     /**
      * When the user gives a rating, using the slider, it sends the value to the
