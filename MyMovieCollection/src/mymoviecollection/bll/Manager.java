@@ -169,6 +169,14 @@ public class Manager {
     public void playMovie(Movie selectedItem) {
         System.out.println(selectedItem.getFilePath());
         vlc.callVlc(selectedItem.getFilePath());
+        
+        try
+        {
+            mdao.SendLastView(selectedItem);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
