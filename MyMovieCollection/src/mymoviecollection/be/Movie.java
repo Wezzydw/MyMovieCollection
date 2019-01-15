@@ -60,7 +60,7 @@ public class Movie {
         this.imdbRating = imdbRating;
         this.rating = personalRating;
         this.id = id;
-        this.lastView = this.lastView;
+        this.lastView = lastView;
     }
 
     public double getRating() {

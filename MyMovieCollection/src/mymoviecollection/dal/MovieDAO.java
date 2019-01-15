@@ -257,7 +257,7 @@ public class MovieDAO {
                 String posterPath = rs.getString("posterPath");
                 String genre = rs.getString("categories");
                 String[] genres = genre.split(",");
-                
+                System.out.println("LastView : " + lastView);
                 for (String s :genres)
                 {
                     categori.add(s);
