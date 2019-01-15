@@ -240,7 +240,7 @@ public class ImdbDAO
                 //System.out.println("Spasser2");
                 //System.out.println((startTime + requestRateTimer) + " " + System.currentTimeMillis() + " " + (startTime + requestRateTimer - System.currentTimeMillis()));
             }
-            //System.out.println(url);
+            System.out.println("AFTER STATUS CODE 25 " + url);
             return getIMDBText(url);
         }
         return response.toString();

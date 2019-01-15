@@ -154,7 +154,7 @@ public class MovieDAO {
             imdb.setStartTime(startTime);
         }
 
-        while (counter > 38) {
+        while (counter > 36) {
             System.out.println("spasser");
             if (startTime + requestRateTimer < System.currentTimeMillis()) {
                 counter = 0;
