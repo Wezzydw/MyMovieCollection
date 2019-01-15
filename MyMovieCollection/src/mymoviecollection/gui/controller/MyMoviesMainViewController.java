@@ -205,16 +205,19 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private void btnPlayMov(ActionEvent event)
     {
-        model.playMovie(lstMov.getSelectionModel().getSelectedItem());
+        LocalDate date1 = LocalDate.now();
+        lblInfo.setText(date1.toString());
+        Movie m = (lstMov.getSelectionModel().getSelectedItem());
+        m.setLastView(date1.toString());
+        model.playMovie(m);
         
     }
 
     @FXML
     private void txtSearch(KeyEvent event)
     {
-        LocalDate date1 = LocalDate.now();
         model.searchMovie(txtSearch.getText());
-        lblInfo.setText(date1.toString());
+        
     }
 
     @FXML

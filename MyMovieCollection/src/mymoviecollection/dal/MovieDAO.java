@@ -369,6 +369,23 @@ public class MovieDAO {
         }
 
     }
+    
+        public void SendLastView(Movie movie) throws IOException {
+        //String a = "UPDATE Songs SET Title = ?, Author = ?, Album = ?, Categori = ?, Filepath = ?, Length = ?, ReleaseYear = ? WHERE Id = ?;";
+        String a = "UPDATE Movies SET lastView = ? WHERE Title = ?;";
+        try (Connection con = conProvider.getConnection()) {
+            System.out.println("getLastView " + movie.getLastView());
+            System.out.println("ID: " + movie.getId());
+            PreparedStatement pstmt = con.prepareStatement(a);
+            pstmt.setString(1, movie.getLastView());
+            pstmt.setString(2, movie.getTitle());
+            pstmt.execute();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
     public void updateMovie(Movie movie)
     {
         String categories = "";
