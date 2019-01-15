@@ -263,6 +263,14 @@ public class MyMoviesMainViewController implements Initializable
        
        lblImdb.setText(""+ lstMov.getSelectionModel().getSelectedItem().getImdbRating());
        lblInfo.setText(""+ lstMov.getSelectionModel().getSelectedItem().getLastView());
+       
+       if(sliderRateMovie != null){
+           sliderRateMovie.setValue(lstMov.getSelectionModel().getSelectedItem().getRating());
+           movieRating.setText(""+ lstMov.getSelectionModel().getSelectedItem().getRating());
+       }else{
+           sliderRateMovie.setValue(0);
+           movieRating.setText("");
+       }
     }
 
 }
