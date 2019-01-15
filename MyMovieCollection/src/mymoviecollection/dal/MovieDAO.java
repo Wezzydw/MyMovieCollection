@@ -221,7 +221,7 @@ public class MovieDAO
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
         LocalDate ldate = LocalDate.now();
-        newMovie.setLastView(ldate);
+        newMovie.setLastView(ldate.toString());
 
         for (Movie m : movies)
         {
@@ -299,8 +299,13 @@ public class MovieDAO
                 String length = rs.getString("Length");
                 int id = rs.getInt("Id");
                 String releaseYear = rs.getString("ReleaseYear");
+                double imdbRating = rs.getDouble("imdbRating");
+                double personalRating = rs.getDouble("personalRating");
+                String filePath = rs.getString("filePath");
+                String lastView = rs.getString("lastView");
+                String posterPath = rs.getString("posterPath");
                 //Movie herunder skal fixes
-                Movie movie = new Movie(title, length, releaseYear, categori, filepath, "", -1);
+                Movie movie = new Movie(title, length, releaseYear, categori, filePath, posterPath, imdbRating, personalRating, id, lastView);
                 if (new File(filepath).isFile())
                 {
                     allMovies.add(movie);
@@ -370,6 +375,7 @@ public class MovieDAO
         } catch (IOException e)
         {
         }
+        System.out.println("Image path: " + imagePath);
         System.out.println(img.getHeight());
         return img;
 //        System.out.println("Filepath " + imagePath);
