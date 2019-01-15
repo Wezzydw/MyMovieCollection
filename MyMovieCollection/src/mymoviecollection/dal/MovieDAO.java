@@ -405,5 +405,29 @@ public class MovieDAO
         }
 
     }
+    public void updateMovie(Movie movie)
+    {
+        String categories = "";
+        for (String string : movie.getCategory())
+        {
+            categories += string + ",";
+        }
+        String a = "UPDATE Songs SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
+        try (Connection con = conProvider.getConnection())
+        {
+            PreparedStatement pstmt = con.prepareStatement(a);
+            pstmt.setString(1, movie.getTitle());
+            pstmt.setString(2, movie.getLength());
+            pstmt.setString(3, movie.getReleaseYear());
+            pstmt.setDouble(4, movie.getRating());
+            pstmt.setString(5, categories);
+            pstmt.setString(6, movie.getFilePath());
+            pstmt.execute();
+
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 
 }

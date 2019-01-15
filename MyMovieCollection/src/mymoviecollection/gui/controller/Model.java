@@ -16,7 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -83,8 +85,18 @@ public class Model
 
     }
 
-    void editMovie(Movie selectedItem)
+    void editMovie(Movie selectedItem) throws IOException
     {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/mytunes/gui/view/EditMovieView.fxml"));
+        loader.load();
+        EditMovieViewController display = loader.getController();
+        display.setMovie(selectedItem);
+        display.setModel(this);
+        Parent p = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(p));
+        stage.showAndWait();
         manager.editMovie(selectedItem);
     }
     

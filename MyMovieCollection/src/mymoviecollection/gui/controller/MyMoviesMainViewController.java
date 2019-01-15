@@ -184,7 +184,7 @@ public class MyMoviesMainViewController implements Initializable
     }
 
     @FXML
-    private void btnEditMov(ActionEvent event)
+    private void btnEditMov(ActionEvent event) throws IOException
     {
         model.editMovie(lstMov.getSelectionModel().getSelectedItem());
     }
