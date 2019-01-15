@@ -50,6 +50,7 @@ public class Model {
     private Search search;
     private ObservableList<Movie> movies;
     private ObservableList<Category> categories;
+    private List<Movie> moviesReminder;
     private Manager manager;
     private String tmpString;
     private MenuButton mmm;
@@ -198,38 +199,38 @@ public class Model {
         manager.addCategory(cat);
     }
     
-    void movieReminder(){
+        void movieReminder(){
         Button btn = new Button("OK");
         Label lbl = new Label();
-        List<Movie> movies = new ArrayList();
-        movies.addAll( manager.warning());
+        moviesReminder = new ArrayList();
+        moviesReminder.addAll(manager.warning());
         String underWatchedMovie = "";
-        
-        for (Movie movy : movies) {
-            underWatchedMovie = underWatchedMovie + movy.getTitle() + "\n";
-        }
-        
-        lbl.setText(underWatchedMovie);
-        
-        StackPane root = new StackPane();
-        root.setAlignment(lbl, Pos.TOP_CENTER);
-        root.setAlignment(btn, Pos.BOTTOM_CENTER);
-        root.getChildren().addAll(lbl, btn);
-        Scene scene = new Scene(root, 800, 600);
-        Stage stage = new Stage();
-        stage.setTitle("Consider removing these movies");
-        stage.setScene(scene);
-        stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-
-            public void handle(ActionEvent event) {
-                Stage stage = (Stage) btn.getScene().getWindow();
-
-                stage.close();
+        if (moviesReminder.size() != 0) {
+            for (Movie movy : moviesReminder) {
+                underWatchedMovie = underWatchedMovie + movy.getTitle() + "\n";
             }
-        });
-        
+
+            lbl.setText(underWatchedMovie);
+
+            StackPane root = new StackPane();
+            root.setAlignment(lbl, Pos.TOP_CENTER);
+            root.setAlignment(btn, Pos.BOTTOM_CENTER);
+            root.getChildren().addAll(lbl, btn);
+            Scene scene = new Scene(root, 800, 600);
+            Stage stage = new Stage();
+            stage.setTitle("Consider removing these movies");
+            stage.setScene(scene);
+            stage.show();
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+
+                public void handle(ActionEvent event) {
+                    Stage stage = (Stage) btn.getScene().getWindow();
+
+                    stage.close();
+                }
+            });
+        }
     }
 
     void chooseDeleteCategory() {
