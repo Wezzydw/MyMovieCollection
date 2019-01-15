@@ -39,8 +39,7 @@ import mymoviecollection.bll.Search;
  *
  * @author Wezzy Laptop
  */
-public class Model
-{
+public class Model {
 
     private Player player;
     private Search search;
@@ -50,8 +49,8 @@ public class Model
     private String tmpString;
     private MenuButton mmm;
     private List<Boolean> categoryCheck;
-    public Model() throws IOException
-    {
+
+    public Model() throws IOException {
         player = new Player();
         search = new Search();
         movies = FXCollections.observableArrayList();
@@ -59,37 +58,33 @@ public class Model
         manager = new Manager();
         tmpString = "";
     }
-    public void setCheckList(List<Boolean> categoryCheck)
-    {
+
+    public void setCheckList(List<Boolean> categoryCheck) {
         this.categoryCheck = categoryCheck;
     }
-    
-    public void setMenuItmes(MenuButton mmm, List<Category> allCat)
-    {
+
+    public void setMenuItmes(MenuButton mmm, List<Category> allCat) {
         this.mmm = mmm;
         manager.getChecklistCategories(allCat);
     }
-    public void addMovies(Stage stage)
-    {
+
+    public void addMovies(Stage stage) {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(stage);
 
-        if (selectedDirectory != null)
-        {
+        if (selectedDirectory != null) {
             String filepath = selectedDirectory.getAbsolutePath();
             manager.scanFolder(filepath);
         }
 
     }
 
-    void editMovie(Movie selectedItem)
-    {
+    void editMovie(Movie selectedItem) {
         manager.editMovie(selectedItem);
     }
-    
-    void editCat()
-    {
+
+    void editCat() {
         TextField txtTitle = new TextField();
         txtTitle.setText("new category name");
         Button btn = new Button();
@@ -108,13 +103,11 @@ public class Model
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try
-                {
+                try {
                     editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
-                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem())+1);
+                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
                     mmm.getItems().add(new CheckMenuItem(txtTitle.getText()));
-                } catch (SQLException ex)
-                {
+                } catch (SQLException ex) {
                     Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
@@ -122,40 +115,35 @@ public class Model
             }
         });
     }
+
     void editCategory(Category category, String newTitle) throws SQLException {
         manager.editCategory(category, newTitle);
 
     }
 
-    void playMovie(Movie selectedItem)
-    {
+    void playMovie(Movie selectedItem) {
         manager.playMovie(selectedItem);
-       
+
     }
 
-    public void sliderRateMovie(Movie selectedItem, double value)
-    {
-        System.out.println(selectedItem.getTitle());
-        if (selectedItem !=null)
-        {
+    public void sliderRateMovie(Movie selectedItem, double value) {
+        System.out.println("Title " + selectedItem.getTitle());
+        if (selectedItem != null) {
             System.out.println("We are in manager");
             manager.sliderRateMovie(selectedItem, value);
         }
     }
 
-    public double getLabelRating(double value)
-    {
-        
-    return value;
+    public double getLabelRating(double value) {
+
+        return value;
     }
-    
-    void reMovie(List<Movie> selectedItem) throws IOException
-    {
+
+    void reMovie(List<Movie> selectedItem) throws IOException {
         manager.reMovie(selectedItem);
     }
 
-    void createCategory()
-    {
+    void createCategory() {
         TextField txtTitle = new TextField();
         txtTitle.setText("Category");
         Button btn = new Button();
@@ -169,13 +157,11 @@ public class Model
         stage.setTitle("create category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 addCategory(new Category(txtTitle.getText()));
-                tmpString =txtTitle.getText();
+                tmpString = txtTitle.getText();
                 mmm.getItems().add(new CheckMenuItem(tmpString));
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
@@ -183,21 +169,18 @@ public class Model
         });
     }
 
-    void addCategory(Category cat)
-    {
+    void addCategory(Category cat) {
         //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
     }
 
-    void chooseDeleteCategory()
-    {
+    void chooseDeleteCategory() {
 //        TextField txtTitle = new TextField();
 //        txtTitle.setText("Category");
         Button btn = new Button();
         ComboBox cbox = new ComboBox<Category>();
         cbox.setItems(manager.getAllCategories());
-        
-        
+
         btn.setText("delete category");
         StackPane root = new StackPane();
         root.setAlignment(cbox, Pos.TOP_CENTER);
@@ -208,17 +191,14 @@ public class Model
         stage.setTitle("delete category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
 
             public void handle(ActionEvent event) {
-                try
-                {
+                try {
                     deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
-                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem())+1);
-                } catch (SQLException ex)
-                {
+                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
+                } catch (SQLException ex) {
                     Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 Stage stage = (Stage) btn.getScene().getWindow();
@@ -233,35 +213,30 @@ public class Model
 
     }
 
-    public ObservableList<Movie> getAllMovies()
-    {
+    public ObservableList<Movie> getAllMovies() {
         return manager.getAllMovies();
     }
 
-
-    ObservableList<Category> getAllCategories()
-    {
+    ObservableList<Category> getAllCategories() {
         return manager.getAllCategories();
     }
 
     void searchMovie(String query) {
         manager.searchMovie(query);
     }
-    
+
     public void onProgramClose(Stage stage) {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-             manager.onProgramClose();
+                manager.onProgramClose();
             }
         });
     }
 
-
-    void sendDataOnClick(ObservableList<Movie> selectedItems)
-    {
+    void sendDataOnClick(ObservableList<Movie> selectedItems) {
         manager.sendDataOnClick();
-        
+
     }
 
     void sortCategories() {
@@ -269,17 +244,16 @@ public class Model
 
     }
 
-    void deleteHalf()
-    {
+    void deleteHalf() {
         manager.deleteHalf();
     }
-    
-    public BufferedImage getImage(String image)
-    {
-    return manager.getImage(image);
+
+    public BufferedImage getImage(String image) {
+        System.out.println("Image in model " + image);
+        if (!image.isEmpty()) {
+            return manager.getImage(image);
+        }
+        return null;
     }
-    
-    
-    
 
 }
