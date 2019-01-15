@@ -8,6 +8,7 @@ package mymoviecollection.gui.controller;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -205,12 +206,15 @@ public class MyMoviesMainViewController implements Initializable
     private void btnPlayMov(ActionEvent event)
     {
         model.playMovie(lstMov.getSelectionModel().getSelectedItem());
+        
     }
 
     @FXML
     private void txtSearch(KeyEvent event)
     {
+        LocalDate date1 = LocalDate.now();
         model.searchMovie(txtSearch.getText());
+        lblInfo.setText(date1.toString());
     }
 
     @FXML
