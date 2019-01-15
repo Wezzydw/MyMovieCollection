@@ -28,6 +28,7 @@ public class Movie {
     String posterPath;
     double imdbRating;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    String posterURL;
     //Date date = new Date();
 
     public Movie(double rating, int id, String title, String filePath, String lastView) {
@@ -47,7 +48,6 @@ public class Movie {
         this.categories = categories;
         this.posterPath = posterPath;
         this.imdbRating = imdbRating;
-
     }
 
     public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating, double personalRating, int id, String lastView) {
@@ -60,7 +60,7 @@ public class Movie {
         this.imdbRating = imdbRating;
         this.rating = personalRating;
         this.id = id;
-        this.lastView = this.lastView;
+        this.lastView = lastView;
     }
 
     public double getRating() {
@@ -126,5 +126,6 @@ public class Movie {
     public String getPosterPath() {
         return posterPath;
     }
+    
 
 }

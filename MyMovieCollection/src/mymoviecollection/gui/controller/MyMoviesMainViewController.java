@@ -184,7 +184,7 @@ public class MyMoviesMainViewController implements Initializable
     }
 
     @FXML
-    private void btnEditMov(ActionEvent event)
+    private void btnEditMov(ActionEvent event) throws IOException
     {
         model.editMovie(lstMov.getSelectionModel().getSelectedItem());
     }
@@ -233,6 +233,8 @@ public class MyMoviesMainViewController implements Initializable
     private void selectedDataToManager(MouseEvent event)
     {
        BufferedImage buff = null;
+        System.out.println("LastView : " + lstMov.getSelectionModel().getSelectedItem().getLastView());
+       lblInfo.setText(" " + lstMov.getSelectionModel().getSelectedItem().getLastView());
        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
        lblLength.setText(" Movie length "+ lstMov.getSelectionModel().getSelectedItem().getLength()+" Minutes");
