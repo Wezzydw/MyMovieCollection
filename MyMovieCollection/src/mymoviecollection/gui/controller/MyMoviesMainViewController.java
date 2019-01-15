@@ -239,6 +239,7 @@ public class MyMoviesMainViewController implements Initializable
        lblYear.setText(" Release year "+ lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
        System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
        //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
+        System.out.println("Image in controller: " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
        Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
        MovieImage.setImage(image);
        String tmpString = "";
