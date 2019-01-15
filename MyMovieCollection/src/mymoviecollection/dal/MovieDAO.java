@@ -371,5 +371,46 @@ public class MovieDAO {
         }
 
     }
+    
+        public void SendLastView(Movie movie) throws IOException {
+        //String a = "UPDATE Songs SET Title = ?, Author = ?, Album = ?, Categori = ?, Filepath = ?, Length = ?, ReleaseYear = ? WHERE Id = ?;";
+        String a = "UPDATE Movies SET lastView = ? WHERE Title = ?;";
+        try (Connection con = conProvider.getConnection()) {
+            System.out.println("getLastView " + movie.getLastView());
+            System.out.println("ID: " + movie.getId());
+            PreparedStatement pstmt = con.prepareStatement(a);
+            pstmt.setString(1, movie.getLastView());
+            pstmt.setString(2, movie.getTitle());
+            pstmt.execute();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    public void updateMovie(Movie movie)
+    {
+        String categories = "";
+        for (String string : movie.getCategory())
+        {
+            categories += string + ",";
+        }
+        String a = "UPDATE Songs SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
+        try (Connection con = conProvider.getConnection())
+        {
+            PreparedStatement pstmt = con.prepareStatement(a);
+            pstmt.setString(1, movie.getTitle());
+            pstmt.setString(2, movie.getLength());
+            pstmt.setString(3, movie.getReleaseYear());
+            pstmt.setDouble(4, movie.getRating());
+            pstmt.setString(5, categories);
+            pstmt.setString(6, movie.getFilePath());
+            pstmt.execute();
+
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 
 }

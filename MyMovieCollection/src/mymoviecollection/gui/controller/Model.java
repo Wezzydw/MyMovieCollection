@@ -5,10 +5,12 @@
  */
 package mymoviecollection.gui.controller;
 
+import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +18,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -80,7 +85,18 @@ public class Model {
 
     }
 
-    void editMovie(Movie selectedItem) {
+    void editMovie(Movie selectedItem) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/mytunes/gui/view/EditMovieView.fxml"));
+        loader.load();
+        EditMovieViewController display = loader.getController();
+        display.setMovie(selectedItem);
+        display.setModel(this);
+        Parent p = loader.getRoot();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(p));
+        stage.showAndWait();
         manager.editMovie(selectedItem);
     }
 
@@ -172,6 +188,40 @@ public class Model {
     void addCategory(Category cat) {
         //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
+    }
+    
+    void movieReminder(){
+        Button btn = new Button("OK");
+        Label lbl = new Label();
+        List<Movie> movies = new ArrayList();
+        movies.addAll( manager.warning());
+        String underWatchedMovie = "";
+        
+        for (Movie movy : movies) {
+            underWatchedMovie = underWatchedMovie + movy.getTitle() + "\n";
+        }
+        
+        lbl.setText(underWatchedMovie);
+        
+        StackPane root = new StackPane();
+        root.setAlignment(lbl, Pos.TOP_CENTER);
+        root.setAlignment(btn, Pos.BOTTOM_CENTER);
+        root.getChildren().addAll(lbl, btn);
+        Scene scene = new Scene(root, 800, 600);
+        Stage stage = new Stage();
+        stage.setTitle("Consider removing these movies");
+        stage.setScene(scene);
+        stage.show();
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+
+            public void handle(ActionEvent event) {
+                Stage stage = (Stage) btn.getScene().getWindow();
+
+                stage.close();
+            }
+        });
+        
     }
 
     void chooseDeleteCategory() {
