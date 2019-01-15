@@ -21,13 +21,14 @@ public class Movie {
     int id;
     String title;
     String filePath;
-    LocalDate lastView;
+    String lastView;
     String length;
     String releaseYear;
     List<String> categories;
     String posterPath;
     double imdbRating;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    String posterURL;
     //Date date = new Date();
 
     public Movie(double rating, int id, String title, String filePath, String lastView) {
@@ -47,9 +48,21 @@ public class Movie {
         this.categories = categories;
         this.posterPath = posterPath;
         this.imdbRating = imdbRating;
-
     }
-    
+
+    public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating, double personalRating, int id, String lastView) {
+        this.title = title;
+        this.length = length;
+        this.releaseYear = releaseYear;
+        this.categories = categories;
+        this.filePath = filepath;
+        this.posterPath = posterPath;
+        this.imdbRating = imdbRating;
+        this.rating = personalRating;
+        this.id = id;
+        this.lastView = lastView;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -78,7 +91,7 @@ public class Movie {
         this.filePath = filePath;
     }
 
-    public void setLastView(LocalDate lastView) {
+    public void setLastView(String lastView) {
         this.lastView = lastView;
     }
 
@@ -86,7 +99,7 @@ public class Movie {
         return filePath;
     }
 
-    public LocalDate getLastView() {
+    public String getLastView() {
         return lastView;
     }
 
@@ -106,14 +119,13 @@ public class Movie {
         return releaseYear;
     }
 
-    public double getImdbRating()
-    {
+    public double getImdbRating() {
         return imdbRating;
     }
 
-    public String getPosterPath()
-    {
+    public String getPosterPath() {
         return posterPath;
     }
+    
 
 }

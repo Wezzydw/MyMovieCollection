@@ -59,11 +59,21 @@ public class Manager {
         categories.addAll(cdao.getAllCategories());
         globalQuery = "";
     }
-
+    
+    /**
+     * Deletes a movie from the DB.
+     * @throws IOException 
+     */
     public void deleteMovie() throws IOException {
         mdao.deleteMovies(movies);
     }
-
+    
+    /**
+     * This scans folders for files. It calls itself recursively. Scans the
+     * folder, if another folder is found, it steps into that, and rescans for
+     * files.
+     * @param filepath 
+     */
     public void scanFolder(String filepath) {
         mdao.clearMovieList();
         Thread t = new Thread(new Runnable() {
@@ -78,7 +88,10 @@ public class Manager {
         movieLoop = System.currentTimeMillis();
         repeatCheckMovies();
     }
-
+    
+    /**
+     * 
+     */
     private void repeatCheckMovies() {
         List<Movie> tmpMovieList = new ArrayList();
         tmpMovieList.addAll(mdao.getMovie());
@@ -134,18 +147,33 @@ public class Manager {
     public void editMovie(Movie selectedItem) {
 
     }
-
+    
+    /**
+     * 
+     * @param category
+     * @param newTitle
+     * @throws SQLException 
+     */
     public void editCategory(Category category, String newTitle) throws SQLException {
         categories.remove(category);
         categories.add(new Category(newTitle));
         cdao.updateCategory(category.getTitle(), newTitle);
     }
-
+    
+    /**
+     * 
+     * @param selectedItem 
+     */
     public void playMovie(Movie selectedItem) {
         System.out.println(selectedItem.getFilePath());
         vlc.callVlc(selectedItem.getFilePath());
     }
-
+    
+    /**
+     * 
+     * @param selectedItem
+     * @param rating 
+     */
     public void sliderRateMovie(Movie selectedItem, double rating) {
         selectedItem.setRating(rating);
         //for (Movie movie1 : allMovies) {
@@ -159,7 +187,12 @@ public class Manager {
             //}
         //}
     }
-
+    
+    /**
+     * 
+     * @param selectedItem
+     * @throws IOException 
+     */
     public void reMovie(List<Movie> selectedItem) throws IOException {
         mdao.deleteMovies(selectedItem);
 
@@ -167,35 +200,60 @@ public class Manager {
             movies.remove(movie1);
         }
     }
-
+    
+    /**
+     * 
+     * @param category 
+     */
     public void addCategory(Category category) {
         categories.add(category);
         cdao.createCategory(category);
     }
-
+    
+    /**
+     * 
+     * @param category
+     * @throws SQLException 
+     */
     public void deleteCategory(Category category) throws SQLException {
         cdao.deleteCategory(category.getTitle());
         categories.remove(category);
 
     }
-
+    
+    /**
+     * 
+     * @return an observablelist of movies.
+     */
     public ObservableList<Movie> getAllMovies() {
         movies.setAll(mdao.getAllMoviesFromDB());
         allMovies.addAll(movies);
         return movies;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public ObservableList<Category> getAllCategories() {
         // genres.addAll(categories);
         return categories;
     }
-
+    
+    /**
+     * 
+     * @param query 
+     */
     public void searchMovie(String query) {
         globalQuery = query;
 //        movies.setAll(search.searchMovie(query, allMovies));
         movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
     }
-
+    
+    /**
+     * 
+     * @param selectedItem 
+     */
     public void getPersonalRatings(Movie selectedItem) {
         selectedItem.getRating();
         for (Movie movie1 : allMovies) {
@@ -204,7 +262,7 @@ public class Manager {
             }
         }
     }
-
+    
     public void onProgramClose() {
 //        try {
 //            mdao.SendRatingToDB(allMovies);
@@ -212,17 +270,29 @@ public class Manager {
 //            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }
-
+    
+    /**
+     * 
+     * @param checkCategories 
+     */
     public void sortCategories(List<Boolean> checkCategories) {
         System.out.println(checkCategories.size() + "hej" + genres.size() + "tonny" + categories.size());
         movies.setAll(search.sortCategories(checkCategories, allMovies, genres));
         this.checkCategories = checkCategories;
     }
 
+    /**
+     * 
+     * @param allCat 
+     */
     public void getChecklistCategories(List<Category> allCat) {
         genres = allCat;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Movie sendDataOnClick() {
 
         for (Movie movie1 : allMovies) {
@@ -234,6 +304,9 @@ public class Manager {
         return null;
     }
 
+    /**
+     * 
+     */
     public void deleteHalf() {
         for (int i = 0; i < movies.size(); i++) {
             if (i % 2 == 0) {
@@ -246,6 +319,11 @@ public class Manager {
         }
     }
 
+    /**
+     * 
+     * @param image
+     * @return 
+     */
     public BufferedImage getImage(String image)
     {
          
