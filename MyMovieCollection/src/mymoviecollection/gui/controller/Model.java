@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -191,14 +192,22 @@ public class Model {
     
     void movieReminder(){
         Button btn = new Button("OK");
-        Label lbl = new Label(manager.warning().toString());
+        Label lbl = new Label();
+        List<Movie> movies = new ArrayList();
+        movies.addAll( manager.warning());
+        String underWatchedMovie = "";
         
+        for (Movie movy : movies) {
+            underWatchedMovie = underWatchedMovie + movy.getTitle() + "\n";
+        }
+        
+        lbl.setText(underWatchedMovie);
         
         StackPane root = new StackPane();
         root.setAlignment(lbl, Pos.TOP_CENTER);
         root.setAlignment(btn, Pos.BOTTOM_CENTER);
         root.getChildren().addAll(lbl, btn);
-        Scene scene = new Scene(root, 400, 100);
+        Scene scene = new Scene(root, 800, 600);
         Stage stage = new Stage();
         stage.setTitle("Consider removing these movies");
         stage.setScene(scene);

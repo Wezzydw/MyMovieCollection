@@ -345,16 +345,23 @@ public class Manager {
         for (Movie movy : allMovies) {
             
             LocalDate d = LocalDate.parse(movy.getLastView());
-            if(d.isAfter(date.plusYears(2))) {
+            if(date.isAfter(d.plusYears(2)) && movy.getRating() < 6) {
+                System.out.println("Er jeg tilføjet?" + spastiker.size());
                 spastiker.add(movy);
             }
         }
         
-        for (Movie movy1 : spastiker) {
-            if(movy1.getRating() > 6){
-                spastiker.remove(movy1);
-            }
-        }
+//        List<Movie> satmeNogetShot = new ArrayList();
+//        satmeNogetShot.addAll(spastiker);
+        
+//        for (Movie movy1 : satmeNogetShot) {
+//            if(movy1.getRating() > 6){
+//                System.out.println("er jeg under 6?" + spastiker.size());
+//                satmeNogetShot.remove(movy1);
+//            }
+//        }
+        
+        System.out.println("Kører jeg overhovedet?!");
         return spastiker;
     }
 
