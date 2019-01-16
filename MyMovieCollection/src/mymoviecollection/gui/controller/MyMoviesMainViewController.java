@@ -188,7 +188,7 @@ public class MyMoviesMainViewController implements Initializable {
 
     private void btnRate(ActionEvent event) {
         //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
-        model.deleteHalf();
+
     }
 
     @FXML
@@ -212,7 +212,6 @@ public class MyMoviesMainViewController implements Initializable {
         movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
         model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
         Stage stage = (Stage) anchorPane.getScene().getWindow();
-        model.onProgramClose(stage);
         System.out.println("VIrker det");
     }
 

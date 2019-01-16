@@ -54,16 +54,29 @@ public class Model {
         manager = new Manager();
         tmpString = "";
     }
-
+/**
+ * metoden laver en list af booleans og sætter variablen til dens input.
+ * @param categoryCheck 
+ */
     public void setCheckList(List<Boolean> categoryCheck) {
         this.categoryCheck = categoryCheck;
     }
-
+    
+/**
+ * sender metoden videre til manager.
+ * @param mmm
+ * @param allCat 
+ */
     public void setMenuItmes(MenuButton mmm, List<Category> allCat) {
         this.mmm = mmm;
         manager.getChecklistCategories(allCat);
     }
 
+    /**
+     * hvis selectedDirectory ikke er null så sender den videre til manager.
+     * @param stage
+     * @throws DALException 
+     */
     public void addMovies(Stage stage) throws DALException {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -99,11 +112,13 @@ public class Model {
         /**
          * metoden opdatere den film der er bleven ændret i editMovie.
          */
+        
     }
     void updateMovie(Movie selectedItem)
     {
         manager.editMovie(selectedItem);
     }
+    
 /**
  * denne metode åbner et vindue der gør det muligt at ændre kategorierne på den
  * valgte kategori.
@@ -139,17 +154,32 @@ public class Model {
             }
         });
     }
-
+    
+/**
+ * Sender metoden ned til manageren, med category og en ny title.
+ * @param category
+ * @param newTitle
+ * @throws SQLException 
+ */
     void editCategory(Category category, String newTitle) throws SQLException {
         manager.editCategory(category, newTitle);
 
     }
-
+    
+/**
+ * Sender den selected movie til manager.
+ * @param selectedItem 
+ */
     void playMovie(Movie selectedItem) {
         manager.playMovie(selectedItem);
 
     }
-
+    
+/**
+ * Sender et selected item og value(rating) til manager
+ * @param selectedItem
+ * @param value 
+ */
     public void sliderRateMovie(Movie selectedItem, double value) {
         System.out.println("Title " + selectedItem.getTitle());
         if (selectedItem != null) {
@@ -157,16 +187,28 @@ public class Model {
             manager.sliderRateMovie(selectedItem, value);
         }
     }
-
+    
+/**
+ * @param value
+ * @return returnere en value som rating
+ */
     public double getLabelRating(double value) {
 
         return value;
     }
-
+    
+/**
+ * sender selected item til manager laget.
+ * @param selectedItem
+ * @throws IOException 
+ */
     void reMovie(List<Movie> selectedItem) throws IOException {
         manager.reMovie(selectedItem);
     }
-
+    
+    /**
+     * åbner et vindue hvori man kan create en ny category.
+     */
     void createCategory() {
         TextField txtTitle = new TextField();
         txtTitle.setText("Category");
@@ -193,11 +235,19 @@ public class Model {
         });
     }
 
+    /**
+     * kalder metoden i manager
+     * @param cat 
+     */
     void addCategory(Category cat) {
         //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
     }
     
+    /**
+     * metoden åbner et advarselsvindue hvis der er film i moviereminder listen.
+     * Så kalder den metoden i manager.warning.
+     */
         void movieReminder(){
         Button btn = new Button("OK");
         Label lbl = new Label();
@@ -231,7 +281,9 @@ public class Model {
             });
         }
     }
-
+/**
+ * Laver et vindue hvori man kan delete valgte kategorier.
+ */
     void chooseDeleteCategory() {
 //        TextField txtTitle = new TextField();
 //        txtTitle.setText("Category");
@@ -252,6 +304,10 @@ public class Model {
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
 
+            /**
+             * den åbner et vindue med en combobox hvori man kan vælge de 
+             * kategorier der skal slettes
+             */
             public void handle(ActionEvent event) {
                 try {
                     deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
@@ -265,45 +321,59 @@ public class Model {
             }
         });
     }
-
+    
+/**
+ * sender metoden til manager.
+ * @param category
+ * @throws SQLException 
+ */
     void deleteCategory(Category category) throws SQLException {
         manager.deleteCategory(category);
-
     }
-
+    
+/**
+ * 
+ * @return kalder metoden getAllMovies i manager
+ */
     public ObservableList<Movie> getAllMovies() {
         return manager.getAllMovies();
     }
-
+/**
+ * kalder cateogry listen ned til manager.
+ * @return 
+ */
     ObservableList<Category> getAllCategories() {
         return manager.getAllCategories();
     }
-
+    
+/**
+ * kalder SearchMovie i manager
+ * @param query 
+ */
     void searchMovie(String query) {
         manager.searchMovie(query);
     }
-
-    public void onProgramClose(Stage stage) {
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-            }
-        });
-    }
-
+    
+ /**   
+ * kalder sendDataOnClick i manager
+ * @param selectedItems 
+ */
     void sendDataOnClick(ObservableList<Movie> selectedItems) {
         manager.sendDataOnClick();
 
     }
-
+    /**
+     * kalder SortCategories i manager
+     */
     void sortCategories() {
         manager.sortCategories(categoryCheck);
     }
 
-    void deleteHalf() {
-        manager.deleteHalf();
-    }
-
+/**
+ * hvis billedet ikke er tomt kalder den getImage i manager.
+ * @param image
+ * @return image
+ */
     public BufferedImage getImage(String image) {
         System.out.println("Image in model " + image);
         if (!image.isEmpty()) {
