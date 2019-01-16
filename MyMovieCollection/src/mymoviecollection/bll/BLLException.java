@@ -5,14 +5,16 @@
  */
 package mymoviecollection.bll;
 
+
+
 /**
  *
  * @author Wezzy Laptop
  */
 public class BLLException extends Exception {
-    
-    public BLLException(String message){
+
+    public BLLException(String message) {
         super(message);
     }
-    
+
 }

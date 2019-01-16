@@ -46,7 +46,8 @@ public class MovieDAO {
             conProvider = new DatabaseConnection();
         } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
-                startTime = 0;}
+            startTime = 0;
+        }
 
         requestRateTimer = 11000;
         requestNotFound = "The resource you requested could not be found.";
@@ -81,11 +82,14 @@ public class MovieDAO {
         }
         return movies;
     }
-/**
- * der bliver lavet et check på hver liste og returner enten true eller false.
- * @param filepath
- * @return 
- */
+
+    /**
+     * der bliver lavet et check på hver liste og returner enten true eller
+     * false.
+     *
+     * @param filepath
+     * @return
+     */
     public boolean isAlreadyInSystem(String filepath) {
         for (Movie m : movies) {
             if (m.getFilePath() == filepath) {
@@ -107,19 +111,22 @@ public class MovieDAO {
         }
         return false;
     }
-/**
- * Hvis Listen ikke er tom, så clear den listen
- */
+
+    /**
+     * Hvis Listen ikke er tom, så clear den listen
+     */
     public void clearMovieList() {
         if (!movies.isEmpty()) {
             oldMovieList.addAll(movies);
         }
         movies.clear();
     }
-/**
- * returnere de film der bliver tilføjet listen løbende
- * @return 
- */
+
+    /**
+     * returnere de film der bliver tilføjet listen løbende
+     *
+     * @return
+     */
     public List<Movie> getMovie() {
         return movies;
     }
@@ -166,23 +173,28 @@ public class MovieDAO {
         startTime = imdb.getStartTime();
 
         if (searchResult.contains("total_results\":0")) {
-            throw new DALException("Movie not found, please check file name - " + 
-                    filepath);
-            //return null;
+//            throw new DALException("Movie not found, please check file name - " + 
+//                    filepath);
+            return null;
         }
 
         try {
             idInformation = imdb.getIMDBText(imdb.getSearchIDQuery(searchResult));
         } catch (IOException ex) {
-            throw new DALException("Could not retrieve information about : "); 
+            throw new DALException("Could not retrieve information about : ", ex);
         }
-        
+
         startTime = imdb.getStartTime();
         counter += 2;
         Movie newMovie = imdb.constructMovie(idInformation);
         LocalDate ldate = LocalDate.now();
-        newMovie.setLastView(ldate.toString());
 
+        if (newMovie == null) {
+            return null;
+
+        }
+        newMovie.setLastView(ldate.toString());
+        System.out.println(newMovie.getTitle() + ldate);
         for (Movie m : movies) {
             if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
@@ -251,9 +263,8 @@ public class MovieDAO {
                 String posterPath = rs.getString("posterPath");
                 String genre = rs.getString("categories");
                 String[] genres = genre.split(",");
-                
-                for (String s :genres)
-                {
+
+                for (String s : genres) {
                     categori.add(s);
                 }
                 Movie movie = new Movie(title, length, releaseYear, categori, filePath, posterPath, imdbRating, personalRating, id, lastView);
@@ -279,10 +290,9 @@ public class MovieDAO {
         String a = "INSERT INTO Movies (title, length, imdbRating, personalRating, filePath, lastView, posterPath, releaseYear, categories ) VALUES (?,?,?,?,?,?,?,?,?);";
         try (Connection con = conProvider.getConnection()) {
             for (Movie movie : allMovies) {
-                
+
                 String genre = "";
-                for (String s : movie.getCategory())
-                {
+                for (String s : movie.getCategory()) {
                     genre += s + ",";
                 }
 
@@ -319,12 +329,13 @@ public class MovieDAO {
      * @param imagePath
      * @return
      */
-    public BufferedImage readImageFromDisk(String imagePath) {
+    public BufferedImage readImageFromDisk(String imagePath) throws DALException {
 
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
+            throw new DALException("Image not found on disk: " + imagePath, e);
         }
 
         System.out.println("Image path: " + imagePath);
@@ -355,6 +366,7 @@ public class MovieDAO {
         }
 
     }
+
     /**
      * Der forbindes til databasen og sender lastview of title på movien dertil
      * @param movie
@@ -380,15 +392,13 @@ public class MovieDAO {
     public void updateMovie(Movie movie)
     {
         String categories = "";
-        for (String string : movie.getCategory())
-        {
+        for (String string : movie.getCategory()) {
             categories += string + ",";
         }
 
         String a = "UPDATE Movies SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
 
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(a);
             pstmt.setString(1, movie.getTitle());
             pstmt.setString(2, movie.getLength());
@@ -398,8 +408,7 @@ public class MovieDAO {
             pstmt.setString(6, movie.getFilePath());
             pstmt.execute();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
