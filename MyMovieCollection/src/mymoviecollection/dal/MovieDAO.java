@@ -249,7 +249,7 @@ public class MovieDAO {
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
-
+            
             while (rs.next()) {
                 List<String> categori = new ArrayList();
                 String title = rs.getString("Title");
@@ -392,6 +392,7 @@ public class MovieDAO {
       */   
     public void updateMovie(Movie movie)
     {
+
         String categories = "";
         for (String string : movie.getCategory()) {
             categories += string + ",";

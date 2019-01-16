@@ -7,6 +7,7 @@ package mymoviecollection.dal;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import mymoviecollection.be.Movie;
@@ -34,7 +35,7 @@ public class MovieDAOTester {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         //File f = new File(uri);
            MovieDAO m = new MovieDAO();

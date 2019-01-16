@@ -132,6 +132,7 @@ public class Manager {
                             }
                         }
                         allMovies.addAll(listToAdd);
+                        
                         searchMovie(globalQuery);
                         try {
                             mdao.SendDataToDB(listToAdd);
