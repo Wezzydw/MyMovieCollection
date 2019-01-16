@@ -12,13 +12,12 @@
       <TextField fx:id="txtLength" layoutX="151.0" layoutY="104.0" />
       <TextField fx:id="txtReleaseYear" layoutX="151.0" layoutY="158.0" />
       <TextField fx:id="txtRating" layoutX="151.0" layoutY="208.0" />
-      <TextField layoutX="151.0" layoutY="261.0" />
       <Label layoutX="55.0" layoutY="57.0" text="Title:" />
       <Label layoutX="55.0" layoutY="108.0" text="Længde" />
       <Label layoutX="55.0" layoutY="162.0" text="Udgivelsesår" />
       <Label layoutX="55.0" layoutY="212.0" text="Personlig rating" />
       <Label layoutX="55.0" layoutY="265.0" text="Kategorier" />
-      <MenuButton fx:id="menuCategories" layoutX="317.0" layoutY="261.0" mnemonicParsing="false" text="Kategorier" />
+      <MenuButton fx:id="menuCategories" layoutX="151.0" layoutY="261.0" mnemonicParsing="false" text="Kategorier" />
       <Button fx:id="btnSave" layoutX="468.0" layoutY="337.0" mnemonicParsing="false" onAction="#onSave" text="Gem" />
    </children>
 </AnchorPane>

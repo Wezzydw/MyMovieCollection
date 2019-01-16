@@ -132,7 +132,7 @@ public class ImdbDAO {
         return year;
     }
 
-    public String getIMDBText(String url) throws IOException {
+    public String getIMDBText(String url) throws IOException, DALException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         //add headers to the connection, or check the status if desired..
 
@@ -163,7 +163,7 @@ public class ImdbDAO {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ImdbDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new DALException("Thread.sleep() error + " + response.toString());
                 }
             }
             return getIMDBText(url);
@@ -188,7 +188,7 @@ public class ImdbDAO {
         return idString;
     }
 
-    public Movie constructMovie(String information) {
+    public Movie constructMovie(String information) throws DALException {
         String title = "";
         String length = "";
         String releaseYear = "";
@@ -219,13 +219,13 @@ public class ImdbDAO {
             try {
                 url = new URL(posterURLp1 + posterPathOnline);
             } catch (MalformedURLException ex) {
-                Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new DALException("Could not construct valid URL" + posterPathOnline);
             }
 
             try {
                 bi = ImageIO.read(url);
             } catch (IOException ex) {
-                Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+                throw new DALException("Could not read Image from URL: " + url);
             }
             posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length() - 4));
             String allGenres = information.substring(information.indexOf("genre"), information.indexOf("]"));
@@ -236,8 +236,8 @@ public class ImdbDAO {
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
                 }
             } else {
-                //Catch error her System.out.println(title);
-                return null;
+                throw new DALException("Movie has no gategories" + title);
+                //return null;
             }
         }
 
@@ -245,7 +245,14 @@ public class ImdbDAO {
         return movie;
     }
 
-    public String saveImageToDisk(BufferedImage image, String title) {
+    /**
+     * Denne metode gemmer billede filerne til vores harddisk som gør det muligt
+     * at benytte disse billeder i programmet.
+     * @param image
+     * @param title
+     * @return 
+     */
+    public String saveImageToDisk(BufferedImage image, String title) throws DALException {
         title = title.replace(":", "_");
         title = title.replace("/", "_");
         title = title.replace("\\", "_");
@@ -263,7 +270,7 @@ public class ImdbDAO {
                 String findFormat = title.substring(title.lastIndexOf(".") + 1);
                 ImageIO.write(bi, findFormat, outputfile);
             } catch (IOException e) {
-                
+                throw new DALException("Could not save image: " + title);
             }
         }
         return outputfile.getAbsolutePath();

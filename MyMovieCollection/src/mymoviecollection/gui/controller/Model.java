@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,8 +33,6 @@ import javafx.stage.WindowEvent;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 import mymoviecollection.bll.Manager;
-import mymoviecollection.bll.Player;
-import mymoviecollection.bll.Search;
 
 /**
  *
@@ -76,7 +73,11 @@ public class Model {
         }
 
     }
-
+/**
+ * Denne metode åbner et FXML vindue hvori det er muligt at editmovies.
+ * @param selectedItem
+ * @throws IOException 
+ */
     void editMovie(Movie selectedItem) throws IOException
     {
         if (selectedItem != null)
@@ -93,13 +94,18 @@ public class Model {
             stage.setScene(new Scene(p));
             stage.showAndWait();
         }
-        
+        /**
+         * metoden opdatere den film der er bleven ændret i editMovie.
+         */
     }
     void updateMovie(Movie selectedItem)
     {
         manager.editMovie(selectedItem);
     }
-
+/**
+ * denne metode åbner et vindue der gør det muligt at ændre kategorierne på den
+ * valgte kategori.
+ */
     void editCat() {
         TextField txtTitle = new TextField();
         txtTitle.setText("new category name");
@@ -290,7 +296,6 @@ public class Model {
 
     void sortCategories() {
         manager.sortCategories(categoryCheck);
-
     }
 
     void deleteHalf() {
