@@ -62,7 +62,7 @@ public class Manager {
     }
 
     /**
-     * Kalder deleteMovie metoden i  mdao som fjerner film fra databasen.
+     * Kalder deleteMovie metoden i mdao som fjerner film fra databasen.
      *
      * @throws IOException
      */
@@ -72,18 +72,18 @@ public class Manager {
 
     /**
      * Den kalder sig selv recursively. Den scanner en mappe igennem for filer,
-     * finder den ikke nogle filer, men en anden mappe, hopper den ind og scanner
-     * den nye mappe.
-     * 
+     * finder den ikke nogle filer, men en anden mappe, hopper den ind og
+     * scanner den nye mappe.
+     *
      * @param filepath
      */
     public void scanFolder(String filepath) throws DALException {
         mdao.clearMovieList();
-        
+
         Thread t = new Thread(new Runnable() {
-            
+
             public void run() {
-                
+
                 try {
                     mdao.scanFolder(filepath);
                 } catch (DALException ex) {
@@ -132,8 +132,48 @@ public class Manager {
                             }
                         }
                         allMovies.addAll(listToAdd);
-                        
+
                         searchMovie(globalQuery);
+                        
+//                        List<String> cat = new ArrayList();
+//
+//                        for (Category c : cdao.getAllCategories()) {
+//                            cat.add(c.getTitle());
+//                        }
+//                        List<String> cappp = new ArrayList();
+//
+//                        for (Movie m : allMovies) {
+//                            System.out.println("her4");
+//                            for (String c : cat) {
+//                                System.out.println("her3");
+//                                for (String mcat : m.getCategory()) {
+//                                    System.out.println("her2");
+//
+//                                    if (cappp.isEmpty()) {
+//                                        if (!c.contains(mcat)) {
+//                                            System.out.println("MACAT1" + mcat);
+//                                            cappp.add(mcat);
+//                                            
+//                                        }
+//                                    } else {
+//
+//                                        for (String ca : cappp) {
+//                                            System.out.println("her1" + mcat);
+//                                            if (!c.contains(mcat) && !ca.contains(mcat)) {
+//                                                System.out.println("MACAT" + mcat);
+//                                                cappp.add(mcat);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                        }
+//
+//                        for (String s : cappp) {
+//                            System.out.println(s);
+//                        }
+
                         try {
                             mdao.SendDataToDB(listToAdd);
 
@@ -142,6 +182,7 @@ public class Manager {
                         }
                         updateOnceASecond = currentTime;
                     }
+
                     repeatCheckMovies();
                 }
             }
@@ -154,8 +195,8 @@ public class Manager {
     }
 
     /**
-     * Den giver lov til at redigere kategorier og opdaterer det ned
-     * og giver updateCategory i cdao adgang hertil.
+     * Den giver lov til at redigere kategorier og opdaterer det ned og giver
+     * updateCategory i cdao adgang hertil.
      *
      * @param category
      * @param newTitle
@@ -169,6 +210,7 @@ public class Manager {
 
     /**
      * Åbner den highligtede film i VLC-player.
+     *
      * @param selectedItem
      */
     public void playMovie(Movie selectedItem) {
@@ -187,8 +229,9 @@ public class Manager {
     }
 
     /**
-     * Sender rating ned til databasen ned til databasen, som brugeren giver filmen,
-     * ved hjælp af sliderbaren.
+     * Sender rating ned til databasen ned til databasen, som brugeren giver
+     * filmen, ved hjælp af sliderbaren.
+     *
      * @param selectedItem
      * @param rating
      */
@@ -202,8 +245,9 @@ public class Manager {
     }
 
     /**
-     * Fjerner den highlightede film, fra listviewet over tilføjede film, og sender
-     * videre ned til deleteMovies i mdao.
+     * Fjerner den highlightede film, fra listviewet over tilføjede film, og
+     * sender videre ned til deleteMovies i mdao.
+     *
      * @param selectedItem
      * @throws IOException
      */
@@ -218,6 +262,7 @@ public class Manager {
     /**
      * Lader brugeren tilføje nye kategorier til listen af kategorier, og sender
      * det videre ned til databasen.
+     *
      * @param category
      */
     public void addCategory(Category category) {
@@ -226,8 +271,9 @@ public class Manager {
     }
 
     /**
-     * Lader brugeren fjerne en kategori fra listen af kategorier, og sender
-     * det videre ned til cdao.
+     * Lader brugeren fjerne en kategori fra listen af kategorier, og sender det
+     * videre ned til cdao.
+     *
      * @param category
      * @throws SQLException
      */
@@ -238,8 +284,9 @@ public class Manager {
     }
 
     /**
-     * Denne metode trækker alle film ud fra databasen, og tilføjer dem til listen
-     * allMovies.
+     * Denne metode trækker alle film ud fra databasen, og tilføjer dem til
+     * listen allMovies.
+     *
      * @return en observablelist af movies.
      */
     public ObservableList<Movie> getAllMovies() {
@@ -251,6 +298,7 @@ public class Manager {
     /**
      * Den får alle kategorier fra databasen oppe i initializeren, og returnerer
      * kategorierne.
+     *
      * @return en observablelist af categories.
      */
     public ObservableList<Category> getAllCategories() {
@@ -258,8 +306,9 @@ public class Manager {
     }
 
     /**
-     * Kalder search metoden og sender input ned i Search klassen, og setter 
+     * Kalder search metoden og sender input ned i Search klassen, og setter
      * movies listen med de film den får tilbage herfra.
+     *
      * @param query
      */
     public void searchMovie(String query) {
@@ -282,8 +331,9 @@ public class Manager {
     }
 
     /**
-     * Setter movies listen ud fra de valgte kategorier i menuboxen, efter at have
-     * kaldt sortCategories i Search klassen.
+     * Setter movies listen ud fra de valgte kategorier i menuboxen, efter at
+     * have kaldt sortCategories i Search klassen.
+     *
      * @param checkCategories
      */
     public void sortCategories(List<Boolean> checkCategories) {
@@ -293,6 +343,7 @@ public class Manager {
 
     /**
      * Setter genres til listen allCat.
+     *
      * @param allCat
      */
     public void getChecklistCategories(List<Category> allCat) {
@@ -300,7 +351,8 @@ public class Manager {
     }
 
     /**
-     * Looper gennem listen allMovies, og hvis 
+     * Looper gennem listen allMovies, og hvis
+     *
      * @return en film.
      */
     public Movie sendDataOnClick() {
@@ -330,9 +382,11 @@ public class Manager {
     }
 
     /**
-     * Får information om filstien fra databasen, gennem readImageFromDisk i mdao.
+     * Får information om filstien fra databasen, gennem readImageFromDisk i
+     * mdao.
+     *
      * @param image
-     * @return filstien til billedet. 
+     * @return filstien til billedet.
      */
     public BufferedImage getImage(String image) throws DALException {
 

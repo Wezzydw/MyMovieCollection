@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 
 /**
@@ -34,9 +35,11 @@ public class ImdbDAO {
     private static final String searchP1 = "https://api.themoviedb.org/3/movie/";
     private static final String serachP2 = "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
     private static final String posterURLp1 = "https://image.tmdb.org/t/p/original/";
+    private CategoryDAO d;
 
-    public ImdbDAO(long startTime) {
+    public ImdbDAO(long startTime) throws IOException {
         this.startTime = startTime;
+        d = new CategoryDAO();
     }
 
     public void setStartTime(long startTime) {
@@ -46,9 +49,7 @@ public class ImdbDAO {
     public long getStartTime() {
         return startTime;
     }
-    
-    
-    
+
     public String makeSearchString(String filepath) {
         String queryP2 = "";
         String searchString = "";
@@ -235,9 +236,34 @@ public class ImdbDAO {
             if (allGenres.contains("}")) {
                 String[] genre = allGenres.split("}");
 
+                List<Category> categories = d.getAllCategories();
+                List<String> list = new ArrayList();
+                List<String> toAdd = new ArrayList();
+
+                for (Category c : categories) {
+                    list.add(c.getTitle());
+                }
+
                 for (String s : genre) {
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
+
                 }
+
+                for (String s : genreList) {
+                    int counter = 0;
+                    for (String k : list) {
+                        if (!k.equals(s)) {
+                            counter++;
+                            if (counter == list.size()) {
+                                toAdd.add(s);
+                            }
+                        }
+
+                    }
+                }
+                for (String s : toAdd) {
+                    d.createCategory(new Category(s));                }
+
             } else {
                 //throw new DALException("Movie has no categories" + title);
                 return null;
@@ -251,9 +277,10 @@ public class ImdbDAO {
     /**
      * Denne metode gemmer billede filerne til vores harddisk som gør det muligt
      * at benytte disse billeder i programmet.
+     *
      * @param image
      * @param title
-     * @return 
+     * @return
      */
     public String saveImageToDisk(BufferedImage image, String title) throws DALException {
         title = title.replace(":", "_");

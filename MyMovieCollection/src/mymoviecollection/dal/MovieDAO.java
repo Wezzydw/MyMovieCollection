@@ -38,7 +38,7 @@ public class MovieDAO {
     private List<Movie> moviesFromDB;
     private List<Movie> oldMovieList;
 
-    public MovieDAO() {
+    public MovieDAO() throws IOException {
         counter = 0;
         movies = new ArrayList();
         i = 0;
