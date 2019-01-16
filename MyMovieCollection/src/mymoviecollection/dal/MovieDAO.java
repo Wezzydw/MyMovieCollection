@@ -58,8 +58,8 @@ public class MovieDAO {
             conProvider = new DatabaseConnection();
         } catch (IOException ex) {
             Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        startTime = 0;
+                startTime = 0;}
+
         requestRateTimer = 11000;
         requestNotFound = "The resource you requested could not be found.";
         imdb = new ImdbDAO(startTime);
@@ -93,7 +93,11 @@ public class MovieDAO {
         }
         return movies;
     }
-
+/**
+ * der bliver lavet et check på hver liste og returner enten true eller false.
+ * @param filepath
+ * @return 
+ */
     public boolean isAlreadyInSystem(String filepath) {
         for (Movie m : movies) {
             if (m.getFilePath() == filepath) {
@@ -115,7 +119,9 @@ public class MovieDAO {
         }
         return false;
     }
-
+/**
+ * Hvis Listen ikke er tom, så clear den listen
+ */
     public void clearMovieList() {
         if (!movies.isEmpty()) {
             oldMovieList.addAll(movies);
@@ -123,7 +129,10 @@ public class MovieDAO {
 
         movies.clear();
     }
-
+/**
+ * returnere de film der bliver tilføjet listen løbende
+ * @return 
+ */
     public List<Movie> getMovie() {
         return movies;
     }
@@ -339,11 +348,7 @@ public class MovieDAO {
         System.out.println("Image path: " + imagePath);
         System.out.println(img.getHeight());
         return img;
-//        System.out.println("Filepath " + imagePath);
-//        System.out.println(img.getHeight());
-//        
-//        System.out.println("WR" + wr.getHeight());
-//        return wr;
+
 
     }
 

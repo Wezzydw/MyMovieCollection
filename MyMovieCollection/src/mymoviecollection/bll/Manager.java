@@ -343,15 +343,6 @@ public class Manager
         }
     }
 
-    public void onProgramClose()
-    {
-//        try {
-//            mdao.SendRatingToDB(allMovies);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-
     /**
      * calls Sets the categories for all movies, after calling sortCategories in
      * the Search class.
@@ -422,32 +413,29 @@ public class Manager
         return mdao.readImageFromDisk(image);
 
     }
-
+/**
+ * Metoden sætter datoen til den den nuværende dato og gennemgår alle film i listen
+ * samt laver en ny liste til de film der opfylder kravene i if statement.
+ * Hvis den satte dato fra i dag, er 2 år eller mere senere end den sidst satte dato, og
+ * ratingen er mindre end 6, så tilføjes filmen til den nye ArrayList.
+ * @return 
+ */
     public List<Movie> warning()
     {
         LocalDate date = LocalDate.now();
-        List<Movie> spastiker = new ArrayList();
+        List<Movie> movie = new ArrayList();
         for (Movie movy : allMovies)
         {
 
             LocalDate d = LocalDate.parse(movy.getLastView());
             if (date.isAfter(d.plusYears(2)) && movy.getRating() < 6)
             {
-                System.out.println("Er jeg tilføjet?" + spastiker.size());
-                spastiker.add(movy);
+                System.out.println("Er jeg tilføjet?" + movie.size());
+                movie.add(movy);
             }
         }
-
-//        List<Movie> satmeNogetShot = new ArrayList();
-//        satmeNogetShot.addAll(spastiker);
-//        for (Movie movy1 : satmeNogetShot) {
-//            if(movy1.getRating() > 6){
-//                System.out.println("er jeg under 6?" + spastiker.size());
-//                satmeNogetShot.remove(movy1);
-//            }
-//        }
         System.out.println("Kører jeg overhovedet?!");
-        return spastiker;
+        return movie;
     }
 
 }
