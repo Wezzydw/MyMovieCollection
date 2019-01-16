@@ -59,22 +59,14 @@ public class MyMoviesMainViewController implements Initializable
     private Label lblTitle;
     @FXML
     private Label lblInfo = new Label("\t\t\t\t" + "no menu item selected");
-    private ChoiceBox<Category> choiceBoxCat;
-
-    Model model;
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private MenuButton menuCategory;
-
     @FXML
     private Slider sliderRateMovie;
     @FXML
     private Label movieRating;
-    @FXML
-    private ImageView StarImage;
-
-    private List<Boolean> selectedCategories;
     @FXML
     private Label lblYear;
     @FXML
@@ -84,9 +76,10 @@ public class MyMoviesMainViewController implements Initializable
     @FXML
     private Label lblCategories;
     @FXML
-    private ImageView ImdbRating;
-    @FXML
     private ImageView MovieImage;
+
+    private List<Boolean> selectedCategories;
+    Model model;
 
     /**
      * Initializes the controller class.
@@ -94,15 +87,14 @@ public class MyMoviesMainViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        
         try
         {
             model = new Model();
         } catch (IOException ex)
         {
-            Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Inititalize model error : " + ex.getMessage());
         }
-        
+
         model.initCategories(menuCategory);
         lstMov.setItems(model.getAllMovies());
         model.setMenuItmes(menuCategory, model.getAllCategories());
@@ -139,16 +131,16 @@ public class MyMoviesMainViewController implements Initializable
             model.addMovies(stage);
         } catch (DALException ex)
         {
-            Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error adding movies : " + ex.getCause() + ex.getStackTrace());
         }
-        //DO SOMETHING WITH ERROR HERE
-
     }
 
     @FXML
     private void btnEditMov(ActionEvent event) throws IOException
     {
-        model.editMovie(lstMov.getSelectionModel().getSelectedItem());
+        Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
+        
+        model.editMovie(selectedMovie);
     }
 
     @FXML
@@ -157,22 +149,16 @@ public class MyMoviesMainViewController implements Initializable
         model.editCat();
     }
 
-    private void btnRate(ActionEvent event)
-    {
-        //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
-
-    }
-
     @FXML
     private void btnPlayMov(ActionEvent event)
     {
-        if (lstMov.getSelectionModel().getSelectedItem() != null)
+        Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
+        if (selectedMovie != null)
         {
             LocalDate date1 = LocalDate.now();
             lblInfo.setText(date1.toString());
-            Movie m = (lstMov.getSelectionModel().getSelectedItem());
-            m.setLastView(date1.toString());
-            model.playMovie(m);
+            selectedMovie.setLastView(date1.toString());
+            model.playMovie(selectedMovie);
         }
     }
 
@@ -180,69 +166,47 @@ public class MyMoviesMainViewController implements Initializable
     private void txtSearch(KeyEvent event)
     {
         model.searchMovie(txtSearch.getText());
-
     }
 
     @FXML
     private void OnHandleMovieRated(MouseEvent event)
     {
-        movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
-        model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
+        double sliderVal = sliderRateMovie.getValue();
+        Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
+        
+        movieRating.setText("" + model.getLabelRating(sliderVal));
+        model.sliderRateMovie(selectedMovie, sliderVal);
+        
         Stage stage = (Stage) anchorPane.getScene().getWindow();
-        System.out.println("VIrker det");
     }
 
-    @FXML
-    private void handleSelectMenuItem(ActionEvent event)
-    {
-        System.out.println("menu handle");
-    }
 
     @FXML
     private void selectedDataToManager(MouseEvent event)
     {
-        if (lstMov.getSelectionModel().getSelectedItem() != null)
+        Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
+        if (selectedMovie != null)
         {
-            System.out.println("LastView : " + lstMov.getSelectionModel().getSelectedItem().getLastView());
-            lblInfo.setText(" " + lstMov.getSelectionModel().getSelectedItem().getLastView());
-            model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
-            lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
-            lblLength.setText(" Movie length " + lstMov.getSelectionModel().getSelectedItem().getLength() + " Minutes");
-            lblYear.setText(" Release year " + lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
-            System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
-            //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
-            System.out.println("Image in controller: " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
-            if (model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()) != null)
+            lblInfo.setText("" + selectedMovie.getLastView());
+            lblTitle.setText(selectedMovie.getTitle());
+            lblLength.setText("Movie length " + selectedMovie.getLength() + " Minutes");
+            lblYear.setText("Release year " + selectedMovie.getReleaseYear());
+            
+            if (model.getImage(selectedMovie.getPosterPath()) != null)
             {
-                Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
+                Image image = SwingFXUtils.toFXImage(model.getImage(selectedMovie.getPosterPath()), null);
                 MovieImage.setImage(image);
             }
 
-            String tmpString = "";
+            lblCategories.setText(model.getCategoryString(selectedMovie));
 
-            int counter = 0;
-            System.out.println(lstMov.getSelectionModel().getSelectedItem().getCategory());
-            for (String category : lstMov.getSelectionModel().getSelectedItem().getCategory())
-            {
-                counter++;
-
-                if (counter == lstMov.getSelectionModel().getSelectedItem().getCategory().size())
-                {
-                    tmpString = tmpString + category;
-                } else
-                {
-                    tmpString = tmpString + category + ", ";
-                }
-            }
-            lblCategories.setText(tmpString);
-
-            lblImdb.setText("" + lstMov.getSelectionModel().getSelectedItem().getImdbRating());
-            lblInfo.setText("" + lstMov.getSelectionModel().getSelectedItem().getLastView());
+            lblImdb.setText("" + selectedMovie.getImdbRating());
+            lblInfo.setText("" + selectedMovie.getLastView());
 
             if (sliderRateMovie != null)
             {
-                sliderRateMovie.setValue(lstMov.getSelectionModel().getSelectedItem().getRating());
-                movieRating.setText("" + lstMov.getSelectionModel().getSelectedItem().getRating());
+                sliderRateMovie.setValue(selectedMovie.getRating());
+                movieRating.setText("" + selectedMovie.getRating());
             } else
             {
                 sliderRateMovie.setValue(0);

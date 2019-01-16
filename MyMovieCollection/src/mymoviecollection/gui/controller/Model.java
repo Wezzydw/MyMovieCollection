@@ -51,7 +51,6 @@ public class Model
     private MenuButton mmm;
     private List<Boolean> categoryCheck;
     private List<Boolean> selectedCategories;
-    
 
     public Model() throws IOException
     {
@@ -409,17 +408,6 @@ public class Model
     }
 
     /**
-     * kalder sendDataOnClick i manager
-     *
-     * @param selectedItems
-     */
-    void sendDataOnClick(ObservableList<Movie> selectedItems)
-    {
-        manager.sendDataOnClick();
-
-    }
-
-    /**
      * kalder SortCategories i manager
      */
     void sortCategories()
@@ -501,6 +489,27 @@ public class Model
         }
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
+    }
+
+    public String getCategoryString(Movie m)
+    {
+        String tmpString = "";
+
+        int counter = 0;
+        for (String category : m.getCategory())
+        {
+            counter++;
+
+            if (counter == m.getCategory().size())
+            {
+                tmpString = tmpString + category;
+            } else
+            {
+                tmpString = tmpString + category + ", ";
+            }
+        }
+
+        return tmpString;
     }
 
 }

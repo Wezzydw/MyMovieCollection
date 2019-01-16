@@ -364,19 +364,7 @@ public class Manager
      *
      * @return en film.
      */
-    public Movie sendDataOnClick()
-    {
 
-        for (Movie movie1 : allMovies)
-        {
-
-            if (movie1.equals(movie))
-            {
-                return movie1;
-            }
-        }
-        return null;
-    }
 
     /**
      *
