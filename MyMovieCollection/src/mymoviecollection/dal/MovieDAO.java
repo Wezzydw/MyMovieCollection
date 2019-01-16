@@ -222,11 +222,14 @@ public class MovieDAO {
      * fjerner den eller dem vi ønsker at fjerne.
      */
     public void deleteMovies(List<Movie> selectedMovie) throws IOException {
+        oldMovieList.addAll(movies);
+        movies.removeAll(selectedMovie);
+        
         try (Connection con = conProvider.getConnection()) {
-            String a = "DELETE FROM Movies WHERE Id =?;";
+            String a = "DELETE FROM Movies WHERE title =?;";
             PreparedStatement prst = con.prepareStatement(a);
-            for (Movie movie : movies) {
-                prst.setInt(1, movie.getId());
+            for (Movie movie : selectedMovie) {
+                prst.setString(1, movie.getTitle());
                 prst.addBatch();
             }
             prst.executeBatch();

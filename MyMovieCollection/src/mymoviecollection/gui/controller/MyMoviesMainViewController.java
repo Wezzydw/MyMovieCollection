@@ -48,7 +48,8 @@ import mymoviecollection.dal.DALException;
  *
  * @author andreas
  */
-public class MyMoviesMainViewController implements Initializable {
+public class MyMoviesMainViewController implements Initializable
+{
 
     @FXML
     private ListView<Movie> lstMov;
@@ -91,13 +92,17 @@ public class MyMoviesMainViewController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        selectedCategories = new ArrayList();
-        try {
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        
+        try
+        {
             model = new Model();
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        selectedCategories = new ArrayList();
         List<Category> allCategories = new ArrayList();
         allCategories.addAll(model.getAllCategories());
         int counter = 0;
@@ -106,13 +111,17 @@ public class MyMoviesMainViewController implements Initializable {
             selectedCategories.add(Boolean.FALSE);
         }
 
-        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                if (((CheckMenuItem) e.getSource()).isSelected()) {
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>()
+        {
+            public void handle(ActionEvent e)
+            {
+                if (((CheckMenuItem) e.getSource()).isSelected())
+                {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
                     selectedCategories.set(tmpIndex, Boolean.TRUE);
                     model.sortCategories();
-                } else {
+                } else
+                {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
 
                     selectedCategories.set(tmpIndex, Boolean.FALSE);
@@ -121,7 +130,8 @@ public class MyMoviesMainViewController implements Initializable {
             }
         };
         List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories) {
+        for (Category allCategory : allCategories)
+        {
             counter++;
             String name = "item" + counter;
             CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
@@ -130,46 +140,43 @@ public class MyMoviesMainViewController implements Initializable {
         }
 //        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
+        
+        
         lstMov.setItems(model.getAllMovies());
-
         model.setMenuItmes(menuCategory, allCategories);
         model.setCheckList(selectedCategories);
         model.movieReminder();
     }
 
     @FXML
-    private void btnRemoveCat(ActionEvent event) {
-//        model.deleteCategory();
+    private void btnRemoveCat(ActionEvent event)
+    {
         model.chooseDeleteCategory();
         menuCategory.getItems().clear();
-        List<Category> allCategories = model.getAllCategories();
-        List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories) {
-            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
-            allItems.add(iti);
-        }
-        model.getAllCategories();
-        menuCategory.getItems().addAll(allItems);
+        menuCategory.getItems().addAll(model.getMenuItems());
     }
 
     @FXML
-    private void btnAddCat(ActionEvent event) {
+    private void btnAddCat(ActionEvent event)
+    {
         model.createCategory();
-//        List<Category> allCategories = model.getAllCategories();
-//        String lastAdded = allCategories.get(allCategories.size()).getTitle();
     }
 
     @FXML
-    private void btnRemoveMov(ActionEvent event) throws IOException {
+    private void btnRemoveMov(ActionEvent event) throws IOException
+    {
         model.reMovie(lstMov.getSelectionModel().getSelectedItems());
     }
 
     @FXML
-    private void btnAddMov(ActionEvent event) {
+    private void btnAddMov(ActionEvent event)
+    {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
-        try {
+        try
+        {
             model.addMovies(stage);
-        } catch (DALException ex) {
+        } catch (DALException ex)
+        {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
         //DO SOMETHING WITH ERROR HERE
@@ -177,38 +184,46 @@ public class MyMoviesMainViewController implements Initializable {
     }
 
     @FXML
-    private void btnEditMov(ActionEvent event) throws IOException {
+    private void btnEditMov(ActionEvent event) throws IOException
+    {
         model.editMovie(lstMov.getSelectionModel().getSelectedItem());
     }
 
     @FXML
-    private void btnRenameCat(ActionEvent event) {
+    private void btnRenameCat(ActionEvent event)
+    {
         model.editCat();
     }
 
-    private void btnRate(ActionEvent event) {
+    private void btnRate(ActionEvent event)
+    {
         //model.rateMovie(lstMov.getSelectionModel().getSelectedItem());
 
     }
 
     @FXML
-    private void btnPlayMov(ActionEvent event) {
-        LocalDate date1 = LocalDate.now();
-        lblInfo.setText(date1.toString());
-        Movie m = (lstMov.getSelectionModel().getSelectedItem());
-        m.setLastView(date1.toString());
-        model.playMovie(m);
-
+    private void btnPlayMov(ActionEvent event)
+    {
+        if (lstMov.getSelectionModel().getSelectedItem() != null)
+        {
+            LocalDate date1 = LocalDate.now();
+            lblInfo.setText(date1.toString());
+            Movie m = (lstMov.getSelectionModel().getSelectedItem());
+            m.setLastView(date1.toString());
+            model.playMovie(m);
+        }
     }
 
     @FXML
-    private void txtSearch(KeyEvent event) {
+    private void txtSearch(KeyEvent event)
+    {
         model.searchMovie(txtSearch.getText());
 
     }
 
     @FXML
-    private void OnHandleMovieRated(MouseEvent event) {
+    private void OnHandleMovieRated(MouseEvent event)
+    {
         movieRating.setText("" + model.getLabelRating(sliderRateMovie.getValue()));
         model.sliderRateMovie(lstMov.getSelectionModel().getSelectedItem(), sliderRateMovie.getValue());
         Stage stage = (Stage) anchorPane.getScene().getWindow();
@@ -216,13 +231,16 @@ public class MyMoviesMainViewController implements Initializable {
     }
 
     @FXML
-    private void handleSelectMenuItem(ActionEvent event) {
+    private void handleSelectMenuItem(ActionEvent event)
+    {
         System.out.println("menu handle");
     }
 
     @FXML
-    private void selectedDataToManager(MouseEvent event) {
-        if (lstMov.getSelectionModel().getSelectedItem() != null) {
+    private void selectedDataToManager(MouseEvent event)
+    {
+        if (lstMov.getSelectionModel().getSelectedItem() != null)
+        {
             System.out.println("LastView : " + lstMov.getSelectionModel().getSelectedItem().getLastView());
             lblInfo.setText(" " + lstMov.getSelectionModel().getSelectedItem().getLastView());
             model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
@@ -232,7 +250,8 @@ public class MyMoviesMainViewController implements Initializable {
             System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
             //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
             System.out.println("Image in controller: " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
-            if (model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()) != null) {
+            if (model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()) != null)
+            {
                 Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
                 MovieImage.setImage(image);
             }
@@ -241,12 +260,15 @@ public class MyMoviesMainViewController implements Initializable {
 
             int counter = 0;
             System.out.println(lstMov.getSelectionModel().getSelectedItem().getCategory());
-            for (String category : lstMov.getSelectionModel().getSelectedItem().getCategory()) {
+            for (String category : lstMov.getSelectionModel().getSelectedItem().getCategory())
+            {
                 counter++;
 
-                if (counter == lstMov.getSelectionModel().getSelectedItem().getCategory().size()) {
+                if (counter == lstMov.getSelectionModel().getSelectedItem().getCategory().size())
+                {
                     tmpString = tmpString + category;
-                } else {
+                } else
+                {
                     tmpString = tmpString + category + ", ";
                 }
             }
@@ -255,10 +277,12 @@ public class MyMoviesMainViewController implements Initializable {
             lblImdb.setText("" + lstMov.getSelectionModel().getSelectedItem().getImdbRating());
             lblInfo.setText("" + lstMov.getSelectionModel().getSelectedItem().getLastView());
 
-            if (sliderRateMovie != null) {
+            if (sliderRateMovie != null)
+            {
                 sliderRateMovie.setValue(lstMov.getSelectionModel().getSelectedItem().getRating());
                 movieRating.setText("" + lstMov.getSelectionModel().getSelectedItem().getRating());
-            } else {
+            } else
+            {
                 sliderRateMovie.setValue(0);
                 movieRating.setText("");
             }
