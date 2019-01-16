@@ -101,7 +101,7 @@ public class Manager
     }
 
     /**
-     *
+     * Ligger sig selv i et loop, og opdaterer listen løbende.
      */
     private void repeatCheckMovies()
     {
