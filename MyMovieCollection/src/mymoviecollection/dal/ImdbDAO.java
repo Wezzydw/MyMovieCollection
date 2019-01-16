@@ -197,7 +197,6 @@ public class ImdbDAO {
         String posterPath = "";
         List<String> genreList = new ArrayList();
 
-
         if (!information.isEmpty()) {
             String[] results = information.split(",");
             for (String s : results) {
@@ -237,7 +236,8 @@ public class ImdbDAO {
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
                 }
             } else {
-                genreList.add("NOT A CATEGORY, NOT SURE IF WE CAN HANDLE NULL/EMPTY");
+                //Catch error her System.out.println(title);
+                return null;
             }
         }
 
