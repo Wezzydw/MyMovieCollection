@@ -17,8 +17,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
@@ -29,18 +27,21 @@ import mymoviecollection.be.Movie;
  */
 public class ImdbDAO {
 
-    long startTime;
+    
     private static final String queryP1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
     private static final String queryEnd = "&include_adult=true&year=";
     private static final int requestRateTimer = 11000;
     private static final String searchP1 = "https://api.themoviedb.org/3/movie/";
     private static final String serachP2 = "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
     private static final String posterURLp1 = "https://image.tmdb.org/t/p/original/";
-    private CategoryDAO d;
+    
+    
+    private CategoryDAO catDAO;
+    private long startTime;
 
     public ImdbDAO(long startTime) throws IOException {
         this.startTime = startTime;
-        d = new CategoryDAO();
+        catDAO = new CategoryDAO();
     }
 /**
  * Sætter en starttime som er udfra variablen man putter ind.
@@ -269,7 +270,6 @@ public class ImdbDAO {
             }
 
             try {
-                System.out.println(title + " " + url.toString());
                 bi = ImageIO.read(url);
             } catch (IOException ex) {
                 return null;
@@ -279,7 +279,7 @@ public class ImdbDAO {
             if (allGenres.contains("}")) {
                 String[] genre = allGenres.split("}");
 
-                List<Category> categories = d.getAllCategories();
+                List<Category> categories = catDAO.getAllCategories();
                 List<String> list = new ArrayList();
                 List<String> toAdd = new ArrayList();
 
@@ -289,7 +289,6 @@ public class ImdbDAO {
 
                 for (String s : genre) {
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
-
                 }
 
                 for (String s : genreList) {
@@ -301,18 +300,15 @@ public class ImdbDAO {
                                 toAdd.add(s);
                             }
                         }
-
                     }
                 }
                 for (String s : toAdd) {
-                    d.createCategory(new Category(s));                }
+                    catDAO.createCategory(new Category(s));                }
 
             } else {
-                //throw new DALException("Movie has no categories" + title);
                 return null;
             }
         }
-
         Movie movie = new Movie(title, length, releaseYear, genreList, "", posterPath, imdbRating);
         return movie;
     }

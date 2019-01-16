@@ -141,7 +141,7 @@ public class Model
 
     }
 
-    void updateMovie(Movie selectedItem)
+    void updateMovie(Movie selectedItem) throws SQLException
     {
         manager.editMovie(selectedItem);
     }
@@ -213,6 +213,9 @@ public class Model
         } catch (IOException ex)
         {
             System.out.println("Error in playing movie" + ex);
+        } catch (SQLException ex)
+        {
+            System.out.println(ex);;
         }
     }
 
@@ -232,6 +235,9 @@ public class Model
             } catch (IOException ex)
             {
                 System.out.println("Error rating movie" + ex);
+            } catch (SQLException ex)
+            {
+                System.out.println(ex);
             }
         }
     }
@@ -259,6 +265,9 @@ public class Model
         } catch (IOException ex)
         {
             System.out.println("Error reMovie-ing selected movie" + ex);
+        } catch (SQLException ex)
+        {
+            System.out.println(ex);
         }
     }
 
@@ -407,7 +416,14 @@ public class Model
      */
     public ObservableList<Movie> getAllMovies()
     {
-        return manager.getAllMovies();
+        try
+        {
+            return manager.getAllMovies();
+        } catch (SQLException ex)
+        {
+            System.out.println("Error getting allmovies " + ex);
+        }
+        return null;
     }
 
     /**

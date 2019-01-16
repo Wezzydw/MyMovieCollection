@@ -7,6 +7,7 @@ package mymoviecollection.gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -174,7 +175,7 @@ public class EditMovieViewController implements Initializable
     }
 
     @FXML
-    private void onSave(ActionEvent event) throws IOException
+    private void onSave(ActionEvent event)
     {
         String title = txtTitle.getText();
         String releaseYear = txtReleaseYear.getText();
@@ -200,7 +201,13 @@ public class EditMovieViewController implements Initializable
         
 //        int id = Id;
         Movie m = new Movie(title, length, releaseYear, categories, selectedMovie.getFilePath(), selectedMovie.getPosterPath(), selectedMovie.getImdbRating(), rating, selectedMovie.getId(), selectedMovie.getLastView());
-        model.updateMovie(m);
+        try
+        {
+            model.updateMovie(m);
+        } catch (SQLException ex)
+        {
+            System.out.println(ex);
+        }
         
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/mymoviecollection/gui/view/MyMoviesMainView.fxml"));
@@ -214,7 +221,13 @@ public class EditMovieViewController implements Initializable
         }
         
         MyMoviesMainViewController display = loader.getController();
-        display.model.updateMovie(m);
+        try
+        {
+            display.model.updateMovie(m);
+        } catch (SQLException ex)
+        {
+            System.out.println("ex");
+        }
 
         Stage stage = (Stage) btnSave.getScene().getWindow();
         stage.close();

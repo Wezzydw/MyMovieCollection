@@ -67,7 +67,7 @@ public class Manager
      *
      * @throws IOException
      */
-    public void deleteMovie() throws IOException
+    public void deleteMovie() throws IOException, SQLException
     {
         mdao.deleteMovies(movies);
     }
@@ -163,6 +163,9 @@ public class Manager
                             //Desværre ikke klar over hvordan det her skal
                             //håndteres i en runnable
                             System.out.println("Error in sending data to DB " + ex);
+                        } catch (SQLException ex)
+                        {
+                            System.out.println(ex.getMessage() + ex);
                         }
                         updateOnceASecond = currentTime;
                     }
@@ -172,7 +175,7 @@ public class Manager
         });
     }
 
-    public void editMovie(Movie selectedItem)
+    public void editMovie(Movie selectedItem) throws SQLException
     {
         mdao.updateMovie(selectedItem);
     }
@@ -197,7 +200,7 @@ public class Manager
      *
      * @param selectedItem
      */
-    public void playMovie(Movie selectedItem) throws IOException
+    public void playMovie(Movie selectedItem) throws IOException, SQLException
     {
         //vlc.callVlc(selectedItem.getFilePath());
         vlc.openDefaultProgram(selectedItem.getFilePath());
@@ -219,7 +222,7 @@ public class Manager
      * @param selectedItem
      * @param rating
      */
-    public void sliderRateMovie(Movie selectedItem, double rating) throws IOException
+    public void sliderRateMovie(Movie selectedItem, double rating) throws IOException, SQLException
     {
         selectedItem.setRating(rating);
         mdao.SendRatingToDB(selectedItem);
@@ -232,7 +235,7 @@ public class Manager
      * @param selectedItem
      * @throws IOException
      */
-    public void reMovie(List<Movie> selectedItem) throws IOException
+    public void reMovie(List<Movie> selectedItem) throws IOException, SQLException
     {
         allMovies.removeAll(selectedItem);
         mdao.deleteMovies(selectedItem);
@@ -270,7 +273,7 @@ public class Manager
      *
      * @return en observablelist af movies.
      */
-    public ObservableList<Movie> getAllMovies()
+    public ObservableList<Movie> getAllMovies() throws SQLException
     {
         movies.setAll(mdao.getAllMoviesFromDB());
         allMovies.addAll(movies);
