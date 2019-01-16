@@ -80,6 +80,9 @@ public class MyMoviesMainViewController implements Initializable
 
     private List<Boolean> selectedCategories;
     Model model;
+    private long initLoopTime;
+    private final long refreshTimer = 1000;
+    private final long loopDuration = 180000;
 
     /**
      * Initializes the controller class.
@@ -100,6 +103,36 @@ public class MyMoviesMainViewController implements Initializable
         model.setMenuItmes(menuCategory, model.getAllCategories());
         model.setCheckList(selectedCategories);
         model.movieReminder();
+        initLoopTime = 0;
+    }
+
+    public void readyForCatLoop()
+    {
+
+        if (initLoopTime + loopDuration < System.currentTimeMillis())
+        {
+            //SKAL MÅSKE ÆNDRES TIL PLATFORM.RUN
+            Thread t = new Thread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(refreshTimer);
+
+                        //Check for updates on catbox
+                    } catch (InterruptedException ex)
+                    {
+                        System.out.println("RIP");
+                    }
+
+                    readyForCatLoop();
+                }
+            });
+
+            t.start();
+        }
     }
 
     @FXML
@@ -127,13 +160,15 @@ public class MyMoviesMainViewController implements Initializable
     {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         model.addMovies(stage);
+        initLoopTime = System.currentTimeMillis();
+        readyForCatLoop();
     }
 
     @FXML
     private void btnEditMov(ActionEvent event) throws IOException
     {
         Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
-        
+
         model.editMovie(selectedMovie);
     }
 
@@ -167,13 +202,12 @@ public class MyMoviesMainViewController implements Initializable
     {
         double sliderVal = sliderRateMovie.getValue();
         Movie selectedMovie = lstMov.getSelectionModel().getSelectedItem();
-        
+
         movieRating.setText("" + model.getLabelRating(sliderVal));
         model.sliderRateMovie(selectedMovie, sliderVal);
-        
+
         Stage stage = (Stage) anchorPane.getScene().getWindow();
     }
-
 
     @FXML
     private void selectedDataToManager(MouseEvent event)
@@ -185,7 +219,7 @@ public class MyMoviesMainViewController implements Initializable
             lblTitle.setText(selectedMovie.getTitle());
             lblLength.setText("Movie length " + selectedMovie.getLength() + " Minutes");
             lblYear.setText("Release year " + selectedMovie.getReleaseYear());
-            
+
             if (model.getImage(selectedMovie.getPosterPath()) != null)
             {
                 Image image = SwingFXUtils.toFXImage(model.getImage(selectedMovie.getPosterPath()), null);
