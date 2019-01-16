@@ -22,7 +22,11 @@ public class DatabaseConnection {
 
     private static final String PROP_FILE = "database/database.settings";
     private SQLServerDataSource ds;
-
+    
+    /**
+     * Sørger for at oprette forbindelse til databasen.
+     * @throws IOException 
+     */
     public DatabaseConnection() throws IOException {
         Properties databaseProperties = new Properties();
         databaseProperties.load(new FileInputStream(PROP_FILE));
