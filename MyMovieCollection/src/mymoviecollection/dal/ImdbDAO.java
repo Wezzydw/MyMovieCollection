@@ -58,6 +58,7 @@ public class ImdbDAO {
  * @param filepath
  * @return 
  */
+
     public String makeSearchString(String filepath) {
         String queryP2 = "";
         String searchString = "";
@@ -259,13 +260,14 @@ public class ImdbDAO {
             try {
                 url = new URL(posterURLp1 + posterPathOnline);
             } catch (MalformedURLException ex) {
-                throw new DALException("Could not construct valid URL" + posterPathOnline);
+                return null;
             }
 
             try {
+                System.out.println(title + " " + url.toString());
                 bi = ImageIO.read(url);
             } catch (IOException ex) {
-                throw new DALException("Could not read Image from URL: " + url);
+                return null;
             }
             posterPath = saveImageToDisk(bi, title + posterPathOnline.substring(posterPathOnline.length() - 4));
             String allGenres = information.substring(information.indexOf("genre"), information.indexOf("]"));
@@ -276,8 +278,8 @@ public class ImdbDAO {
                     genreList.add(s.substring(s.lastIndexOf(":") + 2, s.length() - 1));
                 }
             } else {
-                throw new DALException("Movie has no gategories" + title);
-                //return null;
+                //throw new DALException("Movie has no categories" + title);
+                return null;
             }
         }
 

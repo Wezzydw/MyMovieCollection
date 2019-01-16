@@ -32,7 +32,9 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
+import mymoviecollection.bll.BLLException;
 import mymoviecollection.bll.Manager;
+import mymoviecollection.dal.DALException;
 
 /**
  *
@@ -62,7 +64,7 @@ public class Model {
         manager.getChecklistCategories(allCat);
     }
 
-    public void addMovies(Stage stage) {
+    public void addMovies(Stage stage) throws DALException {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(stage);
@@ -305,7 +307,11 @@ public class Model {
     public BufferedImage getImage(String image) {
         System.out.println("Image in model " + image);
         if (!image.isEmpty()) {
-            return manager.getImage(image);
+            try {
+                return manager.getImage(image);
+            } catch (DALException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         return null;
     }

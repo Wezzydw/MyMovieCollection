@@ -30,11 +30,11 @@ public class Movie {
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     String posterURL;
     //Date date = new Date();
-
-   public Movie()
-   {
-       
-   }
+//
+//   public Movie()
+//   {
+//       
+//   }
     
     
     public Movie(double rating, int id, String title, String filePath, String lastView) {
@@ -113,6 +113,7 @@ public class Movie {
     }
 
     public List<String> getCategory() {
+        
         return categories;
     }
 
