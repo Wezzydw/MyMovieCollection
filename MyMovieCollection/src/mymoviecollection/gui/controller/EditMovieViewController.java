@@ -74,19 +74,18 @@ public class EditMovieViewController implements Initializable
                 if (((CheckMenuItem)e.getSource()).isSelected())
                 {
                     CheckMenuItem c = new CheckMenuItem();
-                    Category mygod = new Category("hi");
                     int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
-                    selectedCategories.remove(tmpIndex);
-                    selectedCategories.add(tmpIndex, Boolean.TRUE);
+                    selectedCategories.set(tmpIndex, Boolean.TRUE);
                     model.sortCategories();
                 }
                 else
                 {
                     int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
-                    selectedCategories.remove(tmpIndex);
-                    selectedCategories.add(tmpIndex, Boolean.FALSE);
+                    selectedCategories.set(tmpIndex, Boolean.FALSE);
                     model.sortCategories();
+                    
                 }
+                System.out.println("22222222222222222222222222222222222222222222222222222222");
             } 
         }; 
         
@@ -114,26 +113,27 @@ public class EditMovieViewController implements Initializable
         {
             s += string + ",";
         }
-//        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
-//            public void handle(ActionEvent e) 
-//            { 
-//                if (((CheckMenuItem)e.getSource()).isSelected())
-//                {
-//                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
-//                    selectedCategories.set(tmpIndex, Boolean.TRUE);
-//                }
-//                else
-//                {
-//                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
-//                    selectedCategories.set(tmpIndex, Boolean.FALSE);
-//                }
-//            } 
-//        }; 
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() { 
+            public void handle(ActionEvent e) 
+            {   
+                if (((CheckMenuItem)e.getSource()).isSelected())
+                {
+                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
+                    selectedCategories.set(tmpIndex, Boolean.TRUE);
+                }
+                else
+                {
+                    int tmpIndex = menuCategories.getItems().indexOf(((CheckMenuItem)e.getSource()));
+                    selectedCategories.set(tmpIndex, Boolean.FALSE);
+                }
+            } 
+        }; 
 
         List<CheckMenuItem> allItems = new ArrayList();
         for (Category allCategory : allCategories)
         {
             CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
+            iti.setOnAction(event1);
             allItems.add(iti);
         }
         model.getAllCategories();
@@ -155,14 +155,11 @@ public class EditMovieViewController implements Initializable
                     
                     //Her fandt jeg noget om det, under section Check Menu Items
                     //http://tutorials.jenkov.com/javafx/menubar.html
-                    //eel.setSelected(true);
+                    eel.setSelected(true);
+                    eel.setOnAction(event1);
                     menuCategories.getItems().set(ocu, eel);
                     
-//                    menuCategories.getItems().get(ocu).set;
-//                    menuCategories.getItems().get(ocu).;
-//                    menuCategories.getItems().se
-//                    selectedCategories.remove(ocu);
-//                    selectedCategories.add(ocu, Boolean.TRUE);
+                    selectedCategories.set(ocu, Boolean.TRUE);
                 }
                 ocu++;
             }
@@ -182,24 +179,31 @@ public class EditMovieViewController implements Initializable
         String title = txtTitle.getText();
         String releaseYear = txtReleaseYear.getText();
         String length = txtLength.getText();
-        String rating = txtRating.getText();
+        double rating = Double.valueOf(txtRating.getText());
         List<String> categories = new ArrayList();
         for (int i = 0; i < selectedCategories.size(); i++)
         {
             if (selectedCategories.get(i))
             {
+                System.out.println(selectedCategories.get(i));
                 categories.add(model.getAllCategories().get(i).toString());
+                System.out.println(model.getAllCategories().get(i).toString());
             }
+        }
+        for (String category : categories)
+        {
+            System.out.println("nye categorier");
+            System.out.println(category);
         }
         
 //        String categori = comboCategory.getSelectionModel().getSelectedItem();
         
-        int id = Id;
-        Movie m = new Movie(title, length, releaseYear, categories, selectedMovie.getFilePath(), selectedMovie.getPosterPath(), selectedMovie.getImdbRating());
+//        int id = Id;
+        Movie m = new Movie(title, length, releaseYear, categories, selectedMovie.getFilePath(), selectedMovie.getPosterPath(), selectedMovie.getImdbRating(), rating, selectedMovie.getId(), selectedMovie.getLastView());
         model.updateMovie(m);
         
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/mytunes/gui/view/MyTunesMainView.fxml"));
+        loader.setLocation(getClass().getResource("/mymoviecollection/gui/view/MyMoviesMainView.fxml"));
         
         try
         {

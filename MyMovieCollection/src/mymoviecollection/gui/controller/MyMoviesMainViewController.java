@@ -112,17 +112,15 @@ public class MyMoviesMainViewController implements Initializable
             { 
                 if (((CheckMenuItem)e.getSource()).isSelected())
                 {
-                    Category mygod = new Category("hi");
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
-                    selectedCategories.remove(tmpIndex);
-                    selectedCategories.add(tmpIndex, Boolean.TRUE);
+                    selectedCategories.set(tmpIndex, Boolean.TRUE);
                     model.sortCategories();
                 }
                 else
                 {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem)e.getSource()));
-                    selectedCategories.remove(tmpIndex);
-                    selectedCategories.add(tmpIndex, Boolean.FALSE);
+                    
+                    selectedCategories.set(tmpIndex, Boolean.FALSE);
                     model.sortCategories();
                 }
             } 
