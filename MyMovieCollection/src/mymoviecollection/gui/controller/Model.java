@@ -25,15 +25,12 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
-import mymoviecollection.bll.BLLException;
 import mymoviecollection.bll.Manager;
 import mymoviecollection.dal.DALException;
 
@@ -43,7 +40,6 @@ import mymoviecollection.dal.DALException;
  */
 public class Model
 {
-
     private static final String editMoviefxml = "/mymoviecollection/gui/view/EditMovieView.fxml";
     private List<Movie> moviesReminder;
     private Manager manager;
@@ -97,7 +93,6 @@ public class Model
             String filepath = selectedDirectory.getAbsolutePath();
             manager.scanFolder(filepath);
         }
-
     }
 
     /**
@@ -195,7 +190,6 @@ public class Model
     void playMovie(Movie selectedItem)
     {
         manager.playMovie(selectedItem);
-
     }
 
     /**
@@ -206,10 +200,8 @@ public class Model
      */
     public void sliderRateMovie(Movie selectedItem, double value)
     {
-        System.out.println("Title " + selectedItem.getTitle());
         if (selectedItem != null)
         {
-            System.out.println("We are in manager");
             manager.sliderRateMovie(selectedItem, value);
         }
     }
@@ -220,7 +212,6 @@ public class Model
      */
     public double getLabelRating(double value)
     {
-
         return value;
     }
 
@@ -274,7 +265,6 @@ public class Model
      */
     void addCategory(Category cat)
     {
-        //categories.add(new Category(cat.getTitle()));
         manager.addCategory(cat);
     }
 
@@ -314,7 +304,6 @@ public class Model
                 public void handle(ActionEvent event)
                 {
                     Stage stage = (Stage) btn.getScene().getWindow();
-
                     stage.close();
                 }
             });
@@ -326,8 +315,6 @@ public class Model
      */
     void chooseDeleteCategory()
     {
-//        TextField txtTitle = new TextField();
-//        txtTitle.setText("Category");
         Button btn = new Button();
         ComboBox cbox = new ComboBox<Category>();
         cbox.setItems(manager.getAllCategories());
@@ -423,7 +410,6 @@ public class Model
      */
     public BufferedImage getImage(String image)
     {
-        System.out.println("Image in model " + image);
         if (!image.isEmpty())
         {
             try
@@ -487,19 +473,17 @@ public class Model
             iti.setOnAction(event1);
             allItems.add(iti);
         }
-//        menuCategory.getItems().remove(rb);
         menuCategory.getItems().addAll(allItems);
     }
 
     public String getCategoryString(Movie m)
     {
-        String tmpString = "";
-
+        String string = "";
         int counter = 0;
+        
         for (String category : m.getCategory())
         {
             counter++;
-
             if (counter == m.getCategory().size())
             {
                 tmpString = tmpString + category;
@@ -508,8 +492,7 @@ public class Model
                 tmpString = tmpString + category + ", ";
             }
         }
-
-        return tmpString;
+        return string;
     }
 
 }
