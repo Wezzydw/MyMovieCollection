@@ -7,19 +7,14 @@ package mymoviecollection.bll;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.text.StyledEditorKit;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
-import mymoviecollection.dal.MovieDAO;
 
 /**
  *
  * @author Andreas Svendsen
  */
 public class Search {
-    private Manager manager;
-    private List<Movie> movie;
-    
     public Search(){
        
     }
@@ -71,7 +66,6 @@ public class Search {
             }
             counter++;
         }
-        System.out.println(checkTrue.size());
         if (checkTrue.size() == 0) {
             return movies;
         }
@@ -79,8 +73,6 @@ public class Search {
             int c1 = 0;
             for (String category : movy.getCategory()) {
                 for (Category bæh : checkTrue) {
-                    System.out.println(movy.getTitle() + bæh + category);
-                    int c2 = 0;
                     if (category.equals(bæh.toString())) {
                         c1++;
                         if (c1 == checkTrue.size()) {
