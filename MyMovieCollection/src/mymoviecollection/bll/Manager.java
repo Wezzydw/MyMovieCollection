@@ -62,7 +62,7 @@ public class Manager {
     }
 
     /**
-     * Deletes a movie from the DB.
+     * Kalder deleteMovie metoden i  mdao som fjerner film fra databasen.
      *
      * @throws IOException
      */
@@ -71,10 +71,10 @@ public class Manager {
     }
 
     /**
-     * This scans folders for files. It calls itself recursively. Scans the
-     * folder, if another folder is found, it steps into that, and rescans for
-     * files.
-     *
+     * Den kalder sig selv recursively. Den scanner en mappe igennem for filer,
+     * finder den ikke nogle filer, men en anden mappe, hopper den ind og scanner
+     * den nye mappe.
+     * 
      * @param filepath
      */
     public void scanFolder(String filepath) throws DALException {
@@ -153,8 +153,8 @@ public class Manager {
     }
 
     /**
-     * Lets you add/remove categories to/from the list of categories and updates
-     * it in the DB.
+     * Den giver lov til at redigere kategorier og opdaterer det ned
+     * og giver updateCategory i cdao adgang hertil.
      *
      * @param category
      * @param newTitle
@@ -167,8 +167,7 @@ public class Manager {
     }
 
     /**
-     * Opens the selected movie in VLC-player.
-     *
+     * Åbner den highligtede film i VLC-player.
      * @param selectedItem
      */
     public void playMovie(Movie selectedItem) {
@@ -187,9 +186,8 @@ public class Manager {
     }
 
     /**
-     * When the user gives a rating, using the slider, it sends the value to the
-     * SendRatingToDB method.
-     *
+     * Sender rating ned til databasen ned til databasen, som brugeren giver filmen,
+     * ved hjælp af sliderbaren.
      * @param selectedItem
      * @param rating
      */
@@ -203,9 +201,8 @@ public class Manager {
     }
 
     /**
-     * Removes the selecteditem (Movie) from the observable list, and then sends
-     * the selecteditem further down to the deleteMoves method in mdao.
-     *
+     * Fjerner den highlightede film, fra listviewet over tilføjede film, og sender
+     * videre ned til deleteMovies i mdao.
      * @param selectedItem
      * @throws IOException
      */
@@ -218,9 +215,8 @@ public class Manager {
     }
 
     /**
-     * Lets the user add a category to the list of categories, and then sends it
-     * to the DB through cdao.
-     *
+     * Lader brugeren tilføje nye kategorier til listen af kategorier, og sender
+     * det videre ned til databasen.
      * @param category
      */
     public void addCategory(Category category) {
@@ -229,9 +225,8 @@ public class Manager {
     }
 
     /**
-     * Lets the user delete a category from the list of categories, and sends
-     * the information to delete method in cdao.
-     *
+     * Lader brugeren fjerne en kategori fra listen af kategorier, og sender
+     * det videre ned til cdao.
      * @param category
      * @throws SQLException
      */
@@ -242,8 +237,9 @@ public class Manager {
     }
 
     /**
-     *
-     * @return an observablelist of movies.
+     * Denne metode trækker alle film ud fra databasen, og tilføjer dem til listen
+     * allMovies.
+     * @return en observablelist af movies.
      */
     public ObservableList<Movie> getAllMovies() {
         movies.setAll(mdao.getAllMoviesFromDB());
@@ -252,17 +248,17 @@ public class Manager {
     }
 
     /**
-     *
-     * @return an observablelist of categories.
+     * Den får alle kategorier fra databasen oppe i initializeren, og returnerer
+     * kategorierne.
+     * @return en observablelist af categories.
      */
     public ObservableList<Category> getAllCategories() {
         return categories;
     }
 
     /**
-     * Calls the search method in the search class, to find the input from the
-     * user(query).
-     *
+     * Kalder search metoden og sender input ned i Search klassen, og setter 
+     * movies listen med de film den får tilbage herfra.
      * @param query
      */
     public void searchMovie(String query) {
@@ -271,7 +267,7 @@ public class Manager {
     }
 
     /**
-     * Gets the rating from thre selecteditem.
+     * Får ratingen fra den valgte film.
      *
      * @param selectedItem
      */
@@ -285,9 +281,8 @@ public class Manager {
     }
 
     /**
-     * calls Sets the categories for all movies, after calling sortCategories in
-     * the Search class.
-     *
+     * Setter movies listen ud fra de valgte kategorier i menuboxen, efter at have
+     * kaldt sortCategories i Search klassen.
      * @param checkCategories
      */
     public void sortCategories(List<Boolean> checkCategories) {
@@ -296,7 +291,7 @@ public class Manager {
     }
 
     /**
-     *
+     * Setter genres til listen allCat.
      * @param allCat
      */
     public void getChecklistCategories(List<Category> allCat) {
@@ -304,8 +299,8 @@ public class Manager {
     }
 
     /**
-     *
-     * @return
+     * Looper gennem listen allMovies, og hvis 
+     * @return en film.
      */
     public Movie sendDataOnClick() {
 
@@ -334,9 +329,9 @@ public class Manager {
     }
 
     /**
-     *
+     * Får information om filstien fra databasen, gennem readImageFromDisk i mdao.
      * @param image
-     * @return
+     * @return filstien til billedet. 
      */
     public BufferedImage getImage(String image) throws DALException {
 

@@ -75,7 +75,11 @@ public class Model {
         }
 
     }
-
+/**
+ * Denne metode åbner et FXML vindue hvori det er muligt at editmovies.
+ * @param selectedItem
+ * @throws IOException 
+ */
     void editMovie(Movie selectedItem) throws IOException
     {
         if (selectedItem != null)
@@ -92,13 +96,18 @@ public class Model {
             stage.setScene(new Scene(p));
             stage.showAndWait();
         }
-        
+        /**
+         * metoden opdatere den film der er bleven ændret i editMovie.
+         */
     }
     void updateMovie(Movie selectedItem)
     {
         manager.editMovie(selectedItem);
     }
-
+/**
+ * denne metode åbner et vindue der gør det muligt at ændre kategorierne på den
+ * valgte kategori.
+ */
     void editCat() {
         TextField txtTitle = new TextField();
         txtTitle.setText("new category name");

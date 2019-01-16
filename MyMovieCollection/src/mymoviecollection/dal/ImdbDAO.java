@@ -248,6 +248,13 @@ public class ImdbDAO {
         return movie;
     }
 
+    /**
+     * Denne metode gemmer billede filerne til vores harddisk som gør det muligt
+     * at benytte disse billeder i programmet.
+     * @param image
+     * @param title
+     * @return 
+     */
     public String saveImageToDisk(BufferedImage image, String title) throws DALException {
         title = title.replace(":", "_");
         title = title.replace("/", "_");
