@@ -50,6 +50,8 @@ public class Model
     private String tmpString;
     private MenuButton mmm;
     private List<Boolean> categoryCheck;
+    private List<Boolean> selectedCategories;
+    
 
     public Model() throws IOException
     {
@@ -447,7 +449,7 @@ public class Model
         return null;
     }
 
-    public List<CheckMenuItem> getMenuItems()
+    List<CheckMenuItem> getMenuItems()
     {
         List<Category> allCategories = manager.getAllCategories();
         List<CheckMenuItem> allItems = new ArrayList();
@@ -458,6 +460,47 @@ public class Model
         }
         return allItems;
     }
-    
+
+    public void initCategories(MenuButton menuCategory)
+    {
+        selectedCategories = new ArrayList();
+        List<Category> allCategories = new ArrayList();
+        allCategories.addAll(getAllCategories());
+        int counter = 0;
+        for (int i = 0; i < allCategories.size(); i++) //+1 er for all movies, så måske skal det ændres
+        {
+            selectedCategories.add(Boolean.FALSE);
+        }
+
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>()
+        {
+            public void handle(ActionEvent e)
+            {
+                if (((CheckMenuItem) e.getSource()).isSelected())
+                {
+                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
+                    selectedCategories.set(tmpIndex, Boolean.TRUE);
+                    sortCategories();
+                } else
+                {
+                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
+
+                    selectedCategories.set(tmpIndex, Boolean.FALSE);
+                    sortCategories();
+                }
+            }
+        };
+        List<CheckMenuItem> allItems = new ArrayList();
+        for (Category allCategory : allCategories)
+        {
+            counter++;
+            String name = "item" + counter;
+            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
+            iti.setOnAction(event1);
+            allItems.add(iti);
+        }
+//        menuCategory.getItems().remove(rb);
+        menuCategory.getItems().addAll(allItems);
+    }
 
 }

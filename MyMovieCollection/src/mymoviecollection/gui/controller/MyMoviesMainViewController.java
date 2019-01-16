@@ -102,48 +102,10 @@ public class MyMoviesMainViewController implements Initializable
         {
             Logger.getLogger(MyMoviesMainViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        selectedCategories = new ArrayList();
-        List<Category> allCategories = new ArrayList();
-        allCategories.addAll(model.getAllCategories());
-        int counter = 0;
-        for (int i = 0; i < allCategories.size(); i++) //+1 er for all movies, så måske skal det ændres
-        {
-            selectedCategories.add(Boolean.FALSE);
-        }
-
-        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>()
-        {
-            public void handle(ActionEvent e)
-            {
-                if (((CheckMenuItem) e.getSource()).isSelected())
-                {
-                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
-                    selectedCategories.set(tmpIndex, Boolean.TRUE);
-                    model.sortCategories();
-                } else
-                {
-                    int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
-
-                    selectedCategories.set(tmpIndex, Boolean.FALSE);
-                    model.sortCategories();
-                }
-            }
-        };
-        List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories)
-        {
-            counter++;
-            String name = "item" + counter;
-            CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
-            iti.setOnAction(event1);
-            allItems.add(iti);
-        }
-//        menuCategory.getItems().remove(rb);
-        menuCategory.getItems().addAll(allItems);
         
-        
+        model.initCategories(menuCategory);
         lstMov.setItems(model.getAllMovies());
-        model.setMenuItmes(menuCategory, allCategories);
+        model.setMenuItmes(menuCategory, model.getAllCategories());
         model.setCheckList(selectedCategories);
         model.movieReminder();
     }
