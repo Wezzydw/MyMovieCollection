@@ -31,6 +31,12 @@ public class Movie {
     String posterURL;
     //Date date = new Date();
 
+   public Movie()
+   {
+       
+   }
+    
+    
     public Movie(double rating, int id, String title, String filePath, String lastView) {
         this.rating = rating;
         this.id = id;

@@ -5,7 +5,6 @@
  */
 package mymoviecollection.bll;
 
-import com.sun.corba.se.spi.ior.Writeable;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,13 +17,9 @@ import javafx.application.Platform;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.MovieDAO;
-import mymoviecollection.dal.MovieDAOTester;
 
 /**
  *
@@ -33,6 +28,7 @@ import mymoviecollection.dal.MovieDAOTester;
 public class Manager
 {
     private static int waitTime = 12000;
+    private static int onceASecond = 1000;
     private MovieDAO mdao;
     private CategoryDAO cdao;
     private ObservableList<Movie> movies;
@@ -105,9 +101,10 @@ public class Manager
     {
         long currentTime = System.currentTimeMillis();
         List<Movie> tmpMovieList = new ArrayList();
-        if (mdao.getMovie().size() > 0)
+        List<Movie> movieDao = mdao.getMovie();
+        if (movieDao.size() > 0)
         {
-            tmpMovieList.add(mdao.getMovie().get(mdao.getMovie().size() - 1));
+            tmpMovieList.add(movieDao.get(movieDao.size() - 1));
         }
         
         if (updateOnceASecond == 0)
@@ -131,7 +128,7 @@ public class Manager
                         currentTime < movieLoop + waitTime)
                 {
                     if (mdao.getMovie().size() > 0 && 
-                            (updateOnceASecond + 1000) < currentTime)
+                            (updateOnceASecond + onceASecond) < currentTime)
                     {
                         List<Movie> listToAdd = new ArrayList();
                         for (Movie m : tmpMovieList)
@@ -139,7 +136,6 @@ public class Manager
                             if (!allMovies.contains(m))
                             {
                                 listToAdd.add(m);
-
                             }
                         }
                         allMovies.addAll(listToAdd);
