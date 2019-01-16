@@ -107,7 +107,7 @@ public class ImdbDAO {
         return true;
     }
 /**
- * metoden 
+ * metoden finder indexet fra de sidste år der i stringArrayet.
  * @param string
  * @return index
  */
@@ -131,7 +131,8 @@ public class ImdbDAO {
         return index;
     }
 /**
- * 
+ * Metoden retunere filmens produkktions år, ved at stringen ser bort fra characters
+ * og kun søger efter 4 cifret tal.
  * @param string
  * @return year
  */
@@ -200,7 +201,7 @@ public class ImdbDAO {
         return response.toString();
     }
 /**
- * 
+ * metoden tager et imdb id udfra dens søgeresultat.
  * @param searchResult
  * @return 
  */
