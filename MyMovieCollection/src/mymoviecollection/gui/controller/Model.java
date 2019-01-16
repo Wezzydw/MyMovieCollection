@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,8 +33,6 @@ import javafx.stage.WindowEvent;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 import mymoviecollection.bll.Manager;
-import mymoviecollection.bll.Player;
-import mymoviecollection.bll.Search;
 
 /**
  *
@@ -299,7 +296,6 @@ public class Model {
 
     void sortCategories() {
         manager.sortCategories(categoryCheck);
-
     }
 
     void deleteHalf() {

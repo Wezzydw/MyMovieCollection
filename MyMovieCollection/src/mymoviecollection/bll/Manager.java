@@ -19,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
+import mymoviecollection.dal.DALException;
 import mymoviecollection.dal.MovieDAO;
 
 /**
@@ -86,7 +87,12 @@ public class Manager
             @Override
             public void run()
             {
-                mdao.scanFolder(filepath);
+                try {
+                    mdao.scanFolder(filepath);
+                } catch (DALException ex) {
+                    
+                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         t.start();
@@ -158,7 +164,8 @@ public class Manager
 
     public void editMovie(Movie selectedItem)
     {
-
+        mdao.updateMovie(selectedItem);
+        
     }
 
     /**

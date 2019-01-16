@@ -60,7 +60,7 @@ public class MovieDAO {
      * @param filepath
      * @return
      */
-    public List<Movie> scanFolder(String filepath) {
+    public List<Movie> scanFolder(String filepath) throws DALException {
         File folder = new File(filepath);
         File[] folders = folder.listFiles();
         for (File f : folders) {
@@ -140,7 +140,7 @@ public class MovieDAO {
         return false;
     }
 
-    private Movie getIMDBData(String filepath) {
+    private Movie getIMDBData(String filepath) throws DALException {
         String searchResult = "";
         String idInformation = "";
 
@@ -161,20 +161,20 @@ public class MovieDAO {
         try {
             searchResult = imdb.getIMDBText(searchString);
         } catch (IOException ex) {
-            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DALException("SearchError");
         }
         startTime = imdb.getStartTime();
 
         if (searchResult.contains("total_results\":0")) {
-            System.out.println("Movie not found, please check file name - " + 
+            throw new DALException("Movie not found, please check file name - " + 
                     filepath);
-            return null;
+            //return null;
         }
 
         try {
             idInformation = imdb.getIMDBText(imdb.getSearchIDQuery(searchResult));
         } catch (IOException ex) {
-            Logger.getLogger(MovieDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DALException("Could not retrieve information about : "); 
         }
         
         startTime = imdb.getStartTime();
@@ -384,9 +384,9 @@ public class MovieDAO {
         {
             categories += string + ",";
         }
-        
-        String a = "UPDATE Songs SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
-        
+
+        String a = "UPDATE Movies SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
+
         try (Connection con = conProvider.getConnection())
         {
             PreparedStatement pstmt = con.prepareStatement(a);
