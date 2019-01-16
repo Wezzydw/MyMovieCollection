@@ -38,15 +38,26 @@ public class ImdbDAO {
     public ImdbDAO(long startTime) {
         this.startTime = startTime;
     }
-
+/**
+ * Sætter en starttime som er udfra variablen man putter ind.
+ * @param startTime 
+ */
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
-
+/**
+ * @return returnere den satte starttime.
+ */
     public long getStartTime() {
         return startTime;
     }
-
+/**
+ * metoden tager en filepath som input og prøver så vidt muligt at trække de
+ * relevante informationer ud af den. Den benytter forskellige algoritmer efter 
+ * hvilken filtype den bearbejder.
+ * @param filepath
+ * @return 
+ */
     public String makeSearchString(String filepath) {
         String queryP2 = "";
         String searchString = "";
@@ -82,7 +93,11 @@ public class ImdbDAO {
         }
         return searchString;
     }
-
+/**
+ * metoden sørger for at string kun indeholder bogstaver.
+ * @param string
+ * @return 
+ */
     private boolean isAllLetters(String string) {
         for (char c : string.toCharArray()) {
             if (!Character.isAlphabetic(c)) {
@@ -91,7 +106,11 @@ public class ImdbDAO {
         }
         return true;
     }
-
+/**
+ * metoden 
+ * @param string
+ * @return index
+ */
     private int indexOfLastYear(String[] string) {
         int index = -1;
         int counter = 0;
@@ -111,7 +130,11 @@ public class ImdbDAO {
         }
         return index;
     }
-
+/**
+ * 
+ * @param string
+ * @return year
+ */
     private String getYearFromMovie(String[] string) {
         String year = "";
         int counter = 0;
@@ -131,7 +154,13 @@ public class ImdbDAO {
         }
         return year;
     }
-
+/**
+ * 
+ * @param url
+ * @return
+ * @throws IOException
+ * @throws DALException 
+ */
     public String getIMDBText(String url) throws IOException, DALException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         //add headers to the connection, or check the status if desired..
@@ -170,7 +199,11 @@ public class ImdbDAO {
         }
         return response.toString();
     }
-
+/**
+ * 
+ * @param searchResult
+ * @return 
+ */
     public String getSearchIDQuery(String searchResult) {
         String searchID = "";
 
@@ -187,7 +220,13 @@ public class ImdbDAO {
         String idString = searchP1 + searchID + serachP2;
         return idString;
     }
-
+/**
+ * metoden bliver givet en streng af information fra imdb af, så konsturere den 
+ * et image og en imagepath. Der laves så en ny movie udfra alt den data.
+ * @param information
+ * @return
+ * @throws DALException 
+ */
     public Movie constructMovie(String information) throws DALException {
         String title = "";
         String length = "";
