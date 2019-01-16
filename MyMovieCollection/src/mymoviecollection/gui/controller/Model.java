@@ -50,7 +50,13 @@ public class Model
 
     public Model() throws IOException
     {
-        manager = new Manager();
+        try
+        {
+            manager = new Manager();
+        } catch (SQLException ex)
+        {
+            System.out.println("Error making new Manager " + ex);;
+        }
         tmpString = "";
     }
 

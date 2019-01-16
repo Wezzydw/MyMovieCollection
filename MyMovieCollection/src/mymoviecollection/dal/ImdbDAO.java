@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -233,7 +234,7 @@ public class ImdbDAO {
  * @return
  * @throws DALException 
  */
-    public Movie constructMovie(String information) throws DALException {
+    public Movie constructMovie(String information) throws DALException, SQLException {
         String title = "";
         String length = "";
         String releaseYear = "";

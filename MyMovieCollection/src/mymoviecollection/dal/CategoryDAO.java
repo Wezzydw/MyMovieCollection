@@ -29,8 +29,7 @@ public class CategoryDAO {
     {
         this.conProvider = new DatabaseConnection();
     }
-    //Vi skal have begrænsninger på ikke at lave en Category som allerede findes,
-    // men det skal nok laves i bll laget
+
     public void createCategory(Category category)
     {
         try (Connection con = conProvider.getConnection())
@@ -46,8 +45,7 @@ public class CategoryDAO {
             ex.printStackTrace();
         }
     }
-    // skal måske også slette i CatMov, da det er sammenhænget mellem category og movie
-    public void deleteCategory(String title) throws SQLException //String skal måske være category fra BE laget
+    public void deleteCategory(String title) throws SQLException
     {
         try (Connection con = conProvider.getConnection())
         {
@@ -56,7 +54,6 @@ public class CategoryDAO {
             pstmt.setString(1, title);
             pstmt.execute();
             pstmt.close();
-            //ikke testet
             a = "Select * From catMov;";
             ResultSet rs = con.prepareStatement(a).executeQuery();
             while (rs.next())
@@ -66,9 +63,9 @@ public class CategoryDAO {
                 pstmt.setString(1, title);
                 pstmt.execute();
             }
-            //hertil
         } catch (SQLServerException ex)
         {
+            throw new SQLException("Delete category Error" + ex);
         }
     }
     
@@ -82,12 +79,6 @@ public class CategoryDAO {
             pstmt.setString(2, currentTitle);
             pstmt.execute();
             pstmt.close();
-            // ikke testet herfra
-//            a = "Select * FROM Category;";
-//            pstmt = con.prepareStatement(a);
-//            eller bruge dette
-//            ResultSet rs = con.prepareStatement.executeQuery(a);
-//            ResultSet rs = pstmt.executeQuery();
             ResultSet rs = con.prepareStatement("Select * FROM Category;").executeQuery();
             while (rs.next())
             {
@@ -95,31 +86,25 @@ public class CategoryDAO {
                 pstmt = con.prepareStatement(a);
                 pstmt.setString(1, newTitle);
                 pstmt.setString(2, currentTitle);
-
                 pstmt.execute();
                 pstmt.close();
             }
-            //hertil
-            
         } catch (SQLServerException ex)
         {
-            ex.printStackTrace();
+            throw new SQLException("Update category Error" + ex);
         }
     }
     
-    public List<Category> getAllCategories()
+    public List<Category> getAllCategories() throws SQLException
     {
         List<Category> categories = new ArrayList<>();
-
         try (Connection con = conProvider.getConnection())
         {
-
             String a = "SELECT * FROM Category;";
             PreparedStatement pstmt = con.prepareStatement(a);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
             {
-
                 String title = rs.getString("name");
                 Category playlist = new Category(title);
                 categories.add(playlist);
@@ -128,11 +113,7 @@ public class CategoryDAO {
 
         } catch (SQLException ex)
         {
-            ex.printStackTrace();
-        }
-        for (Category category : categories)
-        {
-            System.out.println(category.getTitle());
+            throw new SQLException("Delete category Error" + ex);
         }
         return categories;
     }

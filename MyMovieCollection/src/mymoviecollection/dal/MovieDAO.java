@@ -61,7 +61,7 @@ public class MovieDAO {
      * @param filepath
      * @return
      */
-    public List<Movie> scanFolder(String filepath) throws DALException {
+    public List<Movie> scanFolder(String filepath) throws DALException, SQLException {
         File folder = new File(filepath);
         File[] folders = folder.listFiles();
         for (File f : folders) {
@@ -147,7 +147,7 @@ public class MovieDAO {
         return false;
     }
 
-    private Movie getIMDBData(String filepath) throws DALException {
+    private Movie getIMDBData(String filepath) throws DALException, SQLException {
         String searchResult = "";
         String idInformation = "";
 

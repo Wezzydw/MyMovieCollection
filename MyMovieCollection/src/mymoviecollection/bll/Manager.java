@@ -46,7 +46,7 @@ public class Manager
     private String globalQuery;
     private long updateOnceASecond;
 
-    public Manager() throws IOException
+    public Manager() throws IOException, SQLException
     {
         mdao = new MovieDAO();
         cdao = new CategoryDAO();
@@ -94,6 +94,10 @@ public class Manager
                 {
                     //Desværre ikke klar over hvordan det her skal
                     //håndteres i en runnable
+                    System.out.println("Error in scanning folder " + ex);
+
+                } catch (SQLException ex)
+                {
                     System.out.println("Error in scanning folder " + ex);
                 }
             }
@@ -293,8 +297,7 @@ public class Manager
     public void searchMovie(String query)
     {
         globalQuery = query;
-        movies.setAll(search.searchMovie(query, search.sortCategories
-        (checkCategories, allMovies, genres)));
+        movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
     }
 
     /**
@@ -341,7 +344,6 @@ public class Manager
      *
      * @return en film.
      */
-
     /**
      * Får information om filstien fra databasen, gennem readImageFromDisk i
      * mdao.

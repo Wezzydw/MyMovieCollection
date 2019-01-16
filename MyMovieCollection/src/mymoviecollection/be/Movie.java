@@ -7,8 +7,6 @@ package mymoviecollection.be;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,22 +25,6 @@ public class Movie {
     List<String> categories;
     String posterPath;
     double imdbRating;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    String posterURL;
-    //Date date = new Date();
-//
-//   public Movie()
-//   {
-//       
-//   }
-    
-    
-    public Movie(double rating, int id, String title, String filePath, String lastView) {
-        this.rating = rating;
-        this.id = id;
-        this.title = title;
-        this.filePath = filePath;
-    }
 
     public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating) {
 
