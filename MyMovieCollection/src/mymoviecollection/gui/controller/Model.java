@@ -82,7 +82,7 @@ public class Model
      * @param stage
      * @throws DALException
      */
-    public void addMovies(Stage stage) throws DALException
+    public void addMovies(Stage stage)
     {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -91,7 +91,13 @@ public class Model
         if (selectedDirectory != null)
         {
             String filepath = selectedDirectory.getAbsolutePath();
-            manager.scanFolder(filepath);
+            try
+            {
+                manager.scanFolder(filepath);
+            } catch (DALException ex)
+            {
+                System.out.println("Error in scanning folder" + ex);
+            }
         }
     }
 
@@ -101,13 +107,19 @@ public class Model
      * @param selectedItem
      * @throws IOException
      */
-    void editMovie(Movie selectedItem) throws IOException
+    void editMovie(Movie selectedItem)
     {
         if (selectedItem != null)
         {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(editMoviefxml));
-            loader.load();
+            try
+            {
+                loader.load();
+            } catch (IOException ex)
+            {
+                System.out.println("Error editing the selected movie" + ex);
+            }
             EditMovieViewController display = loader.getController();
 
             display.setModel(this);
@@ -154,15 +166,9 @@ public class Model
             @Override
             public void handle(ActionEvent event)
             {
-                try
-                {
-                    editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
-                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
-                    mmm.getItems().add(new CheckMenuItem(txtTitle.getText()));
-                } catch (SQLException ex)
-                {
-                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
+                mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
+                mmm.getItems().add(new CheckMenuItem(txtTitle.getText()));
                 Stage stage = (Stage) txtTitle.getScene().getWindow();
                 stage.close();
             }
@@ -176,9 +182,15 @@ public class Model
      * @param newTitle
      * @throws SQLException
      */
-    void editCategory(Category category, String newTitle) throws SQLException
+    void editCategory(Category category, String newTitle)
     {
-        manager.editCategory(category, newTitle);
+        try
+        {
+            manager.editCategory(category, newTitle);
+        } catch (SQLException ex)
+        {
+            System.out.println("Error in editing selected category" + ex);
+        }
 
     }
 
@@ -189,7 +201,13 @@ public class Model
      */
     void playMovie(Movie selectedItem)
     {
-        manager.playMovie(selectedItem);
+        try
+        {
+            manager.playMovie(selectedItem);
+        } catch (IOException ex)
+        {
+            System.out.println("Error in playing movie" + ex);
+        }
     }
 
     /**
@@ -202,7 +220,13 @@ public class Model
     {
         if (selectedItem != null)
         {
-            manager.sliderRateMovie(selectedItem, value);
+            try
+            {
+                manager.sliderRateMovie(selectedItem, value);
+            } catch (IOException ex)
+            {
+                System.out.println("Error rating movie" + ex);
+            }
         }
     }
 
@@ -221,9 +245,15 @@ public class Model
      * @param selectedItem
      * @throws IOException
      */
-    void reMovie(List<Movie> selectedItem) throws IOException
+    void reMovie(List<Movie> selectedItem)
     {
-        manager.reMovie(selectedItem);
+        try
+        {
+            manager.reMovie(selectedItem);
+        } catch (IOException ex)
+        {
+            System.out.println("Error reMovie-ing selected movie" + ex);
+        }
     }
 
     /**
@@ -339,14 +369,8 @@ public class Model
              */
             public void handle(ActionEvent event)
             {
-                try
-                {
-                    deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
-                    mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
-                } catch (SQLException ex)
-                {
-                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
+                mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
                 Stage stage = (Stage) btn.getScene().getWindow();
 
                 stage.close();
@@ -360,9 +384,15 @@ public class Model
      * @param category
      * @throws SQLException
      */
-    void deleteCategory(Category category) throws SQLException
+    void deleteCategory(Category category)
     {
-        manager.deleteCategory(category);
+        try
+        {
+            manager.deleteCategory(category);
+        } catch (SQLException ex)
+        {
+            System.out.println("Error in deleting movie" + ex);
+        }
     }
 
     /**

@@ -60,7 +60,6 @@ public class Manager
         categories.addAll(cdao.getAllCategories());
         globalQuery = "";
         updateOnceASecond = 0;
-
     }
 
     /**
@@ -78,26 +77,25 @@ public class Manager
      * finder den ikke nogle filer, men en anden mappe, hopper den ind og
      * scanner den nye mappe.
      *
+     *
      * @param filepath
      */
     public void scanFolder(String filepath) throws DALException
     {
         mdao.clearMovieList();
-
         Thread t = new Thread(new Runnable()
         {
-
             public void run()
             {
-
                 try
                 {
                     mdao.scanFolder(filepath);
                 } catch (DALException ex)
                 {
-                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                    //Desværre ikke klar over hvordan det her skal
+                    //håndteres i en runnable
+                    System.out.println("Error in scanning folder " + ex);
                 }
-
             }
         });
         t.start();
@@ -135,12 +133,9 @@ public class Manager
             @Override
             public void run()
             {
-
-                if (initMovieLoopSize != movies.size() || movies.size() == 0
-                        || currentTime < movieLoop + waitTime)
+                if (currentTime < movieLoop + waitTime)
                 {
-                    if (mdao.getMovie().size() > 0
-                            && (updateOnceASecond + onceASecond) < currentTime)
+                    if ((updateOnceASecond + onceASecond) < currentTime)
                     {
                         List<Movie> listToAdd = new ArrayList();
                         for (Movie m : tmpMovieList)
@@ -148,29 +143,25 @@ public class Manager
                             if (!allMovies.contains(m))
                             {
                                 listToAdd.add(m);
-                                System.out.println("Uhm" + m.getTitle());
                             }
                         }
-
                         if (listToAdd.size() > 0)
                         {
-                            
                             allMovies.addAll(listToAdd);
-                            System.out.println("allMovies " + tmpMovieList.size());
                             searchMovie(globalQuery);
-                            //listToAdd.clear();
                         }
+
                         try
                         {
                             mdao.SendDataToDB(listToAdd);
-
                         } catch (IOException ex)
                         {
-                            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                            //Desværre ikke klar over hvordan det her skal
+                            //håndteres i en runnable
+                            System.out.println("Error in sending data to DB " + ex);
                         }
                         updateOnceASecond = currentTime;
                     }
-
                     repeatCheckMovies();
                 }
             }
@@ -180,7 +171,6 @@ public class Manager
     public void editMovie(Movie selectedItem)
     {
         mdao.updateMovie(selectedItem);
-
     }
 
     /**
@@ -203,17 +193,12 @@ public class Manager
      *
      * @param selectedItem
      */
-    public void playMovie(Movie selectedItem)
+    public void playMovie(Movie selectedItem) throws IOException
     {
         //vlc.callVlc(selectedItem.getFilePath());
         vlc.openDefaultProgram(selectedItem.getFilePath());
-        try
-        {
-            mdao.SendLastView(selectedItem);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mdao.SendLastView(selectedItem);
+
         for (Movie m : allMovies)
         {
             if (m.getTitle() == selectedItem.getTitle())
@@ -230,16 +215,10 @@ public class Manager
      * @param selectedItem
      * @param rating
      */
-    public void sliderRateMovie(Movie selectedItem, double rating)
+    public void sliderRateMovie(Movie selectedItem, double rating) throws IOException
     {
         selectedItem.setRating(rating);
-        try
-        {
-            mdao.SendRatingToDB(selectedItem);
-        } catch (IOException ex)
-        {
-            Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mdao.SendRatingToDB(selectedItem);
     }
 
     /**
@@ -254,7 +233,6 @@ public class Manager
         allMovies.removeAll(selectedItem);
         mdao.deleteMovies(selectedItem);
         movies.removeAll(selectedItem);
-        
     }
 
     /**
@@ -280,7 +258,6 @@ public class Manager
     {
         cdao.deleteCategory(category.getTitle());
         categories.remove(category);
-
     }
 
     /**
@@ -316,8 +293,8 @@ public class Manager
     public void searchMovie(String query)
     {
         globalQuery = query;
-        System.out.println("ALLMOVIES IN search seize" + allMovies.size());
-        movies.setAll(search.searchMovie(query, search.sortCategories(checkCategories, allMovies, genres)));
+        movies.setAll(search.searchMovie(query, search.sortCategories
+        (checkCategories, allMovies, genres)));
     }
 
     /**
@@ -365,26 +342,6 @@ public class Manager
      * @return en film.
      */
 
-
-    /**
-     *
-     */
-    public void deleteHalf()
-    {
-        for (int i = 0; i < movies.size(); i++)
-        {
-            if (i % 2 == 0)
-            {
-                movies.remove(i);
-            }
-        }
-
-        for (Movie m : movies)
-        {
-            System.out.println(m);
-        }
-    }
-
     /**
      * Får information om filstien fra databasen, gennem readImageFromDisk i
      * mdao.
@@ -394,9 +351,7 @@ public class Manager
      */
     public BufferedImage getImage(String image) throws DALException
     {
-
         return mdao.readImageFromDisk(image);
-
     }
 
     /**
@@ -414,15 +369,12 @@ public class Manager
         List<Movie> movie = new ArrayList();
         for (Movie movy : allMovies)
         {
-
             LocalDate d = LocalDate.parse(movy.getLastView());
             if (date.isAfter(d.plusYears(2)) && movy.getRating() < 6)
             {
-                System.out.println("Er jeg tilføjet?" + movie.size());
                 movie.add(movy);
             }
         }
-        System.out.println("Kører jeg overhovedet?!");
         return movie;
     }
 
