@@ -244,7 +244,14 @@ public class ImdbDAO {
         Movie movie = new Movie(title, length, releaseYear, genreList, "", posterPath, imdbRating);
         return movie;
     }
-
+    
+    /**
+     * Denne metode gemmer billede filerne til vores harddisk som gør det muligt
+     * at benytte disse billeder i programmet.
+     * @param image
+     * @param title
+     * @return 
+     */
     public String saveImageToDisk(BufferedImage image, String title) {
         title = title.replace(":", "_");
         title = title.replace("/", "_");

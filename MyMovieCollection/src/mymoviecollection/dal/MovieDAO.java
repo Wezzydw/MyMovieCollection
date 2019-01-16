@@ -204,7 +204,6 @@ public class MovieDAO {
     }
 
     /**
-     * Denne metode
      *
      * @param selectedMovie
      * @throws IOException denne metode tager fat i vores selected movies og
@@ -335,7 +334,7 @@ public class MovieDAO {
 
     /**
      * Der tages fat i vores film og søges igennem filmene efter en angivet
-     * rating. Denne rating sendese til databasen så alle film der er bleven
+     * rating. Denne rating sendes til databasen så alle film der er bleven
      * ratet i løbet af programmets uptime, bliver gemt i databasen.
      *
      * @param allMovies
@@ -356,7 +355,11 @@ public class MovieDAO {
         }
 
     }
-    
+    /**
+     * Der forbindes til databasen og sender lastview of title på movien dertil
+     * @param movie
+     * @throws IOException 
+     */
         public void SendLastView(Movie movie) throws IOException {
         String a = "UPDATE Movies SET lastView = ? WHERE Title = ?;";
         try (Connection con = conProvider.getConnection()) {
@@ -369,7 +372,11 @@ public class MovieDAO {
             ex.printStackTrace();
         }
     }
-        
+     /**
+      * der forbindes til databasen for at updatere filmene, derfor sendes alt 
+      * filmenenes info med
+      * @param movie 
+      */   
     public void updateMovie(Movie movie)
     {
         String categories = "";
