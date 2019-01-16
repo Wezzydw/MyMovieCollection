@@ -179,7 +179,8 @@ public class Manager
 
     public void editMovie(Movie selectedItem)
     {
-
+        mdao.updateMovie(selectedItem);
+        
     }
 
     /**

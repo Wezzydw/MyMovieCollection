@@ -395,7 +395,7 @@ public class MovieDAO {
         {
             categories += string + ",";
         }
-        String a = "UPDATE Songs SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
+        String a = "UPDATE Movies SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
         try (Connection con = conProvider.getConnection())
         {
             PreparedStatement pstmt = con.prepareStatement(a);
