@@ -38,7 +38,6 @@ public class Movie {
         this.filePath = filePath;
     }
 
-    //System.out.println(dateFormat.format(date));
     public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating) {
 
         this.title = title;
