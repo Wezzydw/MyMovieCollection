@@ -5,7 +5,6 @@
  */
 package mymoviecollection.gui.controller;
 
-import com.sun.org.apache.bcel.internal.generic.LSTORE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +27,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -46,21 +43,15 @@ import mymoviecollection.bll.Search;
  */
 public class Model {
 
-    private Player player;
-    private Search search;
-    private ObservableList<Movie> movies;
-    private ObservableList<Category> categories;
+    private static final String editMoviefxml = "/mymoviecollection/gui/view/EditMovieView.fxml";
     private List<Movie> moviesReminder;
     private Manager manager;
     private String tmpString;
     private MenuButton mmm;
     private List<Boolean> categoryCheck;
+    
 
     public Model() throws IOException {
-        player = new Player();
-        search = new Search();
-        movies = FXCollections.observableArrayList();
-        categories = FXCollections.observableArrayList();
         manager = new Manager();
         tmpString = "";
     }
@@ -91,7 +82,7 @@ public class Model {
         if (selectedItem != null)
         {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/mymoviecollection/gui/view/EditMovieView.fxml"));
+            loader.setLocation(getClass().getResource(editMoviefxml));
             loader.load();
             EditMovieViewController display = loader.getController();
             
