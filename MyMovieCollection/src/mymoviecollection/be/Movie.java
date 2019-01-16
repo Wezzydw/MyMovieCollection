@@ -113,6 +113,7 @@ public class Movie {
     }
 
     public List<String> getCategory() {
+        
         return categories;
     }
 

@@ -244,13 +244,14 @@ public class MovieDAO {
      */
     public List<Movie> getAllMoviesFromDB() {
         List<Movie> allMovies = new ArrayList();
-        List<String> categori = new ArrayList();
+        
         try (Connection con = conProvider.getConnection()) {
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
 
             while (rs.next()) {
+                List<String> categori = new ArrayList();
                 String title = rs.getString("Title");
                 String filepath = rs.getString("Filepath");
                 String length = rs.getString("Length");

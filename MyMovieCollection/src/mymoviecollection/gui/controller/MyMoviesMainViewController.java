@@ -223,46 +223,46 @@ public class MyMoviesMainViewController implements Initializable {
 
     @FXML
     private void selectedDataToManager(MouseEvent event) {
-        if (lstMov.getSelectionModel().getSelectedItem() != null)
-        {
-        System.out.println("LastView : " + lstMov.getSelectionModel().getSelectedItem().getLastView());
-        lblInfo.setText(" " + lstMov.getSelectionModel().getSelectedItem().getLastView());
-        model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
-        lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
-        lblLength.setText(" Movie length " + lstMov.getSelectionModel().getSelectedItem().getLength() + " Minutes");
-        lblYear.setText(" Release year " + lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
-        System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
-        //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
-        System.out.println("Image in controller: " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
-        if (model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()) != null) {
-            Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
-            MovieImage.setImage(image);
-        }
+        if (lstMov.getSelectionModel().getSelectedItem() != null) {
+            System.out.println("LastView : " + lstMov.getSelectionModel().getSelectedItem().getLastView());
+            lblInfo.setText(" " + lstMov.getSelectionModel().getSelectedItem().getLastView());
+            model.sendDataOnClick(lstMov.getSelectionModel().getSelectedItems());
+            lblTitle.setText(lstMov.getSelectionModel().getSelectedItem().getTitle());
+            lblLength.setText(" Movie length " + lstMov.getSelectionModel().getSelectedItem().getLength() + " Minutes");
+            lblYear.setText(" Release year " + lstMov.getSelectionModel().getSelectedItem().getReleaseYear());
+            System.out.println("Init poster path; " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
+            //MovieImage = new ImageView(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath())); 
+            System.out.println("Image in controller: " + lstMov.getSelectionModel().getSelectedItem().getPosterPath());
+            if (model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()) != null) {
+                Image image = SwingFXUtils.toFXImage(model.getImage(lstMov.getSelectionModel().getSelectedItem().getPosterPath()), null);
+                MovieImage.setImage(image);
+            }
 
-        String tmpString = "";
+            String tmpString = "";
 
-        int counter = 0;
+            int counter = 0;
+            System.out.println(lstMov.getSelectionModel().getSelectedItem().getCategory());
+            for (String category : lstMov.getSelectionModel().getSelectedItem().getCategory()) {
+                counter++;
 
-        for (String category : lstMov.getSelectionModel().getSelectedItem().getCategory()) {
-            counter++;
-            if (counter == lstMov.getSelectionModel().getSelectedItem().getCategory().size()) {
-                tmpString = tmpString + category;
+                if (counter == lstMov.getSelectionModel().getSelectedItem().getCategory().size()) {
+                    tmpString = tmpString + category;
+                } else {
+                    tmpString = tmpString + category + ", ";
+                }
+            }
+            lblCategories.setText(tmpString);
+
+            lblImdb.setText("" + lstMov.getSelectionModel().getSelectedItem().getImdbRating());
+            lblInfo.setText("" + lstMov.getSelectionModel().getSelectedItem().getLastView());
+
+            if (sliderRateMovie != null) {
+                sliderRateMovie.setValue(lstMov.getSelectionModel().getSelectedItem().getRating());
+                movieRating.setText("" + lstMov.getSelectionModel().getSelectedItem().getRating());
             } else {
-                tmpString = tmpString + category + ", ";
+                sliderRateMovie.setValue(0);
+                movieRating.setText("");
             }
         }
-        lblCategories.setText(tmpString);
-
-        lblImdb.setText("" + lstMov.getSelectionModel().getSelectedItem().getImdbRating());
-        lblInfo.setText("" + lstMov.getSelectionModel().getSelectedItem().getLastView());
-
-        if (sliderRateMovie != null) {
-            sliderRateMovie.setValue(lstMov.getSelectionModel().getSelectedItem().getRating());
-            movieRating.setText("" + lstMov.getSelectionModel().getSelectedItem().getRating());
-        } else {
-            sliderRateMovie.setValue(0);
-            movieRating.setText("");
-        }
-    }
     }
 }
