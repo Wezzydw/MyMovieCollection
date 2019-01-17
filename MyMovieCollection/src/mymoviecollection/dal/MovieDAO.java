@@ -15,8 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import mymoviecollection.be.Category;
@@ -26,8 +24,7 @@ import mymoviecollection.be.Movie;
  *
  * @author Andreas Svendsen
  */
-public class MovieDAO
-{
+public class MovieDAO {
 
     List<Movie> movies;
     int counter;
@@ -40,13 +37,10 @@ public class MovieDAO
     private List<Movie> moviesFromDB;
     private List<Movie> oldMovieList;
 
-    public MovieDAO() throws IOException, SQLException
-    {
-        try
-        {
+    public MovieDAO() throws IOException, SQLException {
+        try {
             conProvider = new DatabaseConnection();
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new IOException("No database connection established " + ex);
         }
 
@@ -62,31 +56,28 @@ public class MovieDAO
     }
 
     /**
-     * 
+     * Den kalder sig selv recursively. Den scanner en mappe igennem for
+     * filer, finder den ikke nogle filer, men en anden mappe, hopper den ind og
+     * scanner den nye mappe.
+     *
      * @param filepath
      * @return
      */
-    public List<Movie> scanFolder(String filepath) throws DALException, SQLException
-    {
+    public List<Movie> scanFolder(String filepath) throws DALException, SQLException {
         File folder = new File(filepath);
         File[] folders = folder.listFiles();
-        for (File f : folders)
-        {
-            if (f.isFile())
-            {
-                if (checkForFileType(f) && !isAlreadyInSystem(filepath))
-                {
+        for (File f : folders) {
+            if (f.isFile()) {
+                if (checkForFileType(f) && !isAlreadyInSystem(filepath)) {
                     Movie m = getIMDBData(f.getName());
-                    if (m != null)
-                    {
+                    if (m != null) {
                         m.setFilePath(f.getAbsolutePath());
                         movies.add(m);
                         i++;
                     }
                 }
             }
-            if (f.isDirectory())
-            {
+            if (f.isDirectory()) {
                 scanFolder(f.getAbsolutePath());
             }
         }
@@ -100,29 +91,21 @@ public class MovieDAO
      * @param filepath
      * @return
      */
-    public boolean isAlreadyInSystem(String filepath)
-    {
-        for (Movie m : movies)
-        {
-            if (m.getFilePath() == filepath)
-            {
+    public boolean isAlreadyInSystem(String filepath) {
+        for (Movie m : movies) {
+            if (m.getFilePath() == filepath) {
                 return true;
             }
         }
 
-        for (Movie m : moviesFromDB)
-        {
-            if (m.getFilePath() == filepath)
-            {
+        for (Movie m : moviesFromDB) {
+            if (m.getFilePath() == filepath) {
                 return true;
             }
         }
-        if (!oldMovieList.isEmpty())
-        {
-            for (Movie m : oldMovieList)
-            {
-                if (m.getFilePath() == filepath)
-                {
+        if (!oldMovieList.isEmpty()) {
+            for (Movie m : oldMovieList) {
+                if (m.getFilePath() == filepath) {
                     return true;
                 }
             }
@@ -133,10 +116,8 @@ public class MovieDAO
     /**
      * Hvis Listen ikke er tom, så clear den listen
      */
-    public void clearMovieList()
-    {
-        if (!movies.isEmpty())
-        {
+    public void clearMovieList() {
+        if (!movies.isEmpty()) {
             oldMovieList.addAll(movies);
         }
         movies.clear();
@@ -147,54 +128,47 @@ public class MovieDAO
      *
      * @return
      */
-    public List<Movie> getMovie()
-    {
+    public List<Movie> getMovie() {
         return movies;
     }
 
     /**
      * Checker for korrekt filtype
+     *
      * @param f
      * @return
      */
-    private boolean checkForFileType(File f)
-    {
+    private boolean checkForFileType(File f) {
         String path = f.getAbsolutePath();
         if (path.endsWith(".mkv") || path.endsWith(".mp4")
-                || path.endsWith(".mpeg4"))
-        {
-            if (!path.toLowerCase().contains("sample"))
-            {
+                || path.endsWith(".mpeg4")) {
+            if (!path.toLowerCase().contains("sample")) {
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * Fungerer som et bindeled imellem alle de andre imdbMetoder, som i sidste
      * ende sender en fuldt construeret film return, ud fra en filepath
+     *
      * @param filepath
      * @return
      * @throws DALException
-     * @throws SQLException 
+     * @throws SQLException
      */
-
-    private Movie getIMDBData(String filepath) throws DALException, SQLException
-    {
+    private Movie getIMDBData(String filepath) throws DALException, SQLException {
         String searchResult = "";
         String idInformation = "";
 
-        if (counter == 0)
-        {
+        if (counter == 0) {
             startTime = System.currentTimeMillis();
             imdb.setStartTime(startTime);
         }
 
-        while (counter > 36)
-        {
-            if (startTime + requestRateTimer < System.currentTimeMillis())
-            {
+        while (counter > 36) {
+            if (startTime + requestRateTimer < System.currentTimeMillis()) {
                 counter = 0;
                 startTime = System.currentTimeMillis();
                 imdb.setStartTime(startTime);
@@ -202,25 +176,20 @@ public class MovieDAO
         }
 
         String searchString = imdb.makeSearchString(filepath);
-        try
-        {
+        try {
             searchResult = imdb.getIMDBText(searchString);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new DALException("SearchError");
         }
         startTime = imdb.getStartTime();
 
-        if (searchResult.contains("total_results\":0"))
-        {
+        if (searchResult.contains("total_results\":0")) {
             return null;
         }
 
-        try
-        {
+        try {
             idInformation = imdb.getIMDBText(imdb.getSearchIDQuery(searchResult));
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             throw new DALException("Could not retrieve information about : ", ex);
         }
 
@@ -229,33 +198,26 @@ public class MovieDAO
         Movie newMovie = imdb.constructMovie(idInformation);
         LocalDate ldate = LocalDate.now();
 
-        if (newMovie == null)
-        {
+        if (newMovie == null) {
             //Weird null error withouth this check
             return null;
         }
 
         newMovie.setLastView(ldate.toString());
-        for (Movie m : movies)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : movies) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
 
-        for (Movie m : oldMovieList)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : oldMovieList) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
 
-        for (Movie m : moviesFromDB)
-        {
-            if (m.getTitle().equals(newMovie.getTitle()))
-            {
+        for (Movie m : moviesFromDB) {
+            if (m.getTitle().equals(newMovie.getTitle())) {
                 return null;
             }
         }
@@ -268,24 +230,20 @@ public class MovieDAO
      * @throws IOException denne metode tager fat i vores selected movies og
      * fjerner den eller dem vi ønsker at fjerne.
      */
-    public void deleteMovies(List<Movie> selectedMovie) throws IOException, SQLException
-    {
+    public void deleteMovies(List<Movie> selectedMovie) throws IOException, SQLException {
         oldMovieList.addAll(movies);
         movies.removeAll(selectedMovie);
 
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             String a = "DELETE FROM Movies WHERE title =?;";
             PreparedStatement prst = con.prepareStatement(a);
-            for (Movie movie : selectedMovie)
-            {
+            for (Movie movie : selectedMovie) {
                 prst.setString(1, movie.getTitle());
                 prst.addBatch();
             }
             prst.executeBatch();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Could not delete from db" + ex);
         }
     }
@@ -296,18 +254,15 @@ public class MovieDAO
      *
      * @return
      */
-    public List<Movie> getAllMoviesFromDB() throws SQLException
-    {
+    public List<Movie> getAllMoviesFromDB() throws SQLException {
         List<Movie> allMovies = new ArrayList();
 
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             String a = "SELECT * FROM Movies;";
             PreparedStatement prst = con.prepareStatement(a);
             ResultSet rs = prst.executeQuery();
 
-            while (rs.next())
-            {
+            while (rs.next()) {
                 List<String> categori = new ArrayList();
                 String title = rs.getString("Title");
                 String filepath = rs.getString("Filepath");
@@ -322,18 +277,15 @@ public class MovieDAO
                 String genre = rs.getString("categories");
                 String[] genres = genre.split(",");
 
-                for (String s : genres)
-                {
+                for (String s : genres) {
                     categori.add(s);
                 }
                 Movie movie = new Movie(title, length, releaseYear, categori, filePath, posterPath, imdbRating, personalRating, id, lastView);
-                if (new File(filepath).isFile())
-                {
+                if (new File(filepath).isFile()) {
                     allMovies.add(movie);
                 }
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("No data from getAllMovies" + ex);
         }
         movies.addAll(allMovies);
@@ -347,16 +299,12 @@ public class MovieDAO
      * @param allMovies
      * @throws IOException
      */
-    public void SendDataToDB(List<Movie> allMovies) throws IOException, SQLException
-    {
+    public void SendDataToDB(List<Movie> allMovies) throws IOException, SQLException {
         String a = "INSERT INTO Movies (title, length, imdbRating, personalRating, filePath, lastView, posterPath, releaseYear, categories ) VALUES (?,?,?,?,?,?,?,?,?);";
-        try (Connection con = conProvider.getConnection())
-        {
-            for (Movie movie : allMovies)
-            {
+        try (Connection con = conProvider.getConnection()) {
+            for (Movie movie : allMovies) {
                 String genre = "";
-                for (String s : movie.getCategory())
-                {
+                for (String s : movie.getCategory()) {
                     genre += s + ",";
                 }
 
@@ -373,8 +321,7 @@ public class MovieDAO
                 pstmt.execute();
 
             }
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Could not save to DB" + ex);
         }
 
@@ -394,14 +341,11 @@ public class MovieDAO
      * @param imagePath
      * @return
      */
-    public BufferedImage readImageFromDisk(String imagePath) throws DALException
-    {
+    public BufferedImage readImageFromDisk(String imagePath) throws DALException {
         BufferedImage img = null;
-        try
-        {
+        try {
             img = ImageIO.read(new File(imagePath));
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new DALException("Image not found on disk: " + imagePath, e);
         }
         return img;
@@ -415,11 +359,9 @@ public class MovieDAO
      * @param allMovies
      * @throws IOException
      */
-    public void SendRatingToDB(Movie movie) throws IOException, SQLException
-    {
+    public void SendRatingToDB(Movie movie) throws IOException, SQLException {
         String a = "UPDATE Movies SET personalRating = ? WHERE Title = ?;";
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             System.out.println("getRating " + movie.getRating());
             System.out.println("ID: " + movie.getId());
             PreparedStatement pstmt = con.prepareStatement(a);
@@ -427,8 +369,7 @@ public class MovieDAO
             pstmt.setString(2, movie.getTitle());
             pstmt.execute();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Could not send rating to DB" + ex);
         }
 
@@ -440,18 +381,15 @@ public class MovieDAO
      * @param movie
      * @throws IOException
      */
-    public void SendLastView(Movie movie) throws IOException, SQLException
-    {
+    public void SendLastView(Movie movie) throws IOException, SQLException {
         String a = "UPDATE Movies SET lastView = ? WHERE Title = ?;";
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(a);
             pstmt.setString(1, movie.getLastView());
             pstmt.setString(2, movie.getTitle());
             pstmt.execute();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Could not send lastViewedTime" + ex);
         }
     }
@@ -462,18 +400,15 @@ public class MovieDAO
      *
      * @param movie
      */
-    public void updateMovie(Movie movie) throws SQLException
-    {
+    public void updateMovie(Movie movie) throws SQLException {
         String categories = "";
-        for (String string : movie.getCategory())
-        {
+        for (String string : movie.getCategory()) {
             categories += string + ",";
         }
 
         String a = "UPDATE Movies SET Title = ?, length = ?, releaseYear = ?, personalRating = ?, categories = ? WHERE filepath = ?;";
 
-        try (Connection con = conProvider.getConnection())
-        {
+        try (Connection con = conProvider.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(a);
             pstmt.setString(1, movie.getTitle());
             pstmt.setString(2, movie.getLength());
@@ -483,17 +418,17 @@ public class MovieDAO
             pstmt.setString(6, movie.getFilePath());
             pstmt.execute();
 
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             throw new SQLException("Could not change data in DB" + ex);
         }
     }
+
     /**
      * returnerer categorier lavet i imdbDAO
-     * @return 
+     *
+     * @return
      */
-    public List<Category> getCategory()
-    {
+    public List<Category> getCategory() {
         return imdb.getCategorys();
     }
 }

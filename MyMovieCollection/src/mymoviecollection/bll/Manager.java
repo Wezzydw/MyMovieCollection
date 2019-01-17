@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
@@ -22,7 +20,6 @@ import javafx.scene.control.MenuButton;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.DALException;
-import mymoviecollection.dal.ImdbDAO;
 import mymoviecollection.dal.MovieDAO;
 
 /**

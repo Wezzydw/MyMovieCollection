@@ -173,7 +173,7 @@ public class ImdbDAO {
     }
 
     /**
-     *
+     *  Laver en forespørgsel på et URL og søger for at skaffe en string retur
      * @param url
      * @return
      * @throws IOException
