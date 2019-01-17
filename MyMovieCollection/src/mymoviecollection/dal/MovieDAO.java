@@ -62,7 +62,7 @@ public class MovieDAO
     }
 
     /**
-     *
+     * 
      * @param filepath
      * @return
      */
@@ -153,7 +153,7 @@ public class MovieDAO
     }
 
     /**
-     *
+     * Checker for korrekt filtype
      * @param f
      * @return
      */
@@ -170,6 +170,15 @@ public class MovieDAO
         }
         return false;
     }
+    
+    /**
+     * Fungerer som et bindeled imellem alle de andre imdbMetoder, som i sidste
+     * ende sender en fuldt construeret film return, ud fra en filepath
+     * @param filepath
+     * @return
+     * @throws DALException
+     * @throws SQLException 
+     */
 
     private Movie getIMDBData(String filepath) throws DALException, SQLException
     {
@@ -479,7 +488,10 @@ public class MovieDAO
             throw new SQLException("Could not change data in DB" + ex);
         }
     }
-    
+    /**
+     * returnerer categorier lavet i imdbDAO
+     * @return 
+     */
     public List<Category> getCategory()
     {
         return imdb.getCategorys();

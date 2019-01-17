@@ -124,12 +124,12 @@ public class Model {
             stage.setScene(new Scene(p));
             stage.showAndWait();
         }
-        /**
-         * metoden opdatere den film der er bleven ændret i editMovie.
-         */
 
     }
 
+    /**
+     * metoden opdatere den film der er bleven ændret i editMovie.
+     */
     void updateMovie(Movie selectedItem) throws SQLException {
         manager.editMovie(selectedItem);
     }
@@ -165,8 +165,6 @@ public class Model {
             }
         });
     }
-
-    
 
     /**
      * Sender metoden ned til manageren, med category og en ny title.
@@ -419,8 +417,11 @@ public class Model {
         }
         return null;
     }
-
-    List<CheckMenuItem> getMenuItems() {
+/**
+ * returnerer alle menuitems ud fra alle categorier fundet i manager
+ * @return 
+ */
+   public List<CheckMenuItem> getMenuItems() {
         List<Category> allCategories = manager.getAllCategories();
         List<CheckMenuItem> allItems = new ArrayList();
         for (Category allCategory : allCategories) {
@@ -430,6 +431,11 @@ public class Model {
         return allItems;
     }
 
+   /**
+    * Opstarts items bliver sat
+    * @param menuCategory 
+    */
+   
     public void initCategories(MenuButton menuCategory) {
         selectedCategories = new ArrayList();
         List<Category> allCategories = new ArrayList();
@@ -464,6 +470,12 @@ public class Model {
         }
         menuCategory.getItems().addAll(allItems);
     }
+    
+    /**
+     * returnerer en string af categorier, lavet ud fra en film
+     * @param m
+     * @return 
+     */
 
     public String getCategoryString(Movie m) {
         String string = "";

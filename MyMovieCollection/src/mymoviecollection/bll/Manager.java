@@ -77,9 +77,9 @@ public class Manager
     }
 
     /**
-     * Den kalder sig selv recursively. Den scanner en mappe igennem for filer,
-     * finder den ikke nogle filer, men en anden mappe, hopper den ind og
-     * scanner den nye mappe.
+     * Sørger for håndtering af listen og categorierne
+     * Disse opdateres efter forskellige parametrer og fungerer som et loop
+     * der kalder sig selv for at opdatere
      *
      *
      * @param filepath
@@ -181,11 +181,17 @@ public class Manager
         });
     }
     
+    /**
+     * Laver en kopi af menuen fra MODEL
+     * @param mmm 
+     */
     public void setMenu(MenuButton mmm)
     {
         this.mmm = mmm;
     }
-    
+    /**
+     * refesher CheckMenu
+     */
     public void ttt() {
         List<Category> categoriesAll = new ArrayList();
         categoriesAll.addAll(categories);
@@ -195,6 +201,12 @@ public class Manager
             mmm.getItems().add(new CheckMenuItem(c.getTitle()));
         }
     }
+    
+    /**
+     * redigerer en film
+     * @param selectedItem
+     * @throws SQLException 
+     */
 
     public void editMovie(Movie selectedItem) throws SQLException
     {
@@ -362,6 +374,12 @@ public class Manager
     {
         genres = allCat;
     }
+    
+    /**
+     * Returnerer alle categorier fundet i cdao
+     * @return
+     * @throws SQLException 
+     */
     
     public List<Category> getAllCategorysDB() throws SQLException
     {

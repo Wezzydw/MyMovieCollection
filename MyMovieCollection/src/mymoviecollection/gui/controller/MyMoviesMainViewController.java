@@ -85,7 +85,6 @@ public class MyMoviesMainViewController implements Initializable
         model.setMenuItmes(menuCategory, model.getAllCategories());
         model.setCheckList(selectedCategories);
         model.movieReminder();
-
     }
 
     
