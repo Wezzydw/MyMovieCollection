@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
 
 /**
@@ -477,5 +478,10 @@ public class MovieDAO
         {
             throw new SQLException("Could not change data in DB" + ex);
         }
+    }
+    
+    public List<Category> getCategory()
+    {
+        return imdb.getCategorys();
     }
 }

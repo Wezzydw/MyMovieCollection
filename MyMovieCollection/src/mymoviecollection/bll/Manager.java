@@ -17,9 +17,12 @@ import javafx.application.Platform;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.MenuButton;
 import mymoviecollection.be.Movie;
 import mymoviecollection.dal.CategoryDAO;
 import mymoviecollection.dal.DALException;
+import mymoviecollection.dal.ImdbDAO;
 import mymoviecollection.dal.MovieDAO;
 
 /**
@@ -30,7 +33,7 @@ public class Manager
 {
 
     private static final int waitTime = 30000;
-    private static final int onceASecond = 1000;
+    private static final int onceASecond = 3000;
     private MovieDAO mdao;
     private CategoryDAO cdao;
     private ObservableList<Movie> movies;
@@ -45,7 +48,8 @@ public class Manager
     private int initMovieLoopSize;
     private String globalQuery;
     private long updateOnceASecond;
-
+    private MenuButton mmm;
+    
     public Manager() throws IOException, SQLException
     {
         mdao = new MovieDAO();
@@ -153,6 +157,8 @@ public class Manager
                         {
                             allMovies.addAll(listToAdd);
                             searchMovie(globalQuery);
+                            
+                            ttt();
                         }
 
                         try
@@ -173,6 +179,21 @@ public class Manager
                 }
             }
         });
+    }
+    
+    public void setMenu(MenuButton mmm)
+    {
+        this.mmm = mmm;
+    }
+    
+    public void ttt() {
+        List<Category> categoriesAll = new ArrayList();
+        categoriesAll.addAll(categories);
+        categoriesAll.addAll(mdao.getCategory());
+        mmm.getItems().clear();
+        for (Category c : categoriesAll) {
+            mmm.getItems().add(new CheckMenuItem(c.getTitle()));
+        }
     }
 
     public void editMovie(Movie selectedItem) throws SQLException
@@ -340,6 +361,11 @@ public class Manager
     public void getChecklistCategories(List<Category> allCat)
     {
         genres = allCat;
+    }
+    
+    public List<Category> getAllCategorysDB() throws SQLException
+    {
+        return cdao.getAllCategories();
     }
 
     /**

@@ -5,43 +5,27 @@
  */
 package mymoviecollection.gui.controller;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
-import mymoviecollection.bll.BLLException;
-import mymoviecollection.dal.DALException;
 
 /**
  * FXML Controller class
@@ -80,9 +64,7 @@ public class MyMoviesMainViewController implements Initializable
 
     private List<Boolean> selectedCategories;
     Model model;
-    private long initLoopTime;
-    private final long refreshTimer = 1000;
-    private final long loopDuration = 180000;
+
 
     /**
      * Initializes the controller class.
@@ -103,38 +85,10 @@ public class MyMoviesMainViewController implements Initializable
         model.setMenuItmes(menuCategory, model.getAllCategories());
         model.setCheckList(selectedCategories);
         model.movieReminder();
-        initLoopTime = 0;
+
     }
 
-    public void readyForCatLoop()
-    {
-
-        if (initLoopTime + loopDuration < System.currentTimeMillis())
-        {
-            //SKAL MÅSKE ÆNDRES TIL PLATFORM.RUN
-            Thread t = new Thread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    try
-                    {
-                        Thread.sleep(refreshTimer);
-
-                        //Check for updates on catbox
-                    } catch (InterruptedException ex)
-                    {
-                        System.out.println("RIP");
-                    }
-
-                    readyForCatLoop();
-                }
-            });
-
-            t.start();
-        }
-    }
-
+    
     @FXML
     private void btnRemoveCat(ActionEvent event)
     {
@@ -160,8 +114,6 @@ public class MyMoviesMainViewController implements Initializable
     {
         Stage stage = (Stage) anchorPane.getScene().getWindow();
         model.addMovies(stage);
-        initLoopTime = System.currentTimeMillis();
-        readyForCatLoop();
     }
 
     @FXML

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -38,8 +39,8 @@ import mymoviecollection.dal.DALException;
  *
  * @author Wezzy Laptop
  */
-public class Model
-{
+public class Model {
+
     private static final String editMoviefxml = "/mymoviecollection/gui/view/EditMovieView.fxml";
     private List<Movie> moviesReminder;
     private Manager manager;
@@ -48,13 +49,10 @@ public class Model
     private List<Boolean> categoryCheck;
     private List<Boolean> selectedCategories;
 
-    public Model() throws IOException
-    {
-        try
-        {
+    public Model() throws IOException {
+        try {
             manager = new Manager();
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println("Error making new Manager " + ex);;
         }
         tmpString = "";
@@ -65,8 +63,7 @@ public class Model
      *
      * @param categoryCheck
      */
-    public void setCheckList(List<Boolean> categoryCheck)
-    {
+    public void setCheckList(List<Boolean> categoryCheck) {
         this.categoryCheck = categoryCheck;
     }
 
@@ -76,10 +73,10 @@ public class Model
      * @param mmm
      * @param allCat
      */
-    public void setMenuItmes(MenuButton mmm, List<Category> allCat)
-    {
+    public void setMenuItmes(MenuButton mmm, List<Category> allCat) {
         this.mmm = mmm;
         manager.getChecklistCategories(allCat);
+        manager.setMenu(this.mmm);
     }
 
     /**
@@ -88,20 +85,16 @@ public class Model
      * @param stage
      * @throws DALException
      */
-    public void addMovies(Stage stage)
-    {
+    public void addMovies(Stage stage) {
 
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File selectedDirectory = directoryChooser.showDialog(stage);
 
-        if (selectedDirectory != null)
-        {
+        if (selectedDirectory != null) {
             String filepath = selectedDirectory.getAbsolutePath();
-            try
-            {
+            try {
                 manager.scanFolder(filepath);
-            } catch (DALException ex)
-            {
+            } catch (DALException ex) {
                 System.out.println("Error in scanning folder" + ex);
             }
         }
@@ -113,17 +106,13 @@ public class Model
      * @param selectedItem
      * @throws IOException
      */
-    void editMovie(Movie selectedItem)
-    {
-        if (selectedItem != null)
-        {
+    void editMovie(Movie selectedItem) {
+        if (selectedItem != null) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource(editMoviefxml));
-            try
-            {
+            try {
                 loader.load();
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 System.out.println("Error editing the selected movie" + ex);
             }
             EditMovieViewController display = loader.getController();
@@ -141,8 +130,7 @@ public class Model
 
     }
 
-    void updateMovie(Movie selectedItem) throws SQLException
-    {
+    void updateMovie(Movie selectedItem) throws SQLException {
         manager.editMovie(selectedItem);
     }
 
@@ -150,8 +138,7 @@ public class Model
      * denne metode åbner et vindue der gør det muligt at ændre kategorierne på
      * den valgte kategori.
      */
-    void editCat()
-    {
+    void editCat() {
         TextField txtTitle = new TextField();
         txtTitle.setText("new category name");
         Button btn = new Button();
@@ -167,11 +154,9 @@ public class Model
         stage.setTitle("edit category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 editCategory((Category) cbox.getSelectionModel().getSelectedItem(), txtTitle.getText());
                 mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
                 mmm.getItems().add(new CheckMenuItem(txtTitle.getText()));
@@ -181,6 +166,8 @@ public class Model
         });
     }
 
+    
+
     /**
      * Sender metoden ned til manageren, med category og en ny title.
      *
@@ -188,13 +175,10 @@ public class Model
      * @param newTitle
      * @throws SQLException
      */
-    void editCategory(Category category, String newTitle)
-    {
-        try
-        {
+    void editCategory(Category category, String newTitle) {
+        try {
             manager.editCategory(category, newTitle);
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println("Error in editing selected category" + ex);
         }
 
@@ -205,16 +189,12 @@ public class Model
      *
      * @param selectedItem
      */
-    void playMovie(Movie selectedItem)
-    {
-        try
-        {
+    void playMovie(Movie selectedItem) {
+        try {
             manager.playMovie(selectedItem);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             System.out.println("Error in playing movie" + ex);
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println(ex);;
         }
     }
@@ -225,18 +205,13 @@ public class Model
      * @param selectedItem
      * @param value
      */
-    public void sliderRateMovie(Movie selectedItem, double value)
-    {
-        if (selectedItem != null)
-        {
-            try
-            {
+    public void sliderRateMovie(Movie selectedItem, double value) {
+        if (selectedItem != null) {
+            try {
                 manager.sliderRateMovie(selectedItem, value);
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 System.out.println("Error rating movie" + ex);
-            } catch (SQLException ex)
-            {
+            } catch (SQLException ex) {
                 System.out.println(ex);
             }
         }
@@ -246,8 +221,7 @@ public class Model
      * @param value
      * @return returnere en value som rating
      */
-    public double getLabelRating(double value)
-    {
+    public double getLabelRating(double value) {
         return value;
     }
 
@@ -257,16 +231,12 @@ public class Model
      * @param selectedItem
      * @throws IOException
      */
-    void reMovie(List<Movie> selectedItem)
-    {
-        try
-        {
+    void reMovie(List<Movie> selectedItem) {
+        try {
             manager.reMovie(selectedItem);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             System.out.println("Error reMovie-ing selected movie" + ex);
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
     }
@@ -274,8 +244,7 @@ public class Model
     /**
      * åbner et vindue hvori man kan create en ny category.
      */
-    void createCategory()
-    {
+    void createCategory() {
         TextField txtTitle = new TextField();
         txtTitle.setText("Category");
         Button btn = new Button();
@@ -289,11 +258,9 @@ public class Model
         stage.setTitle("create category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 addCategory(new Category(txtTitle.getText()));
                 tmpString = txtTitle.getText();
                 mmm.getItems().add(new CheckMenuItem(tmpString));
@@ -308,8 +275,7 @@ public class Model
      *
      * @param cat
      */
-    void addCategory(Category cat)
-    {
+    void addCategory(Category cat) {
         manager.addCategory(cat);
     }
 
@@ -317,17 +283,14 @@ public class Model
      * metoden åbner et advarselsvindue hvis der er film i moviereminder listen.
      * Så kalder den metoden i manager.warning.
      */
-    void movieReminder()
-    {
+    void movieReminder() {
         Button btn = new Button("OK");
         Label lbl = new Label();
         moviesReminder = new ArrayList();
         moviesReminder.addAll(manager.warning());
         String underWatchedMovie = "";
-        if (moviesReminder.size() != 0)
-        {
-            for (Movie movy : moviesReminder)
-            {
+        if (moviesReminder.size() != 0) {
+            for (Movie movy : moviesReminder) {
                 underWatchedMovie = underWatchedMovie + movy.getTitle() + "\n";
             }
 
@@ -342,12 +305,10 @@ public class Model
             stage.setTitle("Consider removing these movies");
             stage.setScene(scene);
             stage.show();
-            btn.setOnAction(new EventHandler<ActionEvent>()
-            {
+            btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
 
-                public void handle(ActionEvent event)
-                {
+                public void handle(ActionEvent event) {
                     Stage stage = (Stage) btn.getScene().getWindow();
                     stage.close();
                 }
@@ -358,8 +319,7 @@ public class Model
     /**
      * Laver et vindue hvori man kan delete valgte kategorier.
      */
-    void chooseDeleteCategory()
-    {
+    void chooseDeleteCategory() {
         Button btn = new Button();
         ComboBox cbox = new ComboBox<Category>();
         cbox.setItems(manager.getAllCategories());
@@ -374,16 +334,14 @@ public class Model
         stage.setTitle("delete category");
         stage.setScene(scene);
         stage.show();
-        btn.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
 
             /**
              * den åbner et vindue med en combobox hvori man kan vælge de
              * kategorier der skal slettes
              */
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 deleteCategory((Category) cbox.getSelectionModel().getSelectedItem());
                 mmm.getItems().remove(cbox.getItems().indexOf(cbox.getSelectionModel().getSelectedItem()) + 1);
                 Stage stage = (Stage) btn.getScene().getWindow();
@@ -399,13 +357,10 @@ public class Model
      * @param category
      * @throws SQLException
      */
-    void deleteCategory(Category category)
-    {
-        try
-        {
+    void deleteCategory(Category category) {
+        try {
             manager.deleteCategory(category);
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println("Error in deleting movie" + ex);
         }
     }
@@ -414,13 +369,10 @@ public class Model
      *
      * @return kalder metoden getAllMovies i manager
      */
-    public ObservableList<Movie> getAllMovies()
-    {
-        try
-        {
+    public ObservableList<Movie> getAllMovies() {
+        try {
             return manager.getAllMovies();
-        } catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             System.out.println("Error getting allmovies " + ex);
         }
         return null;
@@ -431,8 +383,7 @@ public class Model
      *
      * @return
      */
-    ObservableList<Category> getAllCategories()
-    {
+    ObservableList<Category> getAllCategories() {
         return manager.getAllCategories();
     }
 
@@ -441,16 +392,14 @@ public class Model
      *
      * @param query
      */
-    void searchMovie(String query)
-    {
+    void searchMovie(String query) {
         manager.searchMovie(query);
     }
 
     /**
      * kalder SortCategories i manager
      */
-    void sortCategories()
-    {
+    void sortCategories() {
         manager.sortCategories(categoryCheck);
     }
 
@@ -460,35 +409,28 @@ public class Model
      * @param image
      * @return image
      */
-    public BufferedImage getImage(String image)
-    {
-        if (!image.isEmpty())
-        {
-            try
-            {
+    public BufferedImage getImage(String image) {
+        if (!image.isEmpty()) {
+            try {
                 return manager.getImage(image);
-            } catch (DALException ex)
-            {
+            } catch (DALException ex) {
                 System.out.println(ex.getMessage());
             }
         }
         return null;
     }
 
-    List<CheckMenuItem> getMenuItems()
-    {
+    List<CheckMenuItem> getMenuItems() {
         List<Category> allCategories = manager.getAllCategories();
         List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories)
-        {
+        for (Category allCategory : allCategories) {
             CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
             allItems.add(iti);
         }
         return allItems;
     }
 
-    public void initCategories(MenuButton menuCategory)
-    {
+    public void initCategories(MenuButton menuCategory) {
         selectedCategories = new ArrayList();
         List<Category> allCategories = new ArrayList();
         allCategories.addAll(getAllCategories());
@@ -498,17 +440,13 @@ public class Model
             selectedCategories.add(Boolean.FALSE);
         }
 
-        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>()
-        {
-            public void handle(ActionEvent e)
-            {
-                if (((CheckMenuItem) e.getSource()).isSelected())
-                {
+        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                if (((CheckMenuItem) e.getSource()).isSelected()) {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
                     selectedCategories.set(tmpIndex, Boolean.TRUE);
                     sortCategories();
-                } else
-                {
+                } else {
                     int tmpIndex = menuCategory.getItems().indexOf(((CheckMenuItem) e.getSource()));
 
                     selectedCategories.set(tmpIndex, Boolean.FALSE);
@@ -517,8 +455,7 @@ public class Model
             }
         };
         List<CheckMenuItem> allItems = new ArrayList();
-        for (Category allCategory : allCategories)
-        {
+        for (Category allCategory : allCategories) {
             counter++;
             String name = "item" + counter;
             CheckMenuItem iti = new CheckMenuItem(allCategory.getTitle());
@@ -528,23 +465,19 @@ public class Model
         menuCategory.getItems().addAll(allItems);
     }
 
-    public String getCategoryString(Movie m)
-    {
+    public String getCategoryString(Movie m) {
         String string = "";
         int counter = 0;
-        
-        for (String category : m.getCategory())
-        {
+
+        for (String category : m.getCategory()) {
+
             counter++;
-            if (counter == m.getCategory().size())
-            {
-                tmpString = tmpString + category;
-            } else
-            {
-                tmpString = tmpString + category + ", ";
+            if (counter == m.getCategory().size()) {
+                string = string + category;
+            } else {
+                string = string + category + ", ";
             }
         }
         return string;
     }
-
 }
