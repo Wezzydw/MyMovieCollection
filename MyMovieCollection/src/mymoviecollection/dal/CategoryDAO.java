@@ -30,6 +30,10 @@ public class CategoryDAO {
         this.conProvider = new DatabaseConnection();
     }
 
+    /**
+     * Sender listen af kategorier ned til databasen.
+     * @param category 
+     */
     public void createCategory(Category category)
     {
         try (Connection con = conProvider.getConnection())
@@ -45,6 +49,12 @@ public class CategoryDAO {
             ex.printStackTrace();
         }
     }
+    
+    /**
+     * Fjerner en kategori, ud fra den String den får ind, fra databasen.
+     * @param title
+     * @throws SQLException 
+     */
     public void deleteCategory(String title) throws SQLException
     {
         try (Connection con = conProvider.getConnection())
@@ -69,6 +79,12 @@ public class CategoryDAO {
         }
     }
     
+    /**
+     * Updatere navnet på kategorien. Erstatter currentTitle med newTitle.
+     * @param currentTitle
+     * @param newTitle
+     * @throws SQLException 
+     */
     public void updateCategory(String currentTitle, String newTitle) throws SQLException
     {
         try (Connection con = conProvider.getConnection())
@@ -95,6 +111,12 @@ public class CategoryDAO {
         }
     }
     
+    /**
+     * Trækker alle kategorierne ud fra databasen og tilføjer dem på listen,
+     * mens næste der stadig har værdier.
+     * @return En liste af kategorier.
+     * @throws SQLException 
+     */
     public List<Category> getAllCategories() throws SQLException
     {
         List<Category> categories = new ArrayList<>();
