@@ -26,7 +26,6 @@ public class Player
     {
         String qq = "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe";
         String test = "\"" + qq + "\"";
-        String l = "\\\\wezzy\\Film\\Avengers.Infinity.War.2018.NORDiC.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-CDB\\Avengers.Infinity.War.2018.NORDiC.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-CDB.mkv";
         try
         {
             Process p = Runtime.getRuntime().exec(test + filePath);
