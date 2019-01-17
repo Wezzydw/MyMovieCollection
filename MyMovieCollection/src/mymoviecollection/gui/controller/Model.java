@@ -29,8 +29,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import mymoviecollection.be.Category;
 import mymoviecollection.be.Movie;
+import mymoviecollection.bll.BLLException;
 import mymoviecollection.bll.Manager;
-import mymoviecollection.dal.DALException;
 
 /**
  *
@@ -89,11 +89,7 @@ public class Model {
 
         if (selectedDirectory != null) {
             String filepath = selectedDirectory.getAbsolutePath();
-            try {
-                manager.scanFolder(filepath);
-            } catch (DALException ex) {
-                System.out.println("Error in scanning folder" + ex);
-            }
+            manager.scanFolder(filepath);
         }
     }
 
@@ -408,7 +404,7 @@ public class Model {
         if (!image.isEmpty()) {
             try {
                 return manager.getImage(image);
-            } catch (DALException ex) {
+            } catch (BLLException ex) {
                 System.out.println(ex.getMessage());
             }
         }

@@ -64,15 +64,6 @@ public class CategoryDAO {
             pstmt.setString(1, title);
             pstmt.execute();
             pstmt.close();
-            a = "Select * From catMov;";
-            ResultSet rs = con.prepareStatement(a).executeQuery();
-            while (rs.next())
-            {
-                a = "DELETE FROM catMov WHERE Title = (?);";
-                pstmt = con.prepareStatement(a);
-                pstmt.setString(1, title);
-                pstmt.execute();
-            }
         } catch (SQLServerException ex)
         {
             throw new SQLException("Delete category Error" + ex);

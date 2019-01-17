@@ -5,6 +5,8 @@
  */
 package mymoviecollection.bll;
 
+import mymoviecollection.dal.DALException;
+
 
 
 /**
@@ -15,6 +17,10 @@ public class BLLException extends Exception {
 
     public BLLException(String message) {
         super(message);
+    }
+
+    BLLException(DALException ex) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import mymoviecollection.be.Category;
 import javafx.collections.FXCollections;
@@ -81,7 +83,7 @@ public class Manager
      *
      * @param filepath
      */
-    public void scanFolder(String filepath) throws DALException
+    public void scanFolder(String filepath)
     {
         mdao.clearMovieList();
         Thread t = new Thread(new Runnable()
@@ -96,7 +98,7 @@ public class Manager
                     //Desværre ikke klar over hvordan det her skal
                     //håndteres i en runnable
                     System.out.println("Error in scanning folder " + ex);
-
+                    
                 } catch (SQLException ex)
                 {
                     System.out.println("Error in scanning folder " + ex);
@@ -395,9 +397,13 @@ public class Manager
      * @param image
      * @return filstien til billedet.
      */
-    public BufferedImage getImage(String image) throws DALException
+    public BufferedImage getImage(String image) throws BLLException
     {
-        return mdao.readImageFromDisk(image);
+        try {
+            return mdao.readImageFromDisk(image);
+        } catch (DALException ex) {
+            throw new BLLException(ex);
+        }
     }
 
     /**
