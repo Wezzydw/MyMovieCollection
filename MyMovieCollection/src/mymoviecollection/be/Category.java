@@ -10,8 +10,8 @@ package mymoviecollection.be;
  * @author Andreas Svendsen
  */
 public class Category {
-    String title;
-    int Id;
+    private String title;
+    private int Id;
 
     public Category(String title)
     {

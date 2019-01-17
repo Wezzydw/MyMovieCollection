@@ -26,13 +26,11 @@ import mymoviecollection.be.Movie;
  */
 public class MovieDAO {
 
-    List<Movie> movies;
-    int counter;
-    long startTime;
-    int requestRateTimer;
-    String requestNotFound;
-    DatabaseConnection conProvider;
-    int i;
+    private List<Movie> movies;
+    private int counter;
+    private long startTime;
+    private int requestRateTimer;
+    private DatabaseConnection conProvider;
     private ImdbDAO imdb;
     private List<Movie> moviesFromDB;
     private List<Movie> oldMovieList;
@@ -47,9 +45,7 @@ public class MovieDAO {
         counter = 0;
         movies = new ArrayList();
         startTime = 0;
-        i = 0;
         requestRateTimer = 11000;
-        requestNotFound = "The resource you requested could not be found.";
         imdb = new ImdbDAO(startTime);
         moviesFromDB = getAllMoviesFromDB();
         oldMovieList = new ArrayList();
@@ -73,7 +69,6 @@ public class MovieDAO {
                     if (m != null) {
                         m.setFilePath(f.getAbsolutePath());
                         movies.add(m);
-                        i++;
                     }
                 }
             }

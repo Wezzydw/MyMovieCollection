@@ -23,7 +23,7 @@ import mymoviecollection.be.Category;
  */
 public class CategoryDAO {
     
-    DatabaseConnection conProvider;
+    private DatabaseConnection conProvider;
 
     public CategoryDAO() throws IOException
     {

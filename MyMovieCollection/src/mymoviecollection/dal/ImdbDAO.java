@@ -27,12 +27,12 @@ import mymoviecollection.be.Movie;
  */
 public class ImdbDAO {
 
-    private static final String queryP1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
-    private static final String queryEnd = "&include_adult=true&year=";
-    private static final int requestRateTimer = 11000;
-    private static final String searchP1 = "https://api.themoviedb.org/3/movie/";
-    private static final String serachP2 = "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
-    private static final String posterURLp1 = "https://image.tmdb.org/t/p/original/";
+    private static final String QUERY_P1 = "https://api.themoviedb.org/3/search/movie?api_key=0c8d21c8ce1c4efd22b8bb8795427245&query=";
+    private static final String QUERY_END = "&include_adult=true&year=";
+    private static final int REQUEST_RATE_TIMER = 11000;
+    private static final String SEARCH_P1 = "https://api.themoviedb.org/3/movie/";
+    private static final String SEARCH_P2 = "?api_key=0c8d21c8ce1c4efd22b8bb8795427245";
+    private static final String POSTER_URL_P1 = "https://image.tmdb.org/t/p/original/";
 
     private CategoryDAO catDAO;
     private long startTime;
@@ -93,12 +93,12 @@ public class ImdbDAO {
                 }
             }
             year = getYearFromMovie(splitString);
-            searchString = queryP1 + queryP2 + queryEnd + year;
+            searchString = QUERY_P1 + queryP2 + QUERY_END + year;
         } else if (filepath.endsWith(".mp4")) {
-            searchString = queryP1 + filepath.substring(0, filepath.length() - 4) + queryEnd;
+            searchString = QUERY_P1 + filepath.substring(0, filepath.length() - 4) + QUERY_END;
             searchString = searchString.replace(" ", "%20");
         } else if (filepath.endsWith(".mpeg4")) {
-            searchString = queryP1 + filepath.substring(0, filepath.length() - 6) + queryEnd;
+            searchString = QUERY_P1 + filepath.substring(0, filepath.length() - 6) + QUERY_END;
             searchString = searchString.replace(" ", "%20");
         }
         return searchString;
@@ -206,7 +206,7 @@ public class ImdbDAO {
         in.close();
         if (response.toString().contains("status_code\":25")) {
             startTime = System.currentTimeMillis();
-            while (startTime + requestRateTimer > System.currentTimeMillis()) {
+            while (startTime + REQUEST_RATE_TIMER > System.currentTimeMillis()) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException ex) {
@@ -237,7 +237,7 @@ public class ImdbDAO {
             }
         }
 
-        String idString = searchP1 + searchID + serachP2;
+        String idString = SEARCH_P1 + searchID + SEARCH_P2;
         return idString;
     }
 
@@ -279,7 +279,7 @@ public class ImdbDAO {
             URL url = null;
 
             try {
-                url = new URL(posterURLp1 + posterPathOnline);
+                url = new URL(POSTER_URL_P1 + posterPathOnline);
             } catch (MalformedURLException ex) {
                 return null;
             }

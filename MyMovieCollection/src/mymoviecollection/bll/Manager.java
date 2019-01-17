@@ -29,8 +29,8 @@ import mymoviecollection.dal.MovieDAO;
 public class Manager
 {
 
-    private static final int waitTime = 30000;
-    private static final int onceASecond = 2000;
+    private static final int WAIT_TIME = 30000;
+    private static final int ONCE_A_SECOND = 2000;
     private MovieDAO mdao;
     private CategoryDAO cdao;
     private ObservableList<Movie> movies;
@@ -138,9 +138,9 @@ public class Manager
             @Override
             public void run()
             {
-                if (currentTime < movieLoop + waitTime)
+                if (currentTime < movieLoop + WAIT_TIME)
                 {
-                    if ((updateOnceASecond + onceASecond) < currentTime)
+                    if ((updateOnceASecond + ONCE_A_SECOND) < currentTime)
                     {
                         List<Movie> listToAdd = new ArrayList();
                         for (Movie m : tmpMovieList)

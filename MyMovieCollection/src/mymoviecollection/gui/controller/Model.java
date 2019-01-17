@@ -38,7 +38,7 @@ import mymoviecollection.dal.DALException;
  */
 public class Model {
 
-    private static final String editMoviefxml = "/mymoviecollection/gui/view/EditMovieView.fxml";
+    private static final String EDIT_MOVIE_FXML = "/mymoviecollection/gui/view/EditMovieView.fxml";
     private List<Movie> moviesReminder;
     private Manager manager;
     private String tmpString;
@@ -106,7 +106,7 @@ public class Model {
     void editMovie(Movie selectedItem) {
         if (selectedItem != null) {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource(editMoviefxml));
+            loader.setLocation(getClass().getResource(EDIT_MOVIE_FXML));
             try {
                 loader.load();
             } catch (IOException ex) {

@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class Movie {
 
-    double rating;
-    int id;
-    String title;
-    String filePath;
-    String lastView;
-    String length;
-    String releaseYear;
-    List<String> categories;
-    String posterPath;
-    double imdbRating;
+    private double rating;
+    private int id;
+    private String title;
+    private String filePath;
+    private String lastView;
+    private String length;
+    private String releaseYear;
+    private List<String> categories;
+    private String posterPath;
+    private double imdbRating;
 
     public Movie(String title, String length, String releaseYear, List<String> categories, String filepath, String posterPath, double imdbRating) {
 

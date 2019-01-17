@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,10 +45,8 @@ public class EditMovieViewController implements Initializable
     @FXML
     private MenuButton menuCategories;
 
-    Model model;
+    private Model model;
     private Movie selectedMovie;
-    private String d2;
-    private int Id;
     private int movieIndex;
     private List<Boolean> selectedCategories = new ArrayList();
     @FXML
@@ -101,7 +97,6 @@ public class EditMovieViewController implements Initializable
         txtLength.setText(selectedMovie.getLength());
         txtRating.setText("" + selectedMovie.getRating());
         txtReleaseYear.setText(selectedMovie.getReleaseYear());
-        this.Id = selectedMovie.getId();
         this.movieIndex = movieIndex;
         
         List<Category> allCategories = model.getAllCategories();
