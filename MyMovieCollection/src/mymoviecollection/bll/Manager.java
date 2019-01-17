@@ -33,7 +33,7 @@ public class Manager
 {
 
     private static final int waitTime = 30000;
-    private static final int onceASecond = 3000;
+    private static final int onceASecond = 2000;
     private MovieDAO mdao;
     private CategoryDAO cdao;
     private ObservableList<Movie> movies;
